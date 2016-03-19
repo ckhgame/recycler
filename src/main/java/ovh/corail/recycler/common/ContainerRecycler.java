@@ -27,9 +27,9 @@ public class ContainerRecycler extends Container {
 		this.k = z;
 		this.addSlotToContainer(new SlotRecycler(inventory, 0, 9, 6));
 		this.addSlotToContainer(new SlotRecycler(inventory, 1, 9, 24));
-		for (int i = inventory.firstOutput; i < 10; i++) {
-			this.addSlotToContainer(new SlotRecycler(inventory, i, 9 + (i - 1) * 18, 61));
-			this.addSlotToContainer(new SlotRecycler(inventory, i + 9, 9 + (i - 1) * 18, 43));
+				for (int i = inventory.firstOutput; i <= 10; i++) {
+			this.addSlotToContainer(new SlotRecycler(inventory, i, 9 + (i - 2) * 18, 61));
+			this.addSlotToContainer(new SlotRecycler(inventory, i + 9, 9 + (i - 2) * 18, 43));
 		}
 		for (int i = 0; i < 3; i++) {
 			this.addSlotToContainer(new SlotVisual(inventory, inventory.visual, i, 117 + (i * 18), 5));
