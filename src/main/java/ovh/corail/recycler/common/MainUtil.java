@@ -37,9 +37,9 @@ public class MainUtil {
 	}
 	
 	public static void getNewRecipes() {
-		Item iron_nugget = MainUtil.getNewItem("iron_nugget");
-		Item diamond_nugget = MainUtil.getNewItem("diamond_nugget");
-		Item diamond_disk = MainUtil.getNewItem("diamond_disk");
+		Item iron_nugget = Main.items.get(0);
+		Item diamond_nugget = Main.items.get(1);
+		Item diamond_disk = Main.items.get(2);
 		Block recycler = Main.blocks.get(0);
 		/* Pépite en Lingot */
 		GameRegistry.addRecipe(new ItemStack(Items.iron_ingot, 1), new Object[]{"000", "000", "000", 
