@@ -33,7 +33,6 @@ import ovh.corail.recycler.common.MainUtil;
 import ovh.corail.recycler.common.blocks.RecyclerBlock;
 
 public class RecyclerTile extends TileEntity implements IInventory {
-	public EntityPlayer player;
 	private int count = 20;
 	public int firstOutput = 2;
 	public ItemStack[] inventory;
@@ -42,7 +41,6 @@ public class RecyclerTile extends TileEntity implements IInventory {
 	private Object BlockPos;
 
 	public RecyclerTile() {
-		player = Minecraft.getMinecraft().thePlayer;
 		this.inventory = new ItemStack[count];
 		this.visual = new InventoryBasic("visual", true, 6);
 		recyclingManager = RecyclingManager.getInstance();
@@ -66,7 +64,7 @@ public class RecyclerTile extends TileEntity implements IInventory {
 			setInventorySlotContents(0, null);
 			return false;
 		}
-		// TODO nécessaire?
+		// TODO nÃ©cessaire?
 		if (getStackInSlot(1).getItemDamage()>=getStackInSlot(1).getMaxDamage()) {
 			return false;
 		}
@@ -86,19 +84,19 @@ public class RecyclerTile extends TileEntity implements IInventory {
 		if (maxDiskUse<nb_input) {
 			nb_input=maxDiskUse;
 		}
-		/* Calcul du résultat */
+		/* Calcul du rÃ©sultat */
 		List<ItemStack> itemsList = recyclingManager.getResultStack(getStackInSlot(0),nb_input);
-		// TODO calcul des stacksizes pour les slots libres à mettre plus bas
+		// TODO calcul des stacksizes pour les slots libres Ã  mettre plus bas
 		int emptyCount = hasEmptySlot();
 		if (emptyCount >= itemsList.size()) {
 			/* Remplir les slots identiques non complets */
-			/* Pour chaque résultat de la recette */
+			/* Pour chaque rÃ©sultat de la recette */
 			for (int i = 0; i < itemsList.size(); i++) {
-				/* Si le slot n'est pas à sa taille maximale */
+				/* Si le slot n'est pas Ã  sa taille maximale */
 				if (itemsList.get(i).stackSize != itemsList.get(i).getMaxStackSize()) {
 					/* Pour chaque slot */
 					for (int j = firstOutput; j < this.count; j++) {
-						/* Même objet */
+						/* MÃªme objet */
 						if (itemsList.get(i) != null && itemsList.get(i).isItemEqual(inventory[j])) {
 							int sommeStackSize = inventory[j].stackSize + itemsList.get(i).stackSize;
 							if (sommeStackSize > inventory[j].getMaxStackSize()) {
