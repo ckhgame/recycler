@@ -48,6 +48,13 @@ public class MainUtil {
 		GameRegistry.addRecipe(new ItemStack(Items.diamond, 1), new Object[]{"000", "000", "000", 
 			Character.valueOf('0'), new ItemStack(diamond_nugget, 1), 
 		});
+		/* Lingot en pépite */
+		GameRegistry.addRecipe(new ItemStack(iron_nugget, 9), new Object[]{"0", 
+				Character.valueOf('0'), new ItemStack(Items.iron_ingot, 1), 
+		});
+		GameRegistry.addRecipe(new ItemStack(diamond_nugget, 9), new Object[]{"0", 
+				Character.valueOf('0'), new ItemStack(Items.diamond, 1), 
+		});
 		/* Podzol (2 terres 2 sables en croix) */
 		GameRegistry.addRecipe(new ItemStack(Blocks.dirt, 1, 2), new Object[]{"01", "10",  
 			Character.valueOf('0'), new ItemStack(Blocks.dirt, 1, 0), 
@@ -104,10 +111,9 @@ public class MainUtil {
 				Character.valueOf('1'), new ItemStack(Blocks.iron_bars, 1, 0), 
 		});
 		/* Recette du Recycleur */
-		GameRegistry.addRecipe(new ItemStack(recycler,1), new Object[]{"000", "121", "000", 
+		GameRegistry.addRecipe(new ItemStack(recycler,1), new Object[]{"000", "111", "000", 
 			Character.valueOf('0'), new ItemStack(Blocks.cobblestone, 1), 
-			Character.valueOf('1'), new ItemStack(Items.iron_sword, 1), 
-			Character.valueOf('2'), new ItemStack(Blocks.redstone_torch, 1), 
+			Character.valueOf('1'), new ItemStack(Items.iron_ingot, 1), 
 		});
 		/* Recette du Disque de diamant */
 		GameRegistry.addRecipe(new ItemStack(diamond_disk,1), new Object[]{" 0 ", "010", " 0 ", 
