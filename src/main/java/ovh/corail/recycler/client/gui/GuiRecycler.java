@@ -55,7 +55,7 @@ public class GuiRecycler extends GuiContainer {
 
 		if (par2 != 28 && par2 != 156) {
 			if (par2 == 1) {
-				this.mc.displayGuiScreen((GuiScreen) null);
+				this.mc.thePlayer.closeScreen();
 			}
 		}
 
