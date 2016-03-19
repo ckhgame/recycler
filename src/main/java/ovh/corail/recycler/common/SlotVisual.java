@@ -24,11 +24,6 @@ public class SlotVisual extends Slot {
 		super.onSlotChange(item1, item2);
 	}
 	@Override
-	public void onPickupFromSlot(EntityPlayer player, ItemStack stack) {
-		super.onPickupFromSlot(player, stack);
-		
-	}
-	@Override
 	public boolean canTakeStack(EntityPlayer playerIn) {
         return false;
     }
