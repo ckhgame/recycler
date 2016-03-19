@@ -7,7 +7,7 @@ public class Disk extends BasicItem {
 	public Disk() {
 		super("diamond_disk");
 	    setCreativeTab(CreativeTabs.tabTools);
-		setMaxDamage(500);
+		setMaxDamage(5000);
 		setMaxStackSize(1);
 	}
 }
