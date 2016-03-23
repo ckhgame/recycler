@@ -2,22 +2,28 @@ package ovh.corail.recycler.common;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class MainUtil {
 	public static boolean showMessages=true;
+	public static I18n translation= new I18n();
+	public static void sendMessage(String content, boolean translate) {
+		content=MainUtil.getTranslation(content);
+		sendMessage(content);
+	}
 	public static void sendMessage(String content) {
 		if (showMessages) {
-			EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
-			player.addChatComponentMessage(new TextComponentString(content));
+			Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new TextComponentString(content));
 		}
+	}
+	public static String getTranslation(String key) {
+		return translation.translateToLocal(key);
 	}
 	public static Block getNewBlock(String name) {
 		for (int i=0;i<Main.blocks.size();i++) {
@@ -37,10 +43,10 @@ public class MainUtil {
 	}
 	
 	public static void getNewRecipes() {
-		Item iron_nugget = Main.items.get(0);
-		Item diamond_nugget = Main.items.get(1);
-		Item diamond_disk = Main.items.get(2);
-		Block recycler = Main.blocks.get(0);
+		Item iron_nugget = MainUtil.getNewItem(Main.MODID+":iron_nugget");
+		Item diamond_nugget = MainUtil.getNewItem(Main.MODID+":diamond_nugget");
+		Item diamond_disk = MainUtil.getNewItem(Main.MODID+":diamond_disk");
+		Block recycler = MainUtil.getNewBlock(Main.MODID+":recycler");
 		/* Pépite en Lingot */
 		GameRegistry.addRecipe(new ItemStack(Items.iron_ingot, 1), new Object[]{"000", "000", "000", 
 			Character.valueOf('0'), new ItemStack(iron_nugget, 1), 
