@@ -1,5 +1,8 @@
 package ovh.corail.recycler.common;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
@@ -9,10 +12,26 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import ovh.corail.recycler.common.blocks.RecyclerBlock;
+import ovh.corail.recycler.common.items.BasicItem;
+import ovh.corail.recycler.common.items.Disk;
 
 public class MainUtil {
 	public static boolean showMessages=true;
 	public static I18n translation= new I18n();
+	public static Item iron_nugget;
+	public static Item diamond_nugget;
+	public static Item diamond_disk;
+	public static Block recycler;
+	public static List<Block> blocks = new ArrayList<Block>();
+	public static List<Item> items = new ArrayList<Item>();
+	public static void init() {
+		iron_nugget=new BasicItem("iron_nugget");
+		diamond_nugget=new BasicItem("diamond_nugget");
+		diamond_disk=new Disk();
+		recycler=new RecyclerBlock();
+		getNewRecipes();
+	}
 	public static void sendMessage(String content, boolean translate) {
 		content=MainUtil.getTranslation(content);
 		sendMessage(content);
@@ -26,27 +45,24 @@ public class MainUtil {
 		return translation.translateToLocal(key);
 	}
 	public static Block getNewBlock(String name) {
-		for (int i=0;i<Main.blocks.size();i++) {
-			if (Main.blocks.get(i).getRegistryName().compareTo(name)==0) {
-				return Main.blocks.get(i);
+		String nameWithModid=Main.MODID+":"+name;
+		for (int i=0;i<blocks.size();i++) {
+			if (blocks.get(i).getRegistryName().compareTo(nameWithModid)==0) {
+				return blocks.get(i);
 			}
 		}
 		return null;
 	}
 	public static Item getNewItem(String name) {
-		for (int i=0;i<Main.items.size();i++) {
-			if (Main.items.get(i).getRegistryName().compareTo(name)==0) {
-				return Main.items.get(i);
+		for (int i=0;i<items.size();i++) {
+			if (items.get(i).getRegistryName().compareTo(name)==0) {
+				return items.get(i);
 			}
 		}
 		return null;
 	}
 	
 	public static void getNewRecipes() {
-		Item iron_nugget = MainUtil.getNewItem(Main.MODID+":iron_nugget");
-		Item diamond_nugget = MainUtil.getNewItem(Main.MODID+":diamond_nugget");
-		Item diamond_disk = MainUtil.getNewItem(Main.MODID+":diamond_disk");
-		Block recycler = MainUtil.getNewBlock(Main.MODID+":recycler");
 		/* Pépite en Lingot */
 		GameRegistry.addRecipe(new ItemStack(Items.iron_ingot, 1), new Object[]{"000", "000", "000", 
 			Character.valueOf('0'), new ItemStack(iron_nugget, 1), 
