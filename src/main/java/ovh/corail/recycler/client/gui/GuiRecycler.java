@@ -13,6 +13,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import ovh.corail.recycler.common.ContainerRecycler;
 import ovh.corail.recycler.common.Main;
+import ovh.corail.recycler.common.MainUtil;
 import ovh.corail.recycler.common.RecyclingManager;
 import ovh.corail.recycler.common.handler.PacketHandler;
 import ovh.corail.recycler.common.packets.ButtonMessage;
@@ -87,7 +88,7 @@ public class GuiRecycler extends GuiContainer {
 		this.buttonList.clear();
 		int posX = (this.width) / 2;
 		int posY = (this.height) / 2;
-		this.buttonList.add(new GuiButton(0, this.guiLeft + 50, this.guiTop + 12, 54, 16, "Recycler"));
+		this.buttonList.add(new GuiButton(0, this.guiLeft + 50, this.guiTop + 12, 54, 16, MainUtil.getTranslation("button.recycle")));
 	}
 
 	@Override
