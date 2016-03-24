@@ -10,6 +10,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import ovh.corail.recycler.common.handler.ConfigurationHandler;
 
 public class RecyclingManager {
 	private static final RecyclingManager instance = new RecyclingManager();
@@ -74,19 +75,19 @@ public class RecyclingManager {
 		}
 		Recipe currentRecipe = recipes.get(num_recipe);
 
-		/* Calcul du résultat du stack */
+		/* Calcul du rÃ©sultat du stack */
 		for (int i = 0; i < currentRecipe.getCount(); i++) {
-			/* Pour chaque stack résultat de la recette */
+			/* Pour chaque stack rÃ©sultat de la recette */
 			ItemStack currentStack = currentRecipe.getStack(i);
 			int newStackCount = currentStack.stackSize * nb_input;
-			/* Objets abimés */
+			/* Objets abimÃ©s */
 			// TODO SWITCH + Main.items.get()
 			if (currentRecipe.canBeRepaired() && stack.getItemDamage() > 0) {
 				String name = currentStack.getItem().getRegistryName();
 				int currentSize = currentStack.stackSize;
-				/* Unités plus petites */
+				/* UnitÃ©s plus petites */
 				if (name.compareTo("minecraft:iron_ingot") == 0) {
-					currentStack = new ItemStack(Main.items.get(0), currentSize * 9, 0);
+					currentStack = new ItemStack(MainUtil.iron_nugget, currentSize * 9, 0);
 					newStackCount = currentStack.stackSize * nb_input;
 				}
 				if (name.compareTo("minecraft:gold_ingot") == 0) {
@@ -94,7 +95,7 @@ public class RecyclingManager {
 					newStackCount = currentStack.stackSize * nb_input;
 				}
 				if (name.compareTo("minecraft:diamond") == 0) {
-					currentStack = new ItemStack(Main.items.get(1), currentSize * 9, 0);
+					currentStack = new ItemStack(MainUtil.diamond_nugget, currentSize * 9, 0);
 					newStackCount = currentStack.stackSize * nb_input;
 				}
 				if (name.compareTo("minecraft:leather") == 0) {
@@ -122,7 +123,7 @@ public class RecyclingManager {
 			}
 
 		}
-		if (isGrind) { // TODO améliorer
+		if (isGrind) { // TODO amÃ©liorer
 			itemsList = this.getResultList(itemsList);
 			itemsList = this.getResultList(itemsList);
 			itemsList = this.getResultList(itemsList);
@@ -139,7 +140,7 @@ public class RecyclingManager {
 				newItemsList.add(itemsList.get(i).copy());
 				continue;
 			}
-			/* Calcul du résultat */
+			/* Calcul du rÃ©sultat */
 			Recipe currentRecipe = recipes.get(numRecipe);
 			if (currentStack.stackSize < currentRecipe.getItemRecipe().stackSize) {
 				newItemsList.add(currentStack.copy());
@@ -167,29 +168,29 @@ public class RecyclingManager {
 		/* Pierre moussue en Pierre */
 		this.addRecipe(new ItemStack(Blocks.mossy_cobblestone, 1, 0),
 				new Object[] { new ItemStack(Blocks.cobblestone, 1, 0), new ItemStack(Blocks.vine, 1, 0) });
-		/* Pierre taillée en pierre */
+		/* Pierre taillÃ©e en pierre */
 		this.addRecipe(new ItemStack(Blocks.stonebrick, 1, 0),
 				new Object[] { new ItemStack(Blocks.cobblestone, 1, 0), });
-		/* Pierre craquelée, moussue, sculptée en pierre taillée */
+		/* Pierre craquelÃ©e, moussue, sculptÃ©e en pierre taillÃ©e */
 		for (int i = 1; i <= 3; i++) {
 			this.addRecipe(new ItemStack(Blocks.stonebrick, 1, i), new Object[] {
 					new ItemStack(Blocks.stonebrick, 1, 0), (i == 1 ? new ItemStack(Blocks.vine, 1, 0) : "") // Moussue
 			});
 		}
-		/* Grès en sable */
+		/* GrÃ¨s en sable */
 		this.addRecipe(new ItemStack(Blocks.sandstone, 1, 0), new Object[] { new ItemStack(Blocks.sand, 4, 0), });
-		/* Quartz rayé/sculpté */
+		/* Quartz rayÃ©/sculptÃ© */
 		this.addRecipe(new ItemStack(Blocks.quartz_block, 1, 1),
 				new Object[] { new ItemStack(Blocks.quartz_block, 1, 0), });
 		this.addRecipe(new ItemStack(Blocks.quartz_block, 1, 2),
 				new Object[] { new ItemStack(Blocks.quartz_block, 1, 0), });
 		this.addRecipe(new ItemStack(Blocks.purpur_pillar, 1, 0), 
 				new Object[] { new ItemStack(Blocks.purpur_block, 1, 0), });
-		/* Granite/diorite/andésite poli */
+		/* Granite/diorite/andÃ©site poli */
 		this.addRecipe(new ItemStack(Blocks.stone, 1, 2), new Object[] { new ItemStack(Blocks.stone, 1, 1), });
 		this.addRecipe(new ItemStack(Blocks.stone, 1, 4), new Object[] { new ItemStack(Blocks.stone, 1, 3), });
 		this.addRecipe(new ItemStack(Blocks.stone, 1, 6), new Object[] { new ItemStack(Blocks.stone, 1, 5), });
-		/* Grès poli/sculpté */
+		/* GrÃ¨s poli/sculptÃ© */
 		this.addRecipe(new ItemStack(Blocks.sandstone, 1, 1), new Object[] { new ItemStack(Blocks.sandstone, 1, 0), });
 		this.addRecipe(new ItemStack(Blocks.sandstone, 1, 2), new Object[] { new ItemStack(Blocks.sandstone, 1, 0), });
 		this.addRecipe(new ItemStack(Blocks.red_sandstone, 1, 1),
@@ -260,7 +261,7 @@ public class RecyclingManager {
 		this.addRecipe(new ItemStack(Blocks.iron_door, 1, 0), new Object[] { new ItemStack(Items.iron_ingot, 2, 0), });
 		/* Barreau de fer */
 		this.addRecipe(new ItemStack(Blocks.iron_bars, 1, 0), new Object[] { new ItemStack(iron_nugget, 3, 0), });
-		/* Plaque de pression (+ pondérée) */
+		/* Plaque de pression (+ pondÃ©rÃ©e) */
 		this.addRecipe(new ItemStack(Blocks.wooden_pressure_plate, 1, 0),
 				new Object[] { new ItemStack(Blocks.planks, 2, 0), });
 		this.addRecipe(new ItemStack(Blocks.stone_pressure_plate, 1, 0),
@@ -269,7 +270,7 @@ public class RecyclingManager {
 				new Object[] { new ItemStack(Items.iron_ingot, 2, 0), });
 		this.addRecipe(new ItemStack(Blocks.light_weighted_pressure_plate, 1, 0),
 				new Object[] { new ItemStack(Items.gold_ingot, 2, 0), });
-		/* Barrière */
+		/* BarriÃ¨re */
 		this.addRecipe(new ItemStack(Blocks.oak_fence, 3, 0),
 				new Object[] { new ItemStack(Blocks.planks, 4, 0), new ItemStack(Items.stick, 2, 0), });
 		this.addRecipe(new ItemStack(Blocks.spruce_fence, 3, 0),
@@ -284,9 +285,9 @@ public class RecyclingManager {
 				new Object[] { new ItemStack(Blocks.planks, 4, 5), new ItemStack(Items.stick, 2, 0), });
 		this.addRecipe(new ItemStack(Blocks.nether_brick_fence, 3, 0),
 				new Object[] { new ItemStack(Blocks.nether_brick, 1, 0), });
-		/* Bâton */
+		/* BÃ¢ton */
 		this.addRecipe(new ItemStack(Items.stick, 2, 0), new Object[] { new ItemStack(Blocks.planks, 1, 0), });
-		/* Planche en bûche */
+		/* Planche en bÃ»che */
 		for (int i = 0; i < 4; i++) {
 			this.addRecipe(new ItemStack(Blocks.planks, 4, i), new Object[] { new ItemStack(Blocks.log, 1, i), });
 		}
@@ -309,7 +310,7 @@ public class RecyclingManager {
 		this.addRecipe(new ItemStack(Blocks.furnace, 1, 0), new Object[] { new ItemStack(Blocks.cobblestone, 8, 0), });
 		/* Enclume */
 		this.addRecipe(new ItemStack(Blocks.anvil, 1, 0), new Object[] { new ItemStack(Items.iron_ingot, 31, 0), });
-		// TODO enclume endommagée
+		// TODO enclume endommagÃ©e
 		/* Table d'enchantement */
 		this.addRecipe(new ItemStack(Blocks.enchanting_table, 1, 0), new Object[] { new ItemStack(Items.diamond, 2, 0),
 				new ItemStack(Blocks.obsidian, 4, 0), new ItemStack(Items.book, 1, 0), });
@@ -354,12 +355,12 @@ public class RecyclingManager {
 				new ItemStack(Items.iron_ingot, 5, 0),
 				new ItemStack(Blocks.chest, 1, 0),
 		});
-		/* Canne à pêche */
+		/* Canne Ã  pÃªche */
 		this.addRecipe(new ItemStack(Items.fishing_rod, 1, 0), new Object[] {
 				new ItemStack(Items.string, 2, 0),
 				new ItemStack(Items.stick, 3, 0),
 		});
-		/* Carotte sur un bâton */
+		/* Carotte sur un bÃ¢ton */
 		this.addRecipe(new ItemStack(Items.carrot_on_a_stick, 1, 0), new Object[] {
 				new ItemStack(Items.carrot, 1, 0),
 				new ItemStack(Items.fishing_rod, 1, 0),
@@ -419,7 +420,7 @@ public class RecyclingManager {
 		this.addRecipe(new ItemStack(Blocks.stone_button, 1, 0), new Object[] {
 				new ItemStack(Blocks.stone, 1, 0),
 		});
-		/* Bâteau */
+		/* BÃ¢teau */
 		this.addRecipe(new ItemStack(Items.boat, 1, 0), new Object[] {
 				new ItemStack(Blocks.planks, 5, 0),
 		});
@@ -594,7 +595,7 @@ public class RecyclingManager {
 				new ItemStack(Items.string, 3, 0),
 				new ItemStack(Items.stick, 3, 0),
 		});
-		/* Flèche */
+		/* FlÃ¨che */
 		this.addRecipe(new ItemStack(Items.arrow, 1, 0), new Object[] {
 				new ItemStack(Items.feather, 1, 0),
 				new ItemStack(Items.stick, 1, 0),
@@ -666,7 +667,7 @@ public class RecyclingManager {
 				new ItemStack(Blocks.iron_bars, 4, 0),
 		});
 		/* Recycleur */
-		if (Main.recyclerRecycled) {
+		if (ConfigurationHandler.recyclerRecycled) {
 			this.addRecipe(new ItemStack(recycler, 1, 0), new Object[] {
 					new ItemStack(Blocks.cobblestone, 6, 0),
 					new ItemStack(Blocks.redstone_torch, 1, 0),
