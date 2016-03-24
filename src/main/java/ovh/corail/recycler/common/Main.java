@@ -22,8 +22,6 @@ public class Main {
 	public static Main instance = new Main();
 	@SidedProxy(clientSide = "ovh.corail.recycler.client.ClientProxy", serverSide = "ovh.corail.recycler.common.CommonProxy")
 	public static CommonProxy proxy;
-	public static List<Block> blocks = new ArrayList<Block>();
-	public static List<Item> items = new ArrayList<Item>();
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
