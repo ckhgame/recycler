@@ -159,10 +159,6 @@ public class RecyclingManager {
 	}
 
 	private RecyclingManager() {
-		Item iron_nugget = MainUtil.getNewItem("iron_nugget");
-		Item diamond_nugget = MainUtil.getNewItem("diamond_nugget");
-		Item diamond_disk = MainUtil.getNewItem("diamond_disk");
-		Block recycler = MainUtil.getNewBlock("recycler");
 		/* Roche en pierre */
 		this.addRecipe(new ItemStack(Blocks.stone, 1, 0), new Object[] { new ItemStack(Blocks.cobblestone, 1, 0) });
 		/* Pierre moussue en Pierre */
@@ -260,7 +256,7 @@ public class RecyclingManager {
 		this.addRecipe(new ItemStack(Blocks.dark_oak_door, 1, 0), new Object[] { new ItemStack(Blocks.planks, 2, 5), });
 		this.addRecipe(new ItemStack(Blocks.iron_door, 1, 0), new Object[] { new ItemStack(Items.iron_ingot, 2, 0), });
 		/* Barreau de fer */
-		this.addRecipe(new ItemStack(Blocks.iron_bars, 1, 0), new Object[] { new ItemStack(iron_nugget, 3, 0), });
+		this.addRecipe(new ItemStack(Blocks.iron_bars, 1, 0), new Object[] { new ItemStack(MainUtil.iron_nugget, 3, 0), });
 		/* Plaque de pression (+ pondérée) */
 		this.addRecipe(new ItemStack(Blocks.wooden_pressure_plate, 1, 0),
 				new Object[] { new ItemStack(Blocks.planks, 2, 0), });
@@ -668,11 +664,9 @@ public class RecyclingManager {
 		});
 		/* Recycleur */
 		if (ConfigurationHandler.recyclerRecycled) {
-			this.addRecipe(new ItemStack(recycler, 1, 0), new Object[] {
+			this.addRecipe(new ItemStack(MainUtil.recycler, 1, 0), new Object[] {
 					new ItemStack(Blocks.cobblestone, 6, 0),
-					new ItemStack(Blocks.redstone_torch, 1, 0),
-					new ItemStack(Items.iron_sword, 1, 0),
-					new ItemStack(Items.iron_sword, 1, 0),
+					new ItemStack(Items.iron_ingot, 3, 0),
 			});
 		}
 		
