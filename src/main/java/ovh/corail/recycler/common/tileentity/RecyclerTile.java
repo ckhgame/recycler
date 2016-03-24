@@ -287,8 +287,7 @@ public class RecyclerTile extends TileEntity implements IInventory {
 		}
 		/* Disk Input Slot */
 		if (index == 1) {
-			// TODO nom des objets Main.item.get() Disque diamant
-			if (stack.getItem().getRegistryName().compareTo(Main.items.get(2).getRegistryName()) == 0) {
+			if (stack.getItem().getRegistryName().compareTo(MainUtil.diamond_disk.getRegistryName()) == 0) {
 				return true;
 			} else {
 				return false;
