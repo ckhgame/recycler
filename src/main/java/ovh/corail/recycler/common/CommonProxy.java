@@ -19,12 +19,8 @@ public class CommonProxy {
 		GameRegistry.registerTileEntity(RecyclerTile.class, "inventory");
 		ConfigurationHandler.config = new Configuration(event.getSuggestedConfigurationFile());
 		ConfigurationHandler.config.load();
-		ConfigurationHandler.refreshConfig();	
-		Main.items.add(new BasicItem("iron_nugget"));
-		Main.items.add(new BasicItem("diamond_nugget"));
-		Main.items.add(new Disk()); 
-		Main.blocks.add(new RecyclerBlock());
-		MainUtil.getNewRecipes(); 
+		ConfigurationHandler.refreshConfig();
+		MainUtil.init();  
 		PacketHandler.init();
 	}
 	public void init(FMLInitializationEvent event) {
