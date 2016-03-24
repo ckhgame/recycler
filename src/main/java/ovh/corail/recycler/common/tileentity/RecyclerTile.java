@@ -21,6 +21,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -122,9 +123,8 @@ public class RecyclerTile extends TileEntity implements IInventory {
 			}
 
 		} else {
-			MainUtil.sendMessage("Emplacement insuffisants output");
-			MainUtil.sendMessage("Slots disponibles : " + emptyCount + "Slots Requis : " + itemsList.size());
-			return false;
+			MainUtil.sendMessage("message.recycler.notEnoughOutputSlots", true);
+			return false; 
 		}
 		/* Vide le slot input */
 		if (currentRecipe.getItemRecipe().stackSize*nb_input==getStackInSlot(0).stackSize) {
@@ -247,17 +247,6 @@ public class RecyclerTile extends TileEntity implements IInventory {
 			}
 		}
 	}
-
-	@Override
-	public String getName() {
-		return "containerRecycler";
-	}
-
-	@Override
-	public boolean hasCustomName() {
-		return true;
-	}
-
 	@Override
 	public ItemStack removeStackFromSlot(int index) {
 		ItemStack stack;
@@ -361,11 +350,16 @@ public class RecyclerTile extends TileEntity implements IInventory {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	/* TODO ChatTranslate
+
 	@Override
-	public IChatComponent getDisplayName() {
-		return this.hasCustomName() ? new ChatComponentText(this.getName())
-				: new ChatComponentTranslation(this.getName());
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
 	}
-*/
+
+	@Override
+	public boolean hasCustomName() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
