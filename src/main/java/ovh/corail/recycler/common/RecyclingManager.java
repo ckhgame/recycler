@@ -1,20 +1,25 @@
 package ovh.corail.recycler.common;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.collect.Lists;
+import com.google.gson.GsonBuilder;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.IRecipe;
 import ovh.corail.recycler.common.handler.ConfigurationHandler;
 
 public class RecyclingManager {
 	private static final RecyclingManager instance = new RecyclingManager();
-	private final List<Recipe> recipes = Lists.<Recipe> newArrayList();
+	private List<Recipe> recipes = Lists.<Recipe> newArrayList();
 
 	public static RecyclingManager getInstance() {
 		return instance;
@@ -27,7 +32,9 @@ public class RecyclingManager {
 	public Recipe getRecipe(int index) {
 		return recipes.get(index);
 	}
-
+	public void addRecipe(Recipe recipe) {
+		recipes.add(recipe);
+	}
 	public void addRecipe(ItemStack stack, Object... recipeComponents) {
 		addRecipe(stack, false, recipeComponents);
 	}
@@ -174,7 +181,7 @@ public class RecyclingManager {
 			});
 		}
 		/* Grès en sable */
-		this.addRecipe(new ItemStack(Blocks.sandstone, 1, 0), new Object[] { new ItemStack(Blocks.sand, 4, 0), });
+		//this.addRecipe(new ItemStack(Blocks.sandstone, 1, 0), new Object[] { new ItemStack(Blocks.sand, 4, 0), });
 		/* Quartz rayé/sculpté */
 		this.addRecipe(new ItemStack(Blocks.quartz_block, 1, 1),
 				new Object[] { new ItemStack(Blocks.quartz_block, 1, 0), });
