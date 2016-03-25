@@ -14,6 +14,9 @@ public class Recipe {
 	public Recipe(Item item, int count, int meta) {
 		this.itemRecipe=new ItemStack(item, count, meta);
 	}
+	public Recipe(ItemStack itemStack) {
+		this.itemRecipe=itemStack;
+	}
 	public Recipe(ItemStack stackIn, Object... recipeComponents) {
 		this.itemRecipe=stackIn.copy();
 		for (Object object : recipeComponents) {
@@ -51,7 +54,7 @@ public class Recipe {
 		addStack(Item.getItemFromBlock(block), count, meta);
 	}
 	public void addStack(ItemStack stack) {
-		
+		itemsList.add(stack);
 	}
 	public ItemStack getStack(int index) {
 		return itemsList.get(index);
