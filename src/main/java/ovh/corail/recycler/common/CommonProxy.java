@@ -40,25 +40,18 @@ public class CommonProxy {
 		ConfigurationHandler.refreshConfig();
 		MainUtil.init();
 		PacketHandler.init();
+		/* Load Json Recipes */
 		File questFile = new File(event.getModConfigurationDirectory(), "recyclingRecipes.json");
 		if (!questFile.exists()) {
 			questFile.createNewFile();
 			FileWriter fw = new FileWriter(questFile);
-			List<jsonRecipe> jsonRecipesList = new ArrayList<jsonRecipe>();
-			//jsonRecipesList
-			//		.add(new jsonRecipe("minecraft:iron_ingot:1:0", new String[] { "minecraft:diamond:1:0" }));
+			List<JsonRecipe> jsonRecipesList = RecyclingManager.getJsonRecipes();
 			fw.write(new GsonBuilder().setPrettyPrinting().create().toJson(jsonRecipesList));
 			fw.close();
 		}
-		// TODO
-		List<jsonRecipe> recipes = new Gson().fromJson(new BufferedReader(new FileReader(questFile)),
-				new TypeToken<List<jsonRecipe>>() {}.getType());
-		Recipe recipe = null;
-		for (int i = 0; i < recipes.size(); i++) {
-			jsonRecipe currentRecipe = recipes.get(i);
-			recipe = MainUtil.convertJsonRecipe(currentRecipe);
-			RecyclingManager.getInstance().addRecipe(recipe);
-		}
+		List<JsonRecipe> jsonRecipesList = new Gson().fromJson(new BufferedReader(new FileReader(questFile)),
+			new TypeToken<List<JsonRecipe>>() {}.getType());
+		RecyclingManager.getInstance().loadJsonRecipes(jsonRecipesList);
 
 	}
 
