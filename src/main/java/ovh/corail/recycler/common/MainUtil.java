@@ -35,26 +35,6 @@ public class MainUtil {
 		recycler = new RecyclerBlock();
 		getNewRecipes();
 	}
-	public static ItemStack StringToItemStack(String value) {
-		String[] parts = value.split(":");
-		if (parts.length==4) {
-			Item item =(Item) GameRegistry.findItem(parts[0], parts[1]);
-			if (item!=null) {
-				return new ItemStack(item, Integer.valueOf(parts[2]), Integer.valueOf(parts[3]));
-			}
-		}
-		return null;
-		
-	}
-	public static Recipe convertJsonRecipe(jsonRecipe jRecipe) {
-		ItemStack inputItem = StringToItemStack(jRecipe.inputItem);
-		Recipe recipe=new Recipe(inputItem);
-		for (int i=0;i<jRecipe.outputItems.length;i++) {
-			recipe.addStack(StringToItemStack(jRecipe.outputItems[i]));
-		}
-		recipe.setCanBeRepaired(jRecipe.canBeRepaired);
-		return recipe;
-	}
 
 	public static void renderItems() {
 		renderItem(MainUtil.iron_nugget);
