@@ -1,7 +1,10 @@
 package ovh.corail.recycler.common;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -13,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 import ovh.corail.recycler.common.blocks.RecyclerBlock;
 import ovh.corail.recycler.common.handler.ConfigurationHandler;
 import ovh.corail.recycler.common.items.BasicItem;
@@ -30,6 +34,26 @@ public class MainUtil {
 		diamond_disk = new Disk();
 		recycler = new RecyclerBlock();
 		getNewRecipes();
+	}
+	public static ItemStack StringToItemStack(String value) {
+		String[] parts = value.split(":");
+		if (parts.length==4) {
+			Item item =(Item) GameRegistry.findItem(parts[0], parts[1]);
+			if (item!=null) {
+				return new ItemStack(item, Integer.valueOf(parts[2]), Integer.valueOf(parts[3]));
+			}
+		}
+		return null;
+		
+	}
+	public static Recipe convertJsonRecipe(jsonRecipe jRecipe) {
+		ItemStack inputItem = StringToItemStack(jRecipe.inputItem);
+		Recipe recipe=new Recipe(inputItem);
+		for (int i=0;i<jRecipe.outputItems.length;i++) {
+			recipe.addStack(StringToItemStack(jRecipe.outputItems[i]));
+		}
+		recipe.setCanBeRepaired(jRecipe.canBeRepaired);
+		return recipe;
 	}
 
 	public static void renderItems() {
@@ -54,6 +78,9 @@ public class MainUtil {
 	public static void render() {
 		renderItems();
 		renderBlocks();
+	}
+	public static void println(String texte) {
+		System.out.print(texte);
 	}
 
 	public static void sendMessage(String content, boolean translate) {
