@@ -1,11 +1,14 @@
 package ovh.corail.recycler.common;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.collect.Lists;
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import net.minecraft.block.Block;
@@ -15,6 +18,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import ovh.corail.recycler.common.handler.ConfigurationHandler;
 
 public class RecyclingManager {
@@ -24,7 +29,8 @@ public class RecyclingManager {
 	public static RecyclingManager getInstance() {
 		return instance;
 	}
-
+	public void init(FMLPreInitializationEvent event) {
+	}
 	public int getRecipesCount() {
 		return recipes.size();
 	}
@@ -164,7 +170,14 @@ public class RecyclingManager {
 		}
 		return newItemsList;
 	}
-
+	//TODO
+	public static List<JsonRecipe> getJsonRecipes() {
+		List<JsonRecipe> jsonRecipesList = new ArrayList<JsonRecipe>();
+		jsonRecipesList.add(new JsonRecipe("minecraft:iron_ingot:1:0", new String[] {
+			"minecraft:diamond:1:0",
+		}));
+		return jsonRecipesList;
+	}
 	private RecyclingManager() {
 		/* Roche en pierre */
 		this.addRecipe(new ItemStack(Blocks.stone, 1, 0), new Object[] { new ItemStack(Blocks.cobblestone, 1, 0) });
@@ -676,6 +689,34 @@ public class RecyclingManager {
 					new ItemStack(Items.iron_ingot, 3, 0),
 			});
 		}
+		
+	}
+	public static void loadJsonRecipes(List<JsonRecipe> jsonRecipes) {
+		for (int i=0;i<jsonRecipes.size();i++) {
+			Recipe recipe=convertJsonRecipe(jsonRecipes.get(i));
+			if (recipe.getItemRecipe()!=null && recipe.getCount()>0) {
+				instance.recipes.add(recipe);
+			}
+		}
+	}
+	public static Recipe convertJsonRecipe(JsonRecipe jRecipe) {
+		ItemStack inputItem = StringToItemStack(jRecipe.inputItem);
+		Recipe recipe=new Recipe(inputItem);
+		for (int i=0;i<jRecipe.outputItems.length;i++) {
+			recipe.addStack(StringToItemStack(jRecipe.outputItems[i]));
+		}
+		recipe.setCanBeRepaired(jRecipe.canBeRepaired);
+		return recipe;
+	}
+	public static ItemStack StringToItemStack(String value) {
+		String[] parts = value.split(":");
+		if (parts.length==4) {
+			Item item =(Item) GameRegistry.findItem(parts[0], parts[1]);
+			if (item!=null) {
+				return new ItemStack(item, Integer.valueOf(parts[2]), Integer.valueOf(parts[3]));
+			}
+		}
+		return null;
 		
 	}
 }
