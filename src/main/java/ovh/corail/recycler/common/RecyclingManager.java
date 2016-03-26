@@ -1,23 +1,13 @@
 package ovh.corail.recycler.common;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.collect.Lists;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import ovh.corail.recycler.common.handler.ConfigurationHandler;
@@ -28,9 +18,6 @@ public class RecyclingManager {
 
 	public static RecyclingManager getInstance() {
 		return instance;
-	}
-
-	public void init(FMLPreInitializationEvent event) {
 	}
 
 	public int getRecipesCount() {
