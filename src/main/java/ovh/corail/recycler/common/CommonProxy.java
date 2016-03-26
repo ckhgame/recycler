@@ -22,10 +22,6 @@ import ovh.corail.recycler.common.handler.GuiHandler;
 import ovh.corail.recycler.common.handler.PacketHandler;
 import ovh.corail.recycler.common.tileentity.RecyclerTile;
 
-import com.google.gson.JsonParser;
-
-
-
 public class CommonProxy {
 	public void preInit(FMLPreInitializationEvent event) throws IOException {
 		GameRegistry.registerTileEntity(RecyclerTile.class, "inventory");
