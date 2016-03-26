@@ -51,6 +51,7 @@ public class CommonProxy {
 		}
 		List<JsonRecyclingRecipe> jsonRecipesList = new Gson().fromJson(new BufferedReader(new FileReader(recyclingRecipesFile)),
 			new TypeToken<List<JsonRecyclingRecipe>>() {}.getType());
+		RecyclingManager.loadJsonRecipes(jsonRecipesList);
 	}
 
 	public void init(FMLInitializationEvent event) {
