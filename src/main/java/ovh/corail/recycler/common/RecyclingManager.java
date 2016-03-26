@@ -259,7 +259,7 @@ public class RecyclingManager {
 		jsonRecipesList
 				.add(new JsonRecipe("minecraft:purpur_slab:2:0", new String[] { "minecraft:purpur_block:1:0", }));
 		/* Porte */
-		jsonRecipesList.add(new JsonRecipe("minecraft:oak_door:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecipe("minecraft:wooden_door:1:0", new String[] { 
 				"minecraft:planks:2:0", 
 		}));
 		jsonRecipesList.add(new JsonRecipe("minecraft:spruce_door:1:0", new String[] { 
@@ -298,7 +298,7 @@ public class RecyclingManager {
 				"minecraft:gold_ingot:2:0", 
 		}));
 		/* Barrière */
-		jsonRecipesList.add(new JsonRecipe("minecraft:oak_fence:3:0", new String[] { 
+		jsonRecipesList.add(new JsonRecipe("minecraft:fence:3:0", new String[] { 
 				"minecraft:planks:4:0",
 				"minecraft:stick:2:0",
 		}));
@@ -394,7 +394,7 @@ public class RecyclingManager {
 			}));
 		}
 		/* Torche */
-		jsonRecipesList.add(new JsonRecipe("minecraft:torch:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecipe("minecraft:torch:4:0", new String[] { 
 				"minecraft:coal:1:0",
 				"minecraft:stick:1:0",
 		}));
@@ -753,6 +753,10 @@ public class RecyclingManager {
 			Recipe recipe = convertJsonRecipe(jsonRecipes.get(i));
 			if (recipe.getItemRecipe() != null && recipe.getCount() > 0) {
 				instance.recipes.add(recipe);
+			} else {
+				
+				//TODO Remove
+				MainUtil.println("Erreur.... Recette : "+i+"  Item : "+jsonRecipes.get(i).inputItem);
 			}
 		}
 	}
