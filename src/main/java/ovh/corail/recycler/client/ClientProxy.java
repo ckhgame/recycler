@@ -1,5 +1,7 @@
 package ovh.corail.recycler.client;
 
+import java.io.IOException;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
@@ -12,7 +14,7 @@ import ovh.corail.recycler.common.MainUtil;
 
 public class ClientProxy extends CommonProxy {
 	@Override
-	public void preInit(FMLPreInitializationEvent event) {
+	public void preInit(FMLPreInitializationEvent event) throws IOException {
 		super.preInit(event);
 	}
 

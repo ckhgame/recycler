@@ -1,5 +1,6 @@
 package ovh.corail.recycler.common;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class Main {
 	public static CommonProxy proxy;
 
 	@EventHandler
-	public void preInit(FMLPreInitializationEvent event) {
+	public void preInit(FMLPreInitializationEvent event) throws IOException {
 		proxy.preInit(event);
 	}
 

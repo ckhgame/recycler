@@ -81,7 +81,8 @@ public class MainUtil {
 	public static void getNewRecipes() {
 		/* Pépite en Lingot */
 		GameRegistry.addRecipe(new ItemStack(Items.iron_ingot, 1),
-				new Object[] { "000", "000", "000", Character.valueOf('0'), new ItemStack(iron_nugget, 1), });
+				new Object[] { "000", "000", "000", Character.valueOf('0'), 
+						new ItemStack(iron_nugget, 1), });
 		GameRegistry.addRecipe(new ItemStack(Items.diamond, 1),
 				new Object[] { "000", "000", "000", Character.valueOf('0'), new ItemStack(diamond_nugget, 1), });
 		/* Lingot en pépite */

@@ -24,7 +24,7 @@ import ovh.corail.recycler.common.handler.ConfigurationHandler;
 
 public class RecyclingManager {
 	private static final RecyclingManager instance = new RecyclingManager();
-	private List<Recipe> recipes = Lists.<Recipe> newArrayList();
+	private List<RecyclingRecipe> recipes = Lists.<RecyclingRecipe> newArrayList();
 
 	public static RecyclingManager getInstance() {
 		return instance;
@@ -37,11 +37,11 @@ public class RecyclingManager {
 		return recipes.size();
 	}
 
-	public Recipe getRecipe(int index) {
+	public RecyclingRecipe getRecipe(int index) {
 		return recipes.get(index);
 	}
 
-	public void addRecipe(Recipe recipe) {
+	public void addRecipe(RecyclingRecipe recipe) {
 		recipes.add(recipe);
 	}
 
@@ -50,13 +50,13 @@ public class RecyclingManager {
 	}
 
 	public void addRecipe(ItemStack stack, boolean canBeRepaired, Object... recipeComponents) {
-		Recipe recipe = new Recipe(stack, recipeComponents);
+		RecyclingRecipe recipe = new RecyclingRecipe(stack, recipeComponents);
 		recipe.setCanBeRepaired(canBeRepaired);
 		recipes.add(recipe);
 	}
 
 	public void addRecipe(ItemStack stackIn, boolean canBeRepaired, ItemStack stackOut) {
-		Recipe recipe = new Recipe(stackIn, stackOut);
+		RecyclingRecipe recipe = new RecyclingRecipe(stackIn, stackOut);
 		recipe.setCanBeRepaired(canBeRepaired);
 		recipes.add(recipe);
 	}
@@ -93,7 +93,7 @@ public class RecyclingManager {
 		if (num_recipe < 0) {
 			return itemsList;
 		}
-		Recipe currentRecipe = recipes.get(num_recipe);
+		RecyclingRecipe currentRecipe = recipes.get(num_recipe);
 
 		/* Calcul du résultat du stack */
 		for (int i = 0; i < currentRecipe.getCount(); i++) {
@@ -161,7 +161,7 @@ public class RecyclingManager {
 				continue;
 			}
 			/* Calcul du résultat */
-			Recipe currentRecipe = recipes.get(numRecipe);
+			RecyclingRecipe currentRecipe = recipes.get(numRecipe);
 			if (currentStack.stackSize < currentRecipe.getItemRecipe().stackSize) {
 				newItemsList.add(currentStack.copy());
 				continue;
@@ -177,568 +177,566 @@ public class RecyclingManager {
 		}
 		return newItemsList;
 	}
-
-	// TODO
-	public static List<JsonRecipe> getJsonRecipes() {
-		List<JsonRecipe> jsonRecipesList = new ArrayList<JsonRecipe>();
+	public static List<JsonRecyclingRecipe> getJsonRecyclingRecipes() {
+		List<JsonRecyclingRecipe> jsonRecipesList = new ArrayList<JsonRecyclingRecipe>();
 		/* Roche en pierre */
-		jsonRecipesList.add(new JsonRecipe("minecraft:stone:1:0", new String[] { "minecraft:cobblestone:1:0", }));
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:stone:1:0", new String[] { "minecraft:cobblestone:1:0", }));
 		/* Pierre moussue en Pierre */
-		jsonRecipesList.add(new JsonRecipe("minecraft:mossy_cobblestone:1:0",
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:mossy_cobblestone:1:0",
 				new String[] { "minecraft:cobblestone:1:0", "minecraft:vine:1:0", }));
 		/* Pierre taillée en pierre */
-		jsonRecipesList.add(new JsonRecipe("minecraft:stonebrick:1:0", new String[] { "minecraft:cobblestone:1:0", }));
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:stonebrick:1:0", new String[] { "minecraft:cobblestone:1:0", }));
 		/* Pierre craquelée, moussue, sculptée en pierre taillée */
 		for (int i = 1; i <= 3; i++) {
-			jsonRecipesList.add(new JsonRecipe("minecraft:stonebrick:1:" + i,
+			jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:stonebrick:1:" + i,
 					new String[] { "minecraft:stonebrick:1:0", (i == 1 ? "minecraft:vine:1:0" : "") // Moussue
 					}));
 		}
 		/* Grès en sable */
-		jsonRecipesList.add(new JsonRecipe("minecraft:sandstone:1:0", new String[] { "minecraft:sand:4:0", }));
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:sandstone:1:0", new String[] { "minecraft:sand:4:0", }));
 		/* Quartz rayé/sculpté */
 		jsonRecipesList
-				.add(new JsonRecipe("minecraft:quartz_block:1:1", new String[] { "minecraft:quartz_block:1:0", }));
+				.add(new JsonRecyclingRecipe("minecraft:quartz_block:1:1", new String[] { "minecraft:quartz_block:1:0", }));
 		jsonRecipesList
-				.add(new JsonRecipe("minecraft:quartz_block:1:2", new String[] { "minecraft:quartz_block:1:0", }));
+				.add(new JsonRecyclingRecipe("minecraft:quartz_block:1:2", new String[] { "minecraft:quartz_block:1:0", }));
 		/* Purpur sculpté */
 		jsonRecipesList
-				.add(new JsonRecipe("minecraft:purpur_pillar:1:0", new String[] { "minecraft:purpur_block:1:0", }));
+				.add(new JsonRecyclingRecipe("minecraft:purpur_pillar:1:0", new String[] { "minecraft:purpur_block:1:0", }));
 		/* Granite/diorite/andésite poli */
 		for (int i = 1; i <= 3; i++) {
-			jsonRecipesList.add(new JsonRecipe("minecraft:stone:1:" + (2 * i),
+			jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:stone:1:" + (2 * i),
 					new String[] { "minecraft:stone:1:" + (2 * i - 1), }));
 		}
 		/* Grès poli/sculpté */
-		jsonRecipesList.add(new JsonRecipe("minecraft:sandstone:1:1", new String[] { "minecraft:sandstone:1:0", }));
-		jsonRecipesList.add(new JsonRecipe("minecraft:sandstone:1:2", new String[] { "minecraft:sandstone:1:0", }));
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:sandstone:1:1", new String[] { "minecraft:sandstone:1:0", }));
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:sandstone:1:2", new String[] { "minecraft:sandstone:1:0", }));
 		jsonRecipesList
-				.add(new JsonRecipe("minecraft:red_sandstone:1:1", new String[] { "minecraft:red_sandstone:1:0", }));
+				.add(new JsonRecyclingRecipe("minecraft:red_sandstone:1:1", new String[] { "minecraft:red_sandstone:1:0", }));
 		jsonRecipesList
-				.add(new JsonRecipe("minecraft:red_sandstone:1:2", new String[] { "minecraft:red_sandstone:1:0", }));
+				.add(new JsonRecyclingRecipe("minecraft:red_sandstone:1:2", new String[] { "minecraft:red_sandstone:1:0", }));
 		/* Escalier en dalle */
-		jsonRecipesList.add(new JsonRecipe("minecraft:oak_stairs:1:0", new String[] { "minecraft:wooden_slab:3:0", }));
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:oak_stairs:1:0", new String[] { "minecraft:wooden_slab:3:0", }));
 		jsonRecipesList
-				.add(new JsonRecipe("minecraft:spruce_stairs:1:0", new String[] { "minecraft:wooden_slab:3:1", }));
+				.add(new JsonRecyclingRecipe("minecraft:spruce_stairs:1:0", new String[] { "minecraft:wooden_slab:3:1", }));
 		jsonRecipesList
-				.add(new JsonRecipe("minecraft:birch_stairs:1:0", new String[] { "minecraft:wooden_slab:3:2", }));
+				.add(new JsonRecyclingRecipe("minecraft:birch_stairs:1:0", new String[] { "minecraft:wooden_slab:3:2", }));
 		jsonRecipesList
-				.add(new JsonRecipe("minecraft:jungle_stairs:1:0", new String[] { "minecraft:wooden_slab:3:3", }));
+				.add(new JsonRecyclingRecipe("minecraft:jungle_stairs:1:0", new String[] { "minecraft:wooden_slab:3:3", }));
 		jsonRecipesList
-				.add(new JsonRecipe("minecraft:acacia_stairs:1:0", new String[] { "minecraft:wooden_slab:3:4", }));
+				.add(new JsonRecyclingRecipe("minecraft:acacia_stairs:1:0", new String[] { "minecraft:wooden_slab:3:4", }));
 		jsonRecipesList
-				.add(new JsonRecipe("minecraft:dark_oak_stairs:1:0", new String[] { "minecraft:wooden_slab:3:5", }));
+				.add(new JsonRecyclingRecipe("minecraft:dark_oak_stairs:1:0", new String[] { "minecraft:wooden_slab:3:5", }));
 		jsonRecipesList
-				.add(new JsonRecipe("minecraft:sandstone_stairs:1:0", new String[] { "minecraft:stone_slab:3:1", }));
-		jsonRecipesList.add(new JsonRecipe("minecraft:stone_stairs:1:0", new String[] { "minecraft:stone_slab:3:3", }));
-		jsonRecipesList.add(new JsonRecipe("minecraft:brick_stairs:1:0", new String[] { "minecraft:stone_slab:3:4", }));
+				.add(new JsonRecyclingRecipe("minecraft:sandstone_stairs:1:0", new String[] { "minecraft:stone_slab:3:1", }));
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:stone_stairs:1:0", new String[] { "minecraft:stone_slab:3:3", }));
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:brick_stairs:1:0", new String[] { "minecraft:stone_slab:3:4", }));
 		jsonRecipesList
-				.add(new JsonRecipe("minecraft:stone_brick_stairs:1:0", new String[] { "minecraft:stone_slab:3:5", }));
+				.add(new JsonRecyclingRecipe("minecraft:stone_brick_stairs:1:0", new String[] { "minecraft:stone_slab:3:5", }));
 		jsonRecipesList
-				.add(new JsonRecipe("minecraft:nether_brick_stairs:1:0", new String[] { "minecraft:stone_slab:3:6", }));
+				.add(new JsonRecyclingRecipe("minecraft:nether_brick_stairs:1:0", new String[] { "minecraft:stone_slab:3:6", }));
 		jsonRecipesList
-				.add(new JsonRecipe("minecraft:quartz_stairs:1:0", new String[] { "minecraft:stone_slab:3:7", }));
+				.add(new JsonRecyclingRecipe("minecraft:quartz_stairs:1:0", new String[] { "minecraft:stone_slab:3:7", }));
 		jsonRecipesList.add(
-				new JsonRecipe("minecraft:red_sandstone_stairs:1:0", new String[] { "minecraft:stone_slab2:3:0", }));
+				new JsonRecyclingRecipe("minecraft:red_sandstone_stairs:1:0", new String[] { "minecraft:stone_slab2:3:0", }));
 		jsonRecipesList
-				.add(new JsonRecipe("minecraft:purpur_stairs:1:0", new String[] { "minecraft:purpur_slab:3:0", }));
+				.add(new JsonRecyclingRecipe("minecraft:purpur_stairs:1:0", new String[] { "minecraft:purpur_slab:3:0", }));
 		/* Dalle en bloc */
 		for (int i = 0; i <= 5; i++) {
 			jsonRecipesList
-					.add(new JsonRecipe("minecraft:wooden_slab:2:" + i, new String[] { "minecraft:planks:1:" + i, }));
+					.add(new JsonRecyclingRecipe("minecraft:wooden_slab:2:" + i, new String[] { "minecraft:planks:1:" + i, }));
 		}
-		jsonRecipesList.add(new JsonRecipe("minecraft:stone_slab:2:0", new String[] { "minecraft:stone:1:0", }));
-		jsonRecipesList.add(new JsonRecipe("minecraft:stone_slab:2:1", new String[] { "minecraft:sandstone:1:0", }));
-		jsonRecipesList.add(new JsonRecipe("minecraft:stone_slab:2:3", new String[] { "minecraft:cobblestone:1:0", }));
-		jsonRecipesList.add(new JsonRecipe("minecraft:stone_slab:2:4", new String[] { "minecraft:brick_block:1:0", }));
-		jsonRecipesList.add(new JsonRecipe("minecraft:stone_slab:2:5", new String[] { "minecraft:brick_block:1:0", }));
-		jsonRecipesList.add(new JsonRecipe("minecraft:stone_slab:2:6", new String[] { "minecraft:nether_brick:1:0", }));
-		jsonRecipesList.add(new JsonRecipe("minecraft:stone_slab:2:7", new String[] { "minecraft:quartz_block:1:0", }));
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:stone_slab:2:0", new String[] { "minecraft:stone:1:0", }));
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:stone_slab:2:1", new String[] { "minecraft:sandstone:1:0", }));
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:stone_slab:2:3", new String[] { "minecraft:cobblestone:1:0", }));
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:stone_slab:2:4", new String[] { "minecraft:brick_block:1:0", }));
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:stone_slab:2:5", new String[] { "minecraft:brick_block:1:0", }));
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:stone_slab:2:6", new String[] { "minecraft:nether_brick:1:0", }));
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:stone_slab:2:7", new String[] { "minecraft:quartz_block:1:0", }));
 		jsonRecipesList
-				.add(new JsonRecipe("minecraft:stone_slab2:2:0", new String[] { "minecraft:red_sandstone:1:0", }));
+				.add(new JsonRecyclingRecipe("minecraft:stone_slab2:2:0", new String[] { "minecraft:red_sandstone:1:0", }));
 		jsonRecipesList
-				.add(new JsonRecipe("minecraft:purpur_slab:2:0", new String[] { "minecraft:purpur_block:1:0", }));
+				.add(new JsonRecyclingRecipe("minecraft:purpur_slab:2:0", new String[] { "minecraft:purpur_block:1:0", }));
 		/* Porte */
-		jsonRecipesList.add(new JsonRecipe("minecraft:wooden_door:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:wooden_door:1:0", new String[] { 
 				"minecraft:planks:2:0", 
 		}));
-		jsonRecipesList.add(new JsonRecipe("minecraft:spruce_door:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:spruce_door:1:0", new String[] { 
 				"minecraft:planks:2:1", 
 		}));
-		jsonRecipesList.add(new JsonRecipe("minecraft:birch_door:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:birch_door:1:0", new String[] { 
 				"minecraft:planks:2:2", 
 		}));
-		jsonRecipesList.add(new JsonRecipe("minecraft:jungle_door:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:jungle_door:1:0", new String[] { 
 				"minecraft:planks:2:3", 
 		}));
-		jsonRecipesList.add(new JsonRecipe("minecraft:acacia_door:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:acacia_door:1:0", new String[] { 
 				"minecraft:planks:2:4", 
 		}));
-		jsonRecipesList.add(new JsonRecipe("minecraft:dark_oak_door:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:dark_oak_door:1:0", new String[] { 
 				"minecraft:planks:2:5", 
 		}));
-		jsonRecipesList.add(new JsonRecipe("minecraft:iron_door:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:iron_door:1:0", new String[] { 
 				"minecraft:iron_ingot:2:0", 
 		}));
 		/* Barreau de fer */
-		jsonRecipesList.add(new JsonRecipe("minecraft:iron_bars:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:iron_bars:1:0", new String[] { 
 				Main.MODID+":iron_nugget:3:0", 
 		}));
 		/* Plaque de pression (+ pondérée) */
-		jsonRecipesList.add(new JsonRecipe("minecraft:wooden_pressure_plate:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:wooden_pressure_plate:1:0", new String[] { 
 				"minecraft:planks:2:0", 
 		}));
-		jsonRecipesList.add(new JsonRecipe("minecraft:stone_pressure_plate:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:stone_pressure_plate:1:0", new String[] { 
 				"minecraft:stone:2:0", 
 		}));
-		jsonRecipesList.add(new JsonRecipe("minecraft:heavy_weighted_pressure_plate:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:heavy_weighted_pressure_plate:1:0", new String[] { 
 				"minecraft:iron_ingot:2:0", 
 		}));
-		jsonRecipesList.add(new JsonRecipe("minecraft:light_weighted_pressure_plate:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:light_weighted_pressure_plate:1:0", new String[] { 
 				"minecraft:gold_ingot:2:0", 
 		}));
 		/* Barrière */
-		jsonRecipesList.add(new JsonRecipe("minecraft:fence:3:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:fence:3:0", new String[] { 
 				"minecraft:planks:4:0",
 				"minecraft:stick:2:0",
 		}));
-		jsonRecipesList.add(new JsonRecipe("minecraft:spruce_fence:3:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:spruce_fence:3:0", new String[] { 
 				"minecraft:planks:4:1",
 				"minecraft:stick:2:0",
 		}));
-		jsonRecipesList.add(new JsonRecipe("minecraft:birch_fence:3:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:birch_fence:3:0", new String[] { 
 				"minecraft:planks:4:2",
 				"minecraft:stick:2:0",
 		}));
-		jsonRecipesList.add(new JsonRecipe("minecraft:jungle_fence:3:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:jungle_fence:3:0", new String[] { 
 				"minecraft:planks:4:3",
 				"minecraft:stick:2:0",
 		}));
-		jsonRecipesList.add(new JsonRecipe("minecraft:acacia_fence:3:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:acacia_fence:3:0", new String[] { 
 				"minecraft:planks:4:4",
 				"minecraft:stick:2:0",
 		}));
-		jsonRecipesList.add(new JsonRecipe("minecraft:dark_oak_fence:3:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:dark_oak_fence:3:0", new String[] { 
 				"minecraft:planks:4:5",
 				"minecraft:stick:2:0",
 		}));
-		jsonRecipesList.add(new JsonRecipe("minecraft:nether_brick_fence:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:nether_brick_fence:1:0", new String[] { 
 				"minecraft:nether_brick:1:0",
 		}));
 		/* Bâton */
-		jsonRecipesList.add(new JsonRecipe("minecraft:stick:2:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:stick:2:0", new String[] { 
 				"minecraft:planks:1:0",
 		}));
 		/* Planche en bûche */
 		for (int i = 0; i < 4; i++) {
-			jsonRecipesList.add(new JsonRecipe("minecraft:planks:4:"+i, new String[] { 
+			jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:planks:4:"+i, new String[] { 
 					"minecraft:log:1:"+i,
 			}));
 		}
-		jsonRecipesList.add(new JsonRecipe("minecraft:planks:4:4", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:planks:4:4", new String[] { 
 				"minecraft:log2:1:0",
 		}));
-		jsonRecipesList.add(new JsonRecipe("minecraft:planks:4:5", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:planks:4:5", new String[] { 
 				"minecraft:log2:1:1",
 		}));
 		/* Trappe */
-		jsonRecipesList.add(new JsonRecipe("minecraft:trapdoor:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:trapdoor:1:0", new String[] { 
 				"minecraft:planks:3:0",
 		}));
-		jsonRecipesList.add(new JsonRecipe("minecraft:iron_trapdoor:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:iron_trapdoor:1:0", new String[] { 
 				"minecraft:iron_ingot:2:0",
 		}));
 		/* Tapis */
 		for (int i = 0; i < 16; i++) {
-			jsonRecipesList.add(new JsonRecipe("minecraft:carpet:3:"+i, new String[] { 
+			jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:carpet:3:"+i, new String[] { 
 					"minecraft:wool:2:"+i,
 			}));
 		}
 		/* Coffre */
-		jsonRecipesList.add(new JsonRecipe("minecraft:chest:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:chest:1:0", new String[] { 
 				"minecraft:planks:8:0",
 		}));
 		/* Etabli */
-		jsonRecipesList.add(new JsonRecipe("minecraft:crafting_table:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:crafting_table:1:0", new String[] { 
 				"minecraft:planks:4:0",
 		}));
 		/* Fourneau */
-		jsonRecipesList.add(new JsonRecipe("minecraft:furnace:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:furnace:1:0", new String[] { 
 				"minecraft:cobblestone:8:0",
 		}));
 		/* Enclume */
 		// TODO enclume endommagée
-		jsonRecipesList.add(new JsonRecipe("minecraft:anvil:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:anvil:1:0", new String[] { 
 				"minecraft:iron_ingot:31:0",
 		}));
 		/* Table d'enchantement */
-		jsonRecipesList.add(new JsonRecipe("minecraft:enchanting_table:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:enchanting_table:1:0", new String[] { 
 				"minecraft:diamond:2:0",
 				"minecraft:obsidian:4:0",
 				"minecraft:book:1:0",
 		}));
 		/* Alambic */
-		jsonRecipesList.add(new JsonRecipe("minecraft:brewing_stand:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:brewing_stand:1:0", new String[] { 
 				"minecraft:cobblestone:3:0",
 				"minecraft:blaze_rod:1:0",
 		}));
 		/* Pancarte */
-		jsonRecipesList.add(new JsonRecipe("minecraft:sign:3:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:sign:3:0", new String[] { 
 				"minecraft:planks:6:0",
 				"minecraft:stick:1:0",
 		}));
 		/* Laine en Ficelle (plus de couleur) */
 		for (int i = 0; i < 16; i++) {
-			jsonRecipesList.add(new JsonRecipe("minecraft:wool:1:"+i, new String[] { 
+			jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:wool:1:"+i, new String[] { 
 					"minecraft:string:4:0",
 			}));
 		}
 		/* Torche */
-		jsonRecipesList.add(new JsonRecipe("minecraft:torch:4:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:torch:4:0", new String[] { 
 				"minecraft:coal:1:0",
 				"minecraft:stick:1:0",
 		}));
 		/* Torche redstone */
-		jsonRecipesList.add(new JsonRecipe("minecraft:redstone_torch:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:redstone_torch:1:0", new String[] { 
 				"minecraft:redstone:1:0",
 				"minecraft:stick:1:0",
 		}));
 		/* Boussole */
-		jsonRecipesList.add(new JsonRecipe("minecraft:compass:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:compass:1:0", new String[] { 
 				"minecraft:redstone:1:0",
 				"minecraft:iron_ingot:4:0",
 		}));
 		/* Carte vierge */
-		jsonRecipesList.add(new JsonRecipe("minecraft:map:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:map:1:0", new String[] { 
 				"minecraft:compass:1:0",
 				"minecraft:paper:8:0",
 		}));
 		/* Entonnoir */
-		jsonRecipesList.add(new JsonRecipe("minecraft:hopper:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:hopper:1:0", new String[] { 
 				"minecraft:iron_ingot:5:0",
 				"minecraft:chest:1:0",
 		}));
 		/* Canne à pêche */
-		jsonRecipesList.add(new JsonRecipe("minecraft:fishing_rod:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:fishing_rod:1:0", new String[] { 
 				"minecraft:string:2:0",
 				"minecraft:stick:3:0",
 		}));
 		/* Carotte sur un bâton */
-		jsonRecipesList.add(new JsonRecipe("minecraft:carrot_on_a_stick:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:carrot_on_a_stick:1:0", new String[] { 
 				"minecraft:carrot:1:0",
 				"minecraft:fishing_rod:1:0",
 		}));
 		/* Seau vide */
-		jsonRecipesList.add(new JsonRecipe("minecraft:bucket:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:bucket:1:0", new String[] { 
 				"minecraft:iron_ingot:3:0",
 		}));
 		/* Chaudron */
-		jsonRecipesList.add(new JsonRecipe("minecraft:cauldron:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:cauldron:1:0", new String[] { 
 				"minecraft:iron_ingot:7:0",
 		}));
 		/* Echelle */
-		jsonRecipesList.add(new JsonRecipe("minecraft:ladder:3:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:ladder:3:0", new String[] { 
 				"minecraft:stick:7:0",
 		}));
 		/* Montre */
-		jsonRecipesList.add(new JsonRecipe("minecraft:clock:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:clock:1:0", new String[] { 
 				"minecraft:gold_ingot:4:0",
 				"minecraft:redstone:1:0",
 		}));
 		/* Dropper */
-		jsonRecipesList.add(new JsonRecipe("minecraft:dropper:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:dropper:1:0", new String[] { 
 				"minecraft:cobblestone:7:0",
 				"minecraft:redstone:1:0",
 		}));
 		/* Porte armure */
-		jsonRecipesList.add(new JsonRecipe("minecraft:armor_stand:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:armor_stand:1:0", new String[] { 
 				"minecraft:stick:8:0",
 				"minecraft:stone_slab:1:0",
 		}));
 		/* Distributeur */
-		jsonRecipesList.add(new JsonRecipe("minecraft:dispenser:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:dispenser:1:0", new String[] { 
 				"minecraft:cobblestone:7:0",
 				"minecraft:redstone:1:0",
 				"minecraft:bow:1:0",
 		}));
 		/* Lanterne aquatique */
-		jsonRecipesList.add(new JsonRecipe("minecraft:sea_lantern:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:sea_lantern:1:0", new String[] { 
 				"minecraft:prismarine_crystals:5:0",
 				"minecraft:prismarine_shard:4:0",
 		}));
 		/* Citrouille lanterne */
-		jsonRecipesList.add(new JsonRecipe("minecraft:lit_pumpkin:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:lit_pumpkin:1:0", new String[] { 
 				"minecraft:pumpkin:1:0",
 				"minecraft:torch:1:0",
 		}));
 		/* Lit */
-		jsonRecipesList.add(new JsonRecipe("minecraft:bed:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:bed:1:0", new String[] { 
 				"minecraft:wool:3:0",
 				"minecraft:planks:3:0",
 		}));
 		/* Boutons */
-		jsonRecipesList.add(new JsonRecipe("minecraft:wooden_button:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:wooden_button:1:0", new String[] { 
 				"minecraft:planks:1:0",
 		}));
-		jsonRecipesList.add(new JsonRecipe("minecraft:stone_button:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:stone_button:1:0", new String[] { 
 				"minecraft:stone:1:0",
 		}));
 		/* Bâteau */
-		jsonRecipesList.add(new JsonRecipe("minecraft:boat:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:boat:1:0", new String[] { 
 				"minecraft:planks:5:0",
 		}));
 		/* Jukebox */
-		jsonRecipesList.add(new JsonRecipe("minecraft:jukebox:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:jukebox:1:0", new String[] { 
 				"minecraft:planks:8:0",
 				"minecraft:diamond:1:0",
 		}));
 		/* TNT */
-		jsonRecipesList.add(new JsonRecipe("minecraft:tnt:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:tnt:1:0", new String[] { 
 				"minecraft:sandstone:4:0",
 				"minecraft:gunpowder:5:0",
 		}));
 		/* Bol */
-		jsonRecipesList.add(new JsonRecipe("minecraft:bowl:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:bowl:1:0", new String[] { 
 				"minecraft:planks:3:0",
 		}));
 		/* Tableau */
-		jsonRecipesList.add(new JsonRecipe("minecraft:painting:1:0", new String[] { 
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:painting:1:0", new String[] { 
 				"minecraft:stick:8:0",
 				"minecraft:wool:1:0",
 		}));
 		/* Crochet */
-		jsonRecipesList.add(new JsonRecipe("minecraft:tripwire_hook:2:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:tripwire_hook:2:0", new String[] {
 				"minecraft:stick:1:0",
 				"minecraft:planks:1:0",
 				"minecraft:iron_ingot:1:0",
 		}));
 		/* Levier */
-		jsonRecipesList.add(new JsonRecipe("minecraft:lever:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:lever:1:0", new String[] {
 				"minecraft:stick:1:0",
 				"minecraft:cobblestone:1:0",
 		}));
 		/* Pistons */
-		jsonRecipesList.add(new JsonRecipe("minecraft:sticky_piston:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:sticky_piston:1:0", new String[] {
 				"minecraft:slime_ball:1:0",
 				"minecraft:piston:1:0",
 		}));
-		jsonRecipesList.add(new JsonRecipe("minecraft:piston:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:piston:1:0", new String[] {
 				"minecraft:iron_ingot:1:0",
 				"minecraft:cobblestone:4:0",
 				"minecraft:redstone:1:0",
 				"minecraft:planks:3:0",
 		}));
 		/* Rails */
-		jsonRecipesList.add(new JsonRecipe("minecraft:rail:16:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:rail:16:0", new String[] {
 				"minecraft:iron_ingot:6:0",
 				"minecraft:stick:1:0",
 		}));
-		jsonRecipesList.add(new JsonRecipe("minecraft:detector_rail:6:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:detector_rail:6:0", new String[] {
 				"minecraft:iron_ingot:6:0",
 				"minecraft:redstone:1:0",
 				"minecraft:stone_pressure_plate:1:0",
 		}));
-		jsonRecipesList.add(new JsonRecipe("minecraft:golden_rail:6:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:golden_rail:6:0", new String[] {
 				"minecraft:gold_ingot:6:0",
 				"minecraft:redstone:1:0",
 				"minecraft:stick:1:0",
 		}));
-		jsonRecipesList.add(new JsonRecipe("minecraft:activator_rail:6:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:activator_rail:6:0", new String[] {
 				"minecraft:iron_ingot:6:0",
 				"minecraft:redstone:1:0",
 				"minecraft:stick:2:0",
 		}));
 		/* Pioche */
-		jsonRecipesList.add(new JsonRecipe("minecraft:wooden_pickaxe:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:wooden_pickaxe:1:0", new String[] {
 				"minecraft:planks:3:0",
 				"minecraft:stick:2:0",
 		}, true));
-		jsonRecipesList.add(new JsonRecipe("minecraft:stone_pickaxe:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:stone_pickaxe:1:0", new String[] {
 				"minecraft:cobblestone:3:0",
 				"minecraft:stick:2:0",
 		}, true));
-		jsonRecipesList.add(new JsonRecipe("minecraft:iron_pickaxe:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:iron_pickaxe:1:0", new String[] {
 				"minecraft:cobblestone:3:0",
 				"minecraft:stick:2:0",
 		}, true));
-		jsonRecipesList.add(new JsonRecipe("minecraft:golden_pickaxe:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:golden_pickaxe:1:0", new String[] {
 				"minecraft:gold_ingot:3:0",
 				"minecraft:stick:2:0",
 		}, true));
-		jsonRecipesList.add(new JsonRecipe("minecraft:diamond_pickaxe:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:diamond_pickaxe:1:0", new String[] {
 				"minecraft:diamond:3:0",
 				"minecraft:stick:2:0",
 		}, true));
 		/* Hache */
-		jsonRecipesList.add(new JsonRecipe("minecraft:wooden_axe:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:wooden_axe:1:0", new String[] {
 				"minecraft:planks:3:0",
 				"minecraft:stick:2:0",
 		}, true));
-		jsonRecipesList.add(new JsonRecipe("minecraft:stone_axe:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:stone_axe:1:0", new String[] {
 				"minecraft:cobblestone:3:0",
 				"minecraft:stick:2:0",
 		}, true));
-		jsonRecipesList.add(new JsonRecipe("minecraft:iron_axe:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:iron_axe:1:0", new String[] {
 				"minecraft:cobblestone:3:0",
 				"minecraft:stick:2:0",
 		}, true));
-		jsonRecipesList.add(new JsonRecipe("minecraft:golden_axe:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:golden_axe:1:0", new String[] {
 				"minecraft:gold_ingot:3:0",
 				"minecraft:stick:2:0",
 		}, true));
-		jsonRecipesList.add(new JsonRecipe("minecraft:diamond_axe:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:diamond_axe:1:0", new String[] {
 				"minecraft:diamond:3:0",
 				"minecraft:stick:2:0",
 		}, true));
 		/* Pelle */
-		jsonRecipesList.add(new JsonRecipe("minecraft:wooden_shovel:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:wooden_shovel:1:0", new String[] {
 				"minecraft:planks:1:0",
 				"minecraft:stick:2:0",
 		}, true));
-		jsonRecipesList.add(new JsonRecipe("minecraft:stone_shovel:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:stone_shovel:1:0", new String[] {
 				"minecraft:cobblestone:1:0",
 				"minecraft:stick:2:0",
 		}, true));
-		jsonRecipesList.add(new JsonRecipe("minecraft:iron_shovel:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:iron_shovel:1:0", new String[] {
 				"minecraft:cobblestone:1:0",
 				"minecraft:stick:2:0",
 		}, true));
-		jsonRecipesList.add(new JsonRecipe("minecraft:golden_shovel:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:golden_shovel:1:0", new String[] {
 				"minecraft:gold_ingot:1:0",
 				"minecraft:stick:2:0",
 		}, true));
-		jsonRecipesList.add(new JsonRecipe("minecraft:diamond_shovel:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:diamond_shovel:1:0", new String[] {
 				"minecraft:diamond:1:0",
 				"minecraft:stick:2:0",
 		}, true));
 		/* Epee */
-		jsonRecipesList.add(new JsonRecipe("minecraft:wooden_sword:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:wooden_sword:1:0", new String[] {
 				"minecraft:planks:2:0",
 				"minecraft:stick:1:0",
 		}, true));
-		jsonRecipesList.add(new JsonRecipe("minecraft:stone_sword:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:stone_sword:1:0", new String[] {
 				"minecraft:cobblestone:2:0",
 				"minecraft:stick:1:0",
 		}, true));
-		jsonRecipesList.add(new JsonRecipe("minecraft:iron_sword:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:iron_sword:1:0", new String[] {
 				"minecraft:cobblestone:2:0",
 				"minecraft:stick:1:0",
 		}, true));
-		jsonRecipesList.add(new JsonRecipe("minecraft:golden_sword:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:golden_sword:1:0", new String[] {
 				"minecraft:gold_ingot:2:0",
 				"minecraft:stick:1:0",
 		}, true));
-		jsonRecipesList.add(new JsonRecipe("minecraft:diamond_sword:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:diamond_sword:1:0", new String[] {
 				"minecraft:diamond:2:0",
 				"minecraft:stick:1:0",
 		}, true));
 		/* Houe */
-		jsonRecipesList.add(new JsonRecipe("minecraft:wooden_hoe:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:wooden_hoe:1:0", new String[] {
 				"minecraft:planks:2:0",
 				"minecraft:stick:2:0",
 		}, true));
-		jsonRecipesList.add(new JsonRecipe("minecraft:stone_hoe:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:stone_hoe:1:0", new String[] {
 				"minecraft:cobblestone:2:0",
 				"minecraft:stick:2:0",
 		}, true));
-		jsonRecipesList.add(new JsonRecipe("minecraft:iron_hoe:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:iron_hoe:1:0", new String[] {
 				"minecraft:cobblestone:2:0",
 				"minecraft:stick:2:0",
 		}, true));
-		jsonRecipesList.add(new JsonRecipe("minecraft:golden_hoe:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:golden_hoe:1:0", new String[] {
 				"minecraft:gold_ingot:2:0",
 				"minecraft:stick:2:0",
 		}, true));
-		jsonRecipesList.add(new JsonRecipe("minecraft:diamond_hoe:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:diamond_hoe:1:0", new String[] {
 				"minecraft:diamond:2:0",
 				"minecraft:stick:2:0",
 		}, true));
 		/* Arc */
-		jsonRecipesList.add(new JsonRecipe("minecraft:bow:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:bow:1:0", new String[] {
 				"minecraft:string:3:0",
 				"minecraft:stick:3:0",
 		}, true));
 		/* Flèche */
-		jsonRecipesList.add(new JsonRecipe("minecraft:arrow:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:arrow:1:0", new String[] {
 				"minecraft:feather:1:0",
 				"minecraft:stick:1:0",
 				"minecraft:flint:1:0",
 		}));
 		/* Armure */
-		jsonRecipesList.add(new JsonRecipe("minecraft:leather_boots:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:leather_boots:1:0", new String[] {
 				"minecraft:leather:4:0",
 		}, true));
-		jsonRecipesList.add(new JsonRecipe("minecraft:leather_helmet:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:leather_helmet:1:0", new String[] {
 				"minecraft:leather:5:0",
 		}, true));
-		jsonRecipesList.add(new JsonRecipe("minecraft:leather_chestplate:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:leather_chestplate:1:0", new String[] {
 				"minecraft:leather:8:0",
 		}, true));
-		jsonRecipesList.add(new JsonRecipe("minecraft:leather_leggings:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:leather_leggings:1:0", new String[] {
 				"minecraft:leather:7:0",
 		}, true));
-		jsonRecipesList.add(new JsonRecipe("minecraft:iron_boots:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:iron_boots:1:0", new String[] {
 				"minecraft:iron_ingot:4:0",
 		}, true));
-		jsonRecipesList.add(new JsonRecipe("minecraft:iron_helmet:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:iron_helmet:1:0", new String[] {
 				"minecraft:iron_ingot:5:0",
 		}, true));
-		jsonRecipesList.add(new JsonRecipe("minecraft:iron_chestplate:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:iron_chestplate:1:0", new String[] {
 				"minecraft:iron_ingot:8:0",
 		}, true));
-		jsonRecipesList.add(new JsonRecipe("minecraft:iron_leggings:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:iron_leggings:1:0", new String[] {
 				"minecraft:iron_ingot:7:0",
 		}, true));
-		jsonRecipesList.add(new JsonRecipe("minecraft:golden_boots:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:golden_boots:1:0", new String[] {
 				"minecraft:golden_ingot:4:0",
 		}, true));
-		jsonRecipesList.add(new JsonRecipe("minecraft:golden_helmet:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:golden_helmet:1:0", new String[] {
 				"minecraft:golden_ingot:5:0",
 		}, true));
-		jsonRecipesList.add(new JsonRecipe("minecraft:golden_chestplate:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:golden_chestplate:1:0", new String[] {
 				"minecraft:golden_ingot:8:0",
 		}, true));
-		jsonRecipesList.add(new JsonRecipe("minecraft:golden_leggings:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:golden_leggings:1:0", new String[] {
 				"minecraft:golden_ingot:7:0",
 		}, true));
-		jsonRecipesList.add(new JsonRecipe("minecraft:diamond_boots:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:diamond_boots:1:0", new String[] {
 				"minecraft:diamond:4:0",
 		}, true));
-		jsonRecipesList.add(new JsonRecipe("minecraft:diamond_helmet:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:diamond_helmet:1:0", new String[] {
 				"minecraft:diamond:5:0",
 		}, true));
-		jsonRecipesList.add(new JsonRecipe("minecraft:diamond_chestplate:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:diamond_chestplate:1:0", new String[] {
 				"minecraft:diamond:8:0",
 		}, true));
-		jsonRecipesList.add(new JsonRecipe("minecraft:diamond_leggings:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:diamond_leggings:1:0", new String[] {
 				"minecraft:diamond:7:0",
 		}, true));
 		if (ConfigurationHandler.craftChainmail) {
-		jsonRecipesList.add(new JsonRecipe("minecraft:chainmail_boots:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:chainmail_boots:1:0", new String[] {
 				"minecraft:iron_ingot:2:0",
 				"minecraft:iron_bars:2:0",
 		}, true));
-		jsonRecipesList.add(new JsonRecipe("minecraft:chainmail_helmet:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:chainmail_helmet:1:0", new String[] {
 				"minecraft:iron_ingot:3:0",
 				"minecraft:iron_bars:2:0",
 		}, true));
-		jsonRecipesList.add(new JsonRecipe("minecraft:chainmail_chestplate:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:chainmail_chestplate:1:0", new String[] {
 				"minecraft:iron_ingot:6:0",
 				"minecraft:iron_bars:2:0",
 		}, true));
-		jsonRecipesList.add(new JsonRecipe("minecraft:chainmail_leggings:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:chainmail_leggings:1:0", new String[] {
 				"minecraft:iron_ingot:3:0",
 				"minecraft:iron_bars:4:0",
 		}, true));
 		}
 		/* Bouclier */
-		jsonRecipesList.add(new JsonRecipe("minecraft:shield:1:0", new String[] {
+		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:shield:1:0", new String[] {
 				"minecraft:iron_ingot:1:0",
 				"minecraft:planks:6:0",
 		}, true));
 		/* Recycleur */
 		if (ConfigurationHandler.recyclerRecycled) {
-			jsonRecipesList.add(new JsonRecipe(Main.MODID+":recycler:1:0", new String[] {
+			jsonRecipesList.add(new JsonRecyclingRecipe(Main.MODID+":recycler:1:0", new String[] {
 					"minecraft:cobblestone:6:0",
 					"minecraft:iron_ingot:3:0",
 			}));
@@ -748,9 +746,9 @@ public class RecyclingManager {
 	private RecyclingManager() {
 	}
 
-	public static void loadJsonRecipes(List<JsonRecipe> jsonRecipes) {
+	public static void loadJsonRecipes(List<JsonRecyclingRecipe> jsonRecipes) {
 		for (int i = 0; i < jsonRecipes.size(); i++) {
-			Recipe recipe = convertJsonRecipe(jsonRecipes.get(i));
+			RecyclingRecipe recipe = convertJsonRecipe(jsonRecipes.get(i));
 			if (recipe.getItemRecipe() != null && recipe.getCount() > 0) {
 				instance.recipes.add(recipe);
 			} else {
@@ -761,9 +759,9 @@ public class RecyclingManager {
 		}
 	}
 
-	public static Recipe convertJsonRecipe(JsonRecipe jRecipe) {
+	public static RecyclingRecipe convertJsonRecipe(JsonRecyclingRecipe jRecipe) {
 		ItemStack inputItem = StringToItemStack(jRecipe.inputItem);
-		Recipe recipe = new Recipe(inputItem);
+		RecyclingRecipe recipe = new RecyclingRecipe(inputItem);
 		for (int i = 0; i < jRecipe.outputItems.length; i++) {
 			recipe.addStack(StringToItemStack(jRecipe.outputItems[i]));
 		}

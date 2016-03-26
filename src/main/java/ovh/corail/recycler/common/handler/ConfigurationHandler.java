@@ -1,5 +1,7 @@
 package ovh.corail.recycler.common.handler;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import ovh.corail.recycler.common.MainUtil;
 

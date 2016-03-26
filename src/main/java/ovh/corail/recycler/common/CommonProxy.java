@@ -40,19 +40,17 @@ public class CommonProxy {
 		ConfigurationHandler.refreshConfig();
 		MainUtil.init();
 		PacketHandler.init();
-		/* Load Json Recipes */
-		File questFile = new File(event.getModConfigurationDirectory(), "recyclingRecipes.json");
-		if (!questFile.exists()) {
-			questFile.createNewFile();
-			FileWriter fw = new FileWriter(questFile);
-			List<JsonRecipe> jsonRecipesList = RecyclingManager.getJsonRecipes();
+		/* Load Json Recycling Recipes */
+		File recyclingRecipesFile = new File(event.getModConfigurationDirectory(), "recyclingRecipes.json");
+		if (!recyclingRecipesFile.exists()) {
+			recyclingRecipesFile.createNewFile();
+			FileWriter fw = new FileWriter(recyclingRecipesFile);
+			List<JsonRecyclingRecipe> jsonRecipesList = RecyclingManager.getJsonRecyclingRecipes();
 			fw.write(new GsonBuilder().setPrettyPrinting().create().toJson(jsonRecipesList));
 			fw.close();
 		}
-		List<JsonRecipe> jsonRecipesList = new Gson().fromJson(new BufferedReader(new FileReader(questFile)),
-			new TypeToken<List<JsonRecipe>>() {}.getType());
-		RecyclingManager.getInstance().loadJsonRecipes(jsonRecipesList);
-
+		List<JsonRecyclingRecipe> jsonRecipesList = new Gson().fromJson(new BufferedReader(new FileReader(recyclingRecipesFile)),
+			new TypeToken<List<JsonRecyclingRecipe>>() {}.getType());
 	}
 
 	public void init(FMLInitializationEvent event) {

@@ -28,7 +28,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ovh.corail.recycler.common.Main;
-import ovh.corail.recycler.common.Recipe;
+import ovh.corail.recycler.common.RecyclingRecipe;
 import ovh.corail.recycler.common.RecyclingManager;
 import ovh.corail.recycler.common.MainUtil;
 import ovh.corail.recycler.common.blocks.RecyclerBlock;
@@ -74,7 +74,7 @@ public class RecyclerTile extends TileEntity implements IInventory {
 		if (num_recipe < 0) {
 			return false;
 		}
-		Recipe currentRecipe = recyclingManager.getRecipe(num_recipe);
+		RecyclingRecipe currentRecipe = recyclingManager.getRecipe(num_recipe);
 		/* Stacksize suffisant du slot input */
 		if (getStackInSlot(0).stackSize < currentRecipe.getItemRecipe().stackSize) {
 			return false;
