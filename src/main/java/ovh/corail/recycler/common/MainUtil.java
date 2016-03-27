@@ -23,7 +23,6 @@ import ovh.corail.recycler.common.items.Disk;
 
 public class MainUtil {
 	public static boolean showMessages = true;
-	public static I18n translation = new I18n();
 	public static Item iron_nugget, diamond_nugget, diamond_disk;
 	public static Block recycler;
 
@@ -74,7 +73,7 @@ public class MainUtil {
 	}
 
 	public static String getTranslation(String key) {
-		return translation.translateToLocal(key);
+		return I18n.translateToLocal(key);
 	}
 
 	public static void getNewRecipes() {
