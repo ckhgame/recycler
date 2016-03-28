@@ -34,6 +34,9 @@ public class ButtonMessage implements IMessage, IMessageHandler<ButtonMessage, I
 				case 0: // Recycle
 					tile.recycle(); 
 					break;
+				case 1: // Auto-recycle
+					tile.switchWorking(); 
+					break;
 				}
 			}
 		});
