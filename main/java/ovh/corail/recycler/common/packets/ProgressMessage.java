@@ -7,7 +7,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import ovh.corail.recycler.common.tileentity.RecyclerTile;
+import ovh.corail.recycler.common.tileentity.TileEntityRecycler;
 
 public class ProgressMessage implements IMessage, IMessageHandler<ProgressMessage, IMessage> {
 	int x, y, z, progress;
@@ -31,7 +31,7 @@ public class ProgressMessage implements IMessage, IMessageHandler<ProgressMessag
 			@Override
 			public void run() {
 				try {
-					RecyclerTile tile = (RecyclerTile) Minecraft.getMinecraft().theWorld
+					TileEntityRecycler tile = (TileEntityRecycler) Minecraft.getMinecraft().theWorld
 						.getTileEntity(new BlockPos(message.x, message.y, message.z));
 					if (tile == null)
 						return;

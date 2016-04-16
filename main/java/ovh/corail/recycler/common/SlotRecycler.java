@@ -5,14 +5,14 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import ovh.corail.recycler.common.tileentity.RecyclerTile;
+import ovh.corail.recycler.common.tileentity.TileEntityRecycler;
 
 
 public class SlotRecycler extends Slot {
-	private RecyclerTile invent;
+	private TileEntityRecycler invent;
 	private int id;
 
-	public SlotRecycler(RecyclerTile inventory, int index, int xPos, int yPos) {
+	public SlotRecycler(TileEntityRecycler inventory, int index, int xPos, int yPos) {
 		super(inventory, index, xPos, yPos);
 		this.id = index;
 		this.invent = inventory;

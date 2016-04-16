@@ -11,6 +11,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import ovh.corail.recycler.common.handler.ConfigurationHandler;
+import ovh.corail.recycler.core.Main;
+import ovh.corail.recycler.core.MainUtil;
 
 public class RecyclingManager {
 	private static final RecyclingManager instance = new RecyclingManager();
@@ -90,22 +92,22 @@ public class RecyclingManager {
 			/* Objets abimés */
 			// TODO SWITCH + Main.items.get()
 			if (currentRecipe.canBeRepaired() && stack.getItemDamage() > 0) {
-				String name = currentStack.getItem().getRegistryName();
+				Item item = currentStack.getItem();
 				int currentSize = currentStack.stackSize;
 				/* Unités plus petites */
-				if (name.compareTo("minecraft:iron_ingot") == 0) {
-					currentStack = new ItemStack(MainUtil.iron_nugget, currentSize * 9, 0);
+				if (item==Items.iron_ingot) {
+					currentStack = new ItemStack(Main.iron_nugget, currentSize * 9, 0);
 					newStackCount = currentStack.stackSize * nb_input;
 				}
-				if (name.compareTo("minecraft:gold_ingot") == 0) {
+				if (item==Items.gold_ingot) {
 					currentStack = new ItemStack(Items.gold_nugget, currentSize * 9, 0);
 					newStackCount = currentStack.stackSize * nb_input;
 				}
-				if (name.compareTo("minecraft:diamond") == 0) {
-					currentStack = new ItemStack(MainUtil.diamond_nugget, currentSize * 9, 0);
+				if (item==Items.diamond) {
+					currentStack = new ItemStack(Main.diamond_nugget, currentSize * 9, 0);
 					newStackCount = currentStack.stackSize * nb_input;
 				}
-				if (name.compareTo("minecraft:leather") == 0) {
+				if (item==Items.leather) {
 					currentStack = new ItemStack(Items.rabbit_hide, currentSize * 4, 0);
 					newStackCount = currentStack.stackSize * nb_input;
 				}
@@ -267,7 +269,7 @@ public class RecyclingManager {
 		}));
 		/* Barreau de fer */
 		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:iron_bars:1:0", new String[] { 
-				Main.MODID+":iron_nugget:3:0", 
+				Main.MOD_ID+":iron_nugget:3:0", 
 		}));
 		/* Plaque de pression (+ pondérée) */
 		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:wooden_pressure_plate:1:0", new String[] { 
@@ -723,7 +725,7 @@ public class RecyclingManager {
 		}, true));
 		/* Recycleur */
 		if (ConfigurationHandler.recyclerRecycled) {
-			jsonRecipesList.add(new JsonRecyclingRecipe(Main.MODID+":recycler:1:0", new String[] {
+			jsonRecipesList.add(new JsonRecyclingRecipe(Main.MOD_ID+":recycler:1:0", new String[] {
 					"minecraft:cobblestone:6:0",
 					"minecraft:iron_ingot:3:0",
 			}));
@@ -738,10 +740,6 @@ public class RecyclingManager {
 			RecyclingRecipe recipe = convertJsonRecipe(jsonRecipes.get(i));
 			if (recipe.getItemRecipe() != null && recipe.getCount() > 0) {
 				instance.recipes.add(recipe);
-			} else {
-				
-				//TODO Remove
-				MainUtil.println("Erreur.... Recette : "+i+"  Item : "+jsonRecipes.get(i).inputItem);
 			}
 		}
 	}

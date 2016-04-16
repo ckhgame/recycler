@@ -10,16 +10,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import ovh.corail.recycler.common.handler.PacketHandler;
 import ovh.corail.recycler.common.packets.VisualMessage;
-import ovh.corail.recycler.common.tileentity.RecyclerTile;
+import ovh.corail.recycler.common.tileentity.TileEntityRecycler;
 
 public class ContainerRecycler extends Container {
 	public int i = 0;
 	public int j = 0;
 	public int k = 0;
-	public RecyclerTile inventory;
+	public TileEntityRecycler inventory;
 	public IInventory visual;
 
-	public ContainerRecycler(EntityPlayer player, World world, int x, int y, int z, RecyclerTile inventory) {
+	public ContainerRecycler(EntityPlayer player, World world, int x, int y, int z, TileEntityRecycler inventory) {
 		this.inventory = inventory;
 		this.visual = inventory.visual;
 		this.i = x;

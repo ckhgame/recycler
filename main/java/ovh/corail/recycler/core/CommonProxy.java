@@ -1,4 +1,4 @@
-package ovh.corail.recycler.common;
+package ovh.corail.recycler.core;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,26 +11,38 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import ovh.corail.recycler.common.JsonRecyclingRecipe;
+import ovh.corail.recycler.common.RecyclingManager;
 import ovh.corail.recycler.common.handler.ConfigurationHandler;
 import ovh.corail.recycler.common.handler.GuiHandler;
 import ovh.corail.recycler.common.handler.PacketHandler;
-import ovh.corail.recycler.common.tileentity.RecyclerTile;
+import ovh.corail.recycler.common.tileentity.TileEntityRecycler;
 
 public class CommonProxy {
 	public void preInit(FMLPreInitializationEvent event) throws IOException {
-		GameRegistry.registerTileEntity(RecyclerTile.class, "inventory");
+		/** config */
 		ConfigurationHandler.config = new Configuration(event.getSuggestedConfigurationFile());
 		ConfigurationHandler.config.load();
 		ConfigurationHandler.refreshConfig();
-		MainUtil.init();
+		/** register */
+		GameRegistry.registerItem(Main.iron_nugget);
+		GameRegistry.registerItem(Main.diamond_nugget);
+		GameRegistry.registerItem(Main.diamond_disk);
+		GameRegistry.registerBlock(Main.recycler);
+		GameRegistry.registerTileEntity(TileEntityRecycler.class, "inventoryRecycler");
+		/** new recipes for crafting table */
+		MainUtil.getNewRecipes();
+		/** messages handler */
 		PacketHandler.init();
-		/* Load Json Recycling Recipes */
+		/** load recycling recipes from json */
 		File recyclingRecipesFile = new File(event.getModConfigurationDirectory(), "recyclingRecipes.json");
 		if (!recyclingRecipesFile.exists()) {
 			recyclingRecipesFile.createNewFile();
@@ -50,4 +62,15 @@ public class CommonProxy {
 
 	public void postInit(FMLPostInitializationEvent event) {
 	}
+	
+	protected void initRender() {
+	}
+
+	protected void render(Item item) {	
+	}
+
+	protected void render(Block block) {	
+	}
+	
+	
 }

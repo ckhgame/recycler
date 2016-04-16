@@ -1,4 +1,4 @@
-package ovh.corail.recycler.client.gui;
+package ovh.corail.recycler.gui;
 
 import java.io.IOException;
 
@@ -10,26 +10,27 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import ovh.corail.recycler.common.ContainerRecycler;
-import ovh.corail.recycler.common.Main;
-import ovh.corail.recycler.common.MainUtil;
 import ovh.corail.recycler.common.RecyclingManager;
 import ovh.corail.recycler.common.handler.PacketHandler;
 import ovh.corail.recycler.common.packets.ButtonMessage;
 import ovh.corail.recycler.common.packets.ProgressMessage;
-import ovh.corail.recycler.common.tileentity.RecyclerTile;
+import ovh.corail.recycler.common.tileentity.TileEntityRecycler;
+import ovh.corail.recycler.core.Main;
+import ovh.corail.recycler.core.MainUtil;
 
 public class GuiRecycler extends GuiContainer {
 	public int i = 0;
 	public int j = 0;
 	public int k = 0;
-	public RecyclerTile inventory;
-	private static ResourceLocation texture = new ResourceLocation(Main.MODID + ":textures/recycler.png");
-	private static ResourceLocation texture2 = new ResourceLocation(Main.MODID + ":textures/items/recycler.png");
+	public TileEntityRecycler inventory;
+	private static ResourceLocation texture = new ResourceLocation(Main.MOD_ID + ":textures/recycler.png");
+	private static ResourceLocation texture2 = new ResourceLocation(Main.MOD_ID + ":textures/items/recycler.png");
 	
-	public GuiRecycler(EntityPlayer player, World world, int x, int y, int z, RecyclerTile inventory) {
+	public GuiRecycler(EntityPlayer player, World world, int x, int y, int z, TileEntityRecycler inventory) {
 		super(new ContainerRecycler(player, world, x, y, z, inventory));
 		this.inventory = inventory;
 		this.i = x;
@@ -92,7 +93,7 @@ public class GuiRecycler extends GuiContainer {
 		Keyboard.enableRepeatEvents(true);
 		this.buttonList.clear();
 		// TODO Current Changes
-		this.buttonList.add(new GuiButton(0, this.guiLeft + 40, this.guiTop + 12, 54, 16, MainUtil.getTranslation("button.recycle")));
+		this.buttonList.add(new GuiButton(0, this.guiLeft + 40, this.guiTop + 12, 54, 16, I18n.translateToLocal("button.recycle")));
 		this.buttonList.add(new GuiButton(1, this.guiLeft + 95, this.guiTop + 5, 16, 16, "Auto"));
 	}
 
