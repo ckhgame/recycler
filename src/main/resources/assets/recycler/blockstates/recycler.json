@@ -1,8 +1,0 @@
-{
-    "variants": {
-        "facing=north": { "model": "recycler:recycler" },
-        "facing=south": { "model": "recycler:recycler", "y": 180 },
-        "facing=west":  { "model": "recycler:recycler", "y": 270 },
-        "facing=east":  { "model": "recycler:recycler", "y": 90 }
-    }
-}
