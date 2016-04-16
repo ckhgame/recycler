@@ -1,4 +1,4 @@
-package ovh.corail.recycler.common;
+package ovh.corail.recycler.recycling;
 
 import java.util.ArrayList;
 import java.util.List;

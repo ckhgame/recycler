@@ -1,4 +1,4 @@
-package ovh.corail.recycler.common;
+package ovh.corail.recycler.gui;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -7,24 +7,21 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import ovh.corail.recycler.common.handler.PacketHandler;
-import ovh.corail.recycler.common.packets.VisualMessage;
-import ovh.corail.recycler.common.tileentity.TileEntityRecycler;
+import ovh.corail.recycler.handler.PacketHandler;
+import ovh.corail.recycler.packets.VisualMessage;
+import ovh.corail.recycler.tileentity.TileEntityRecycler;
 
 public class ContainerRecycler extends Container {
-	public int i = 0;
-	public int j = 0;
-	public int k = 0;
+	public BlockPos currentPos;
 	public TileEntityRecycler inventory;
 	public IInventory visual;
 
-	public ContainerRecycler(EntityPlayer player, World world, int x, int y, int z, TileEntityRecycler inventory) {
+	public ContainerRecycler(EntityPlayer playerIn, World worldIn, int x, int y, int z, TileEntityRecycler inventory) {
 		this.inventory = inventory;
 		this.visual = inventory.visual;
-		this.i = x;
-		this.j = y;
-		this.k = z;
+		this.currentPos = new BlockPos(x, y, z);
 		this.addSlotToContainer(new SlotRecycler(inventory, 0, 9, 6));
 		this.addSlotToContainer(new SlotRecycler(inventory, 1, 9, 24));
 		for (int i = inventory.firstOutput; i <= 10; i++) {
@@ -32,13 +29,13 @@ public class ContainerRecycler extends Container {
 			this.addSlotToContainer(new SlotRecycler(inventory, i + 9, 9 + (i - 2) * 18, 43));
 		}
 		for (int i = 0; i < 3; i++) {
-			this.addSlotToContainer(new SlotVisual(inventory, inventory.visual, i, 117 + (i * 18), 5));
-			this.addSlotToContainer(new SlotVisual(inventory, inventory.visual, i + 3, 117 + (i * 18), 23));
+			this.addSlotToContainer(new SlotVisual(inventory.visual, i, 117 + (i * 18), 5));
+			this.addSlotToContainer(new SlotVisual(inventory.visual, i + 3, 117 + (i * 18), 23));
 		}
 		PacketHandler.INSTANCE.sendToServer(
 				new VisualMessage(inventory.getPos().getX(), inventory.getPos().getY(), inventory.getPos().getZ()));
 		inventory.refreshVisual(inventory.getStackInSlot(0));
-		bindPlayerInventory(player.inventory);
+		bindPlayerInventory(playerIn.inventory);
 	}
 
 	@Override
@@ -53,8 +50,7 @@ public class ContainerRecycler extends Container {
 	}
 
 	protected void bindPlayerInventory(InventoryPlayer inventoryPlayer) {
-		int i;
-		int j;
+		int i, j;
 		for (i = 0; i < 3; ++i) {
 			for (j = 0; j < 9; ++j) {
 				this.addSlotToContainer(new Slot(inventoryPlayer, j + (i + 1) * 9, 8 + j * 18, 84 + i * 18));
@@ -66,12 +62,12 @@ public class ContainerRecycler extends Container {
 	}
 
 	@Override
-	public boolean canInteractWith(EntityPlayer player) {
-		return true;
+	public boolean canInteractWith(EntityPlayer playerIn) {
+		return inventory.isUseableByPlayer(playerIn);
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer player, int index) {
+	public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
 		ItemStack itemstack = null;
 		Slot slot = (Slot) this.inventorySlots.get(index);
 
@@ -97,20 +93,14 @@ public class ContainerRecycler extends Container {
 				return null;
 			}
 
-			slot.onPickupFromSlot(player, itemstack1);
+			slot.onPickupFromSlot(playerIn, itemstack1);
 		}
 
 		return itemstack;
 	}
 
+	@Override
 	public void onContainerClosed(EntityPlayer player) {
 		super.onContainerClosed(player);
-		/*
-		 * if (!this.world.isRemote) for (int i = 0; i <
-		 * content.getSizeInventory(); ++i) { ItemStack itemstack =
-		 * content.getStackInSlot(i); if (itemstack != null)
-		 * player.dropPlayerItemWithRandomChoice(itemstack, false); }
-		 */
-
 	}
 }

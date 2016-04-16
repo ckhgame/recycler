@@ -1,13 +1,13 @@
-package ovh.corail.recycler.common.handler;
+package ovh.corail.recycler.handler;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
-import ovh.corail.recycler.common.ContainerRecycler;
-import ovh.corail.recycler.common.tileentity.TileEntityRecycler;
+import ovh.corail.recycler.gui.ContainerRecycler;
 import ovh.corail.recycler.gui.GuiRecycler;
+import ovh.corail.recycler.tileentity.TileEntityRecycler;
 
 public class GuiHandler implements IGuiHandler {
 	public static final int RECYCLER = 0;

@@ -1,4 +1,4 @@
-package ovh.corail.recycler.common.blocks;
+package ovh.corail.recycler.blocks;
 
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -21,9 +21,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import ovh.corail.recycler.common.tileentity.TileEntityRecycler;
 import ovh.corail.recycler.core.Main;
 import ovh.corail.recycler.core.MainUtil;
+import ovh.corail.recycler.tileentity.TileEntityRecycler;
 
 public class RecyclerBlock extends BlockContainer {
 	private static final String name = "recycler";
