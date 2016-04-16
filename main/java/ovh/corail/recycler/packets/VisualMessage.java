@@ -9,15 +9,13 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import ovh.corail.recycler.tileentity.TileEntityRecycler;
 
 public class VisualMessage implements IMessage, IMessageHandler<VisualMessage, IMessage> {
-		int x, y, z;
+		BlockPos currentPos;
 
 		public VisualMessage() {
 		}
 
-		public VisualMessage(int x, int y, int z) {
-			this.x = x;
-			this.y = y;
-			this.z = z;
+		public VisualMessage(BlockPos currentPos) {
+			this.currentPos = currentPos;
 		}
 
 		@Override
@@ -27,7 +25,7 @@ public class VisualMessage implements IMessage, IMessageHandler<VisualMessage, I
 				@Override
 				public void run() {
 					TileEntityRecycler tile = (TileEntityRecycler) ctx.getServerHandler().playerEntity.worldObj
-							.getTileEntity(new BlockPos(message.x, message.y, message.z));
+							.getTileEntity(currentPos);
 					tile.refreshVisual(tile.getStackInSlot(0));
 
 				}
@@ -36,15 +34,11 @@ public class VisualMessage implements IMessage, IMessageHandler<VisualMessage, I
 		}
 		@Override
 		public void fromBytes(ByteBuf buf) {
-			this.x = buf.readInt();
-			this.y = buf.readInt();
-			this.z = buf.readInt();
+			this.currentPos = BlockPos.fromLong(buf.readLong());
 		}
 
 		@Override
 		public void toBytes(ByteBuf buf) {
-			buf.writeInt(this.x);
-			buf.writeInt(this.y);
-			buf.writeInt(this.z);
+			buf.writeLong(currentPos.toLong());
 		}
 	}

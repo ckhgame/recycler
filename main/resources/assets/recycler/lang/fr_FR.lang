@@ -2,6 +2,7 @@ tile.recycler.name=Recycleur
 item.iron_nugget.name=Pépite de fer
 item.diamond_nugget.name=Pépite de diamant
 item.diamond_disk.name=Disque en diamant
+item.diamond_disk.info=Le Recycleur ne peut fonctionner sans ce disque
 message.recycler.notEnoughOutputSlots=Emplacements insuffisants
 button.recycle=Recycler
 config.recyclerRecycled=Recycleur recyclé

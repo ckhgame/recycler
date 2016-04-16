@@ -112,7 +112,9 @@ public class TileEntityRecycler extends TileEntity implements ISidedInventory, I
 		}
 		/** Calcul du résultat */
 		List<ItemStack> itemsList = recyclingManager.getResultStack(getStackInSlot(0), nb_input);
-		/** TODO calcul des stacksizes pour les slots libres à mettre plus bas */
+		/**
+		 * TODO calcul des stacksizes pour les slots libres à mettre plus bas
+		 */
 		int emptyCount = hasEmptySlot();
 		if (emptyCount >= itemsList.size()) {
 			/** Remplir les slots identiques non complets */
@@ -123,7 +125,7 @@ public class TileEntityRecycler extends TileEntity implements ISidedInventory, I
 					/** Pour chaque slot */
 					for (int j = firstOutput; j < this.slotsCount; j++) {
 						/** Même objet */
-						if (itemsList.get(i) != null && itemsList.get(i)==inventory[j]) {
+						if (itemsList.get(i) != null && itemsList.get(i) == inventory[j]) {
 							int sommeStackSize = inventory[j].stackSize + itemsList.get(i).stackSize;
 							if (sommeStackSize > inventory[j].getMaxStackSize()) {
 								inventory[j].stackSize = inventory[j].getMaxStackSize();
@@ -182,7 +184,7 @@ public class TileEntityRecycler extends TileEntity implements ISidedInventory, I
 		}
 		return -1;
 	}
-	
+
 	public int hasEmptySlot() {
 		int count = 0;
 		for (int i = firstOutput; i < getSizeInventory(); i++) {
@@ -235,10 +237,9 @@ public class TileEntityRecycler extends TileEntity implements ISidedInventory, I
 			}
 		}
 		progress = (int) Math.floor(((double) (maxTicks - countTicks) / (double) maxTicks) * 100.0);
-		PacketHandler.INSTANCE.sendToAllAround(
-				new ProgressMessage(getPos().getX(), getPos().getY(), getPos().getZ(), progress, isWorking),
-				new TargetPoint(worldObj.provider.getDimension(), getPos().getX(), getPos().getY(), getPos().getZ(),
-						12));
+		/** TODO PROGRESS MESSAGE */
+		PacketHandler.INSTANCE.sendToAllAround(new ProgressMessage(getPos(), progress, isWorking), new TargetPoint(
+				worldObj.provider.getDimension(), getPos().getX(), getPos().getY(), getPos().getZ(), 12));
 	}
 
 	public int getPercentWorking() {
@@ -257,7 +258,7 @@ public class TileEntityRecycler extends TileEntity implements ISidedInventory, I
 		this.progress = progress;
 		this.isWorking = isWorking;
 	}
-	
+
 	public void switchWorking() {
 		isWorking = (isWorking ? false : true);
 		countTicks = maxTicks;
@@ -285,7 +286,7 @@ public class TileEntityRecycler extends TileEntity implements ISidedInventory, I
 		}
 		return true;
 	}
-	
+
 	@Override
 	public int[] getSlotsForFace(EnumFacing side) {
 		return new int[0];
@@ -337,7 +338,7 @@ public class TileEntityRecycler extends TileEntity implements ISidedInventory, I
 	public boolean hasCustomName() {
 		return false;
 	}
-	
+
 	@Override
 	public int getInventoryStackLimit() {
 		return 64;
@@ -348,7 +349,7 @@ public class TileEntityRecycler extends TileEntity implements ISidedInventory, I
 		return this.worldObj.getTileEntity(this.pos) != this ? false
 				: player.getDistanceSq(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D) <= 64.0D;
 	}
-	
+
 	@Override
 	public void markDirty() {
 		super.markDirty();
@@ -406,7 +407,7 @@ public class TileEntityRecycler extends TileEntity implements ISidedInventory, I
 		}
 		return stack;
 	}
-	
+
 	@Override
 	public void clear() {
 		for (int i = 0; i < this.getSizeInventory(); i++) {
