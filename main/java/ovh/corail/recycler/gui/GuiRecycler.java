@@ -106,10 +106,10 @@ public class GuiRecycler extends GuiContainer {
 		switch (button.id) {
 		/** TODO check if useless */
 		case 0: /** Recycle */
-			//inventory.recycle();
+			inventory.recycle();
 			break;
 		case 1: /** Auto-recycle */
-			//inventory.switchWorking();
+			inventory.switchWorking();
 			break;
 		}
 	}

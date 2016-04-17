@@ -9,8 +9,8 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import ovh.corail.recycler.tileentity.TileEntityRecycler;
 
 public class ButtonMessage implements IMessage, IMessageHandler<ButtonMessage, IMessage> {
-	BlockPos currentPos;
 	int buttonId;
+	BlockPos currentPos;
 
 	public ButtonMessage() {
 	}
@@ -43,13 +43,13 @@ public class ButtonMessage implements IMessage, IMessageHandler<ButtonMessage, I
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		this.currentPos = BlockPos.fromLong(buf.readLong());
 		this.buttonId = buf.readInt();
+		this.currentPos = BlockPos.fromLong(buf.readLong());
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		buf.writeLong(currentPos.toLong());
 		buf.writeInt(buttonId);
+		buf.writeLong(currentPos.toLong());
 	}
 }
