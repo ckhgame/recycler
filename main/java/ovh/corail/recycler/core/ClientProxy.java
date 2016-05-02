@@ -6,12 +6,9 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
-//import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-//import ovh.corail.recycler.render.RenderRecycler;
-import ovh.corail.recycler.tileentity.TileEntityRecycler;
 
 public class ClientProxy extends CommonProxy {
 	@Override
@@ -24,7 +21,6 @@ public class ClientProxy extends CommonProxy {
 		super.init(event);
 		/** render */
 		initRender();
-		//ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRecycler.class, new RenderRecycler());
 	}
 
 	@Override
