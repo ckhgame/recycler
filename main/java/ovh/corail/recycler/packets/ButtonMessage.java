@@ -10,13 +10,13 @@ import ovh.corail.recycler.tileentity.TileEntityRecycler;
 
 public class ButtonMessage implements IMessage, IMessageHandler<ButtonMessage, IMessage> {
 	BlockPos currentPos;
-	int buttonId;
+	int id;
 
 	public ButtonMessage() {
 	}
 
-	public ButtonMessage(int buttonId, BlockPos currentPos) {
-		this.buttonId = buttonId;
+	public ButtonMessage(int id, BlockPos currentPos) {
+		this.id = id;
 		this.currentPos = currentPos;
 	}
 
@@ -28,7 +28,7 @@ public class ButtonMessage implements IMessage, IMessageHandler<ButtonMessage, I
 			public void run() {
 				TileEntityRecycler tile = (TileEntityRecycler) ctx.getServerHandler().playerEntity.worldObj
 						.getTileEntity(currentPos);
-				switch (message.buttonId) {
+				switch (message.id) {
 				case 0: // Recycle
 					tile.recycle();
 					break;
@@ -44,12 +44,12 @@ public class ButtonMessage implements IMessage, IMessageHandler<ButtonMessage, I
 	@Override
 	public void fromBytes(ByteBuf buf) {
 		this.currentPos = BlockPos.fromLong(buf.readLong());
-		this.buttonId = buf.readInt();
+		this.id = buf.readInt();
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
 		buf.writeLong(currentPos.toLong());
-		buf.writeInt(buttonId);
+		buf.writeInt(this.id);
 	}
 }

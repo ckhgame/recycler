@@ -40,9 +40,10 @@ public class GuiRecycler extends GuiContainer {
 		this.guiLeft = (this.width - xSize) / 2;
 		this.guiTop = (this.height - ySize) / 2;
 		this.buttonList.clear();
+		/** TODO add translations */
 		this.buttonList.add(
 				new GuiButton(0, this.guiLeft + 40, this.guiTop + 12, 54, 16, I18n.translateToLocal("button.recycle")));
-		this.buttonList.add(new GuiButton(1, this.guiLeft + 95, this.guiTop + 5, 16, 16, I18n.translateToLocal("button.auto")));
+		this.buttonList.add(new GuiButton(1, this.guiLeft + 95, this.guiTop + 5, 16, 16, "Auto"));
 	}
 
 	@Override
@@ -67,7 +68,7 @@ public class GuiRecycler extends GuiContainer {
 				int inputCount = rm.getRecipe(num_recipe).getItemRecipe().stackSize;
 				this.fontRendererObj.drawString("X " + Integer.toString(inputCount), (32), (14), 0xffffff);
 			}
-			/** TODO to be changed about progress bar */
+			/** TODO change about progress bar */
 			if (inventory.isWorking()) {
 				mc.renderEngine.bindTexture(texture2);
 				drawTexturedModalRect(90, 19, 100, 104, 22, 12);

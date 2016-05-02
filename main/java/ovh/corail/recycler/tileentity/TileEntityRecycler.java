@@ -59,7 +59,7 @@ public class TileEntityRecycler extends TileEntity implements ISidedInventory, I
 	}
 
 	public boolean canRecycle() {
-		/** disk input slot empty */
+		/** Disk input slot empty */
 		ItemStack diskStack = getStackInSlot(1);
 		if (diskStack == null) {
 			return false;
@@ -77,11 +77,10 @@ public class TileEntityRecycler extends TileEntity implements ISidedInventory, I
 			return false;
 		}
 		/** TODO ?necessary? */
-		/*
-		 * if (getStackInSlot(1).getItemDamage() >=
-		 * getStackInSlot(1).getMaxDamage()) { setInventorySlotContents(1,
-		 * null); return false; }
-		 */
+		if (getStackInSlot(1).getItemDamage() >= getStackInSlot(1).getMaxDamage()) {
+			setInventorySlotContents(1, null);
+			return false;
+		}
 		return true;
 	}
 
@@ -89,55 +88,51 @@ public class TileEntityRecycler extends TileEntity implements ISidedInventory, I
 		if (!canRecycle()) {
 			return false;
 		}
-		/** current disk */
 		ItemStack diskStack = getStackInSlot(1);
-		/** current recipe */
+		/** Recette correspondante */
 		int num_recipe = recyclingManager.hasRecipe(getStackInSlot(0));
 		if (num_recipe < 0) {
 			return false;
 		}
 		RecyclingRecipe currentRecipe = recyclingManager.getRecipe(num_recipe);
-		/** enough stacksize in input slot */
+		/** Stacksize suffisant du slot input */
 		if (getStackInSlot(0).stackSize < currentRecipe.getItemRecipe().stackSize) {
 			return false;
 		}
-		/** nb_input for this recipe */
-		int nb_input;
+		int nb_input = (int) Math
+				.floor((double) getStackInSlot(0).stackSize / (double) currentRecipe.getItemRecipe().stackSize);
+		/** TODO Current Changes */
 		if (isWorking) {
 			nb_input = 1;
-		} else {
-			nb_input = (int) Math
-					.floor((double) getStackInSlot(0).stackSize / (double) currentRecipe.getItemRecipe().stackSize);
 		}
-		/** limit of use of the disk */
+		/** Limite d'utilisation du disque */
 		int maxDiskUse = (int) Math.floor((double) (diskStack.getMaxDamage() - diskStack.getItemDamage()) / 10.0);
 		if (maxDiskUse < nb_input) {
 			nb_input = maxDiskUse;
 		}
-		/** calcul result */
+		/** Calcul du résultat */
 		List<ItemStack> itemsList = recyclingManager.getResultStack(getStackInSlot(0), nb_input);
-		/** number of slots needed */
+		/**
+		 * TODO calcul des stacksizes pour les slots libres à mettre plus bas
+		 */
 		int emptyCount = hasEmptySlot();
 		if (emptyCount >= itemsList.size()) {
-			/** fill same items stacksize */
+			/** Remplir les slots identiques non complets */
+			/** Pour chaque résultat de la recette */
 			for (int i = 0; i < itemsList.size(); i++) {
-				/** for each not fullstack result */
-				if (itemsList.get(i) != null && itemsList.get(i).stackSize != itemsList.get(i).getMaxStackSize()) {
-					/** for each output slots */
+				/** Si le slot n'est pas à sa taille maximale */
+				if (itemsList.get(i).stackSize != itemsList.get(i).getMaxStackSize()) {
+					/** Pour chaque slot */
 					for (int j = firstOutput; j < this.slotsCount; j++) {
-						/** same item not fullstack */
-						if (itemsList.get(i) != null && itemsList.get(i).stackSize < itemsList.get(i).getMaxStackSize()
-								&& itemsList.get(i) == inventory[j]) {
-							/** fill the stack */
+						/** Même objet */
+						if (itemsList.get(i) != null && itemsList.get(i) == inventory[j]) {
 							int sommeStackSize = inventory[j].stackSize + itemsList.get(i).stackSize;
 							if (sommeStackSize > inventory[j].getMaxStackSize()) {
-								/** cant put all */
 								inventory[j].stackSize = inventory[j].getMaxStackSize();
 								ItemStack resteStack = itemsList.get(i).copy();
 								resteStack.stackSize = sommeStackSize - inventory[j].getMaxStackSize();
 								itemsList.set(i, resteStack);
 							} else {
-								/** can put all */
 								inventory[j].stackSize = sommeStackSize;
 								itemsList.set(i, null);
 								// break;
@@ -146,18 +141,21 @@ public class TileEntityRecycler extends TileEntity implements ISidedInventory, I
 					}
 				}
 			}
-			/** fill the others empty output slots */
+			/** Remplissage des slots restants Output */
 			for (int i = 0; i < itemsList.size(); i++) {
 				if (itemsList.get(i) != null) {
-					setInventorySlotContents(getEmptySlot(), itemsList.get(i).copy());
+					int emptySlot = getEmptySlot();
+					setInventorySlotContents(emptySlot, itemsList.get(i).copy());
 				}
 			}
+
 		} else {
+			/** TODO to change... */
 			Minecraft.getMinecraft().thePlayer
 					.sendChatMessage(I18n.translateToLocal("message.recycler.notEnoughOutputSlots"));
 			return false;
 		}
-		/** adjust the input slot */
+		/** Vide le slot input */
 		if (currentRecipe.getItemRecipe().stackSize * nb_input == getStackInSlot(0).stackSize) {
 			setInventorySlotContents(0, null);
 			emptyVisual();
@@ -166,7 +164,8 @@ public class TileEntityRecycler extends TileEntity implements ISidedInventory, I
 			stack.stackSize = getStackInSlot(0).stackSize - (nb_input * currentRecipe.getItemRecipe().stackSize);
 			setInventorySlotContents(0, stack);
 		}
-		/** consum the disk */
+		/** Abime le disque */
+
 		diskStack.setItemDamage(diskStack.getItemDamage() + (10 * nb_input));
 		if (diskStack.getItemDamage() >= diskStack.getMaxDamage()) {
 			this.setInventorySlotContents(1, null);
@@ -176,7 +175,6 @@ public class TileEntityRecycler extends TileEntity implements ISidedInventory, I
 		return true;
 	}
 
-	/** first empty slot */
 	public int getEmptySlot() {
 		for (int i = firstOutput; i < getSizeInventory(); i++) {
 			ItemStack item = getStackInSlot(i);
@@ -187,7 +185,6 @@ public class TileEntityRecycler extends TileEntity implements ISidedInventory, I
 		return -1;
 	}
 
-	/** number of empty slots */
 	public int hasEmptySlot() {
 		int count = 0;
 		for (int i = firstOutput; i < getSizeInventory(); i++) {
@@ -198,7 +195,6 @@ public class TileEntityRecycler extends TileEntity implements ISidedInventory, I
 		return count;
 	}
 
-	/** fill the visual slots */
 	public void fillVisual(List<ItemStack> itemsList) {
 		int num_slot = 0;
 		for (int i = 0; i < itemsList.size(); i++) {
@@ -208,21 +204,19 @@ public class TileEntityRecycler extends TileEntity implements ISidedInventory, I
 		}
 	}
 
-	/** empty the visual slots */
 	public void emptyVisual() {
 		for (int i = 0; i < visual.getSizeInventory(); i++) {
 			visual.setInventorySlotContents(i, null);
 		}
 	}
 
-	/** refresh the visual slots */
 	public void refreshVisual(ItemStack stack) {
 		emptyVisual();
 		List<ItemStack> itemsList = recyclingManager.getResultStack(stack, 1);
 		fillVisual(itemsList);
 	}
 
-	/** progress bar update */
+	/** TODO changes about progress bar */
 	@Override
 	public void update() {
 		if (worldObj.isRemote) {
@@ -243,6 +237,7 @@ public class TileEntityRecycler extends TileEntity implements ISidedInventory, I
 			}
 		}
 		progress = (int) Math.floor(((double) (maxTicks - countTicks) / (double) maxTicks) * 100.0);
+		/** TODO PROGRESS MESSAGE */
 		PacketHandler.INSTANCE.sendToAllAround(new ProgressMessage(getPos(), progress, isWorking), new TargetPoint(
 				worldObj.provider.getDimension(), getPos().getX(), getPos().getY(), getPos().getZ(), 12));
 	}
@@ -272,11 +267,11 @@ public class TileEntityRecycler extends TileEntity implements ISidedInventory, I
 
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
-		/* output slots */
+		/* Output Slots */
 		if (index > 1) {
 			return false;
 		}
-		/* disk to recycle slot */
+		/* Disk Input Slot */
 		if (index == 1) {
 			if (stack.getItem() == Main.diamond_disk) {
 				return true;
@@ -284,7 +279,7 @@ public class TileEntityRecycler extends TileEntity implements ISidedInventory, I
 				return false;
 			}
 		}
-		/* item to recycle slot */
+		/* Item Input Slot */
 		int currentRecipe = recyclingManager.hasRecipe(stack);
 		if (currentRecipe < 0) {
 			return false;
