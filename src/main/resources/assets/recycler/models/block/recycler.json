@@ -1,0 +1,6 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "up": "recycler:blocks/recycler_top","down": "recycler:blocks/recycler_other","north": "recycler:blocks/recycler_front","east": "recycler:blocks/recycler_other","south": "recycler:blocks/recycler_other","west": "recycler:blocks/recycler_other"
+    }
+}
