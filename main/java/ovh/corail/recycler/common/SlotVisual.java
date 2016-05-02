@@ -4,13 +4,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import ovh.corail.recycler.common.tileentity.TileEntityRecycler;
+import ovh.corail.recycler.common.tileentity.RecyclerTile;
 
 public class SlotVisual extends Slot {
 	private int id;
-	public TileEntityRecycler invent;
+	public RecyclerTile invent;
 
-	public SlotVisual(TileEntityRecycler inventory, InventoryBasic visual, int index, int xPos, int yPos) {
+	public SlotVisual(RecyclerTile inventory, InventoryBasic visual, int index, int xPos, int yPos) {
 		super(visual, index, xPos, yPos);
 		this.id = index;
 		this.invent=inventory;

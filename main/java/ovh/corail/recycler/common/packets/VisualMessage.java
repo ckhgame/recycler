@@ -6,7 +6,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import ovh.corail.recycler.common.tileentity.TileEntityRecycler;
+import ovh.corail.recycler.common.tileentity.RecyclerTile;
 
 public class VisualMessage implements IMessage, IMessageHandler<VisualMessage, IMessage> {
 		int x, y, z;
@@ -26,7 +26,7 @@ public class VisualMessage implements IMessage, IMessageHandler<VisualMessage, I
 			mainThread.addScheduledTask(new Runnable() {
 				@Override
 				public void run() {
-					TileEntityRecycler tile = (TileEntityRecycler) ctx.getServerHandler().playerEntity.worldObj
+					RecyclerTile tile = (RecyclerTile) ctx.getServerHandler().playerEntity.worldObj
 							.getTileEntity(new BlockPos(message.x, message.y, message.z));
 					tile.refreshVisual(tile.getStackInSlot(0));
 

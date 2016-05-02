@@ -30,8 +30,7 @@ public class RecyclingRecipe {
 		itemsList.add(stackOut.copy());
 	}
 	public String getName() {
-		/**TODO current changes */
-		return itemRecipe.getItem().getUnlocalizedName();
+		return itemRecipe.getItem().getRegistryName();
 	}
 	public ItemStack getItemRecipe() {
 		return itemRecipe;

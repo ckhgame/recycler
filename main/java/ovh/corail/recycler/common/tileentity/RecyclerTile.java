@@ -25,22 +25,21 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import ovh.corail.recycler.common.Main;
 import ovh.corail.recycler.common.RecyclingRecipe;
 import ovh.corail.recycler.common.RecyclingManager;
+import ovh.corail.recycler.common.MainUtil;
 import ovh.corail.recycler.common.blocks.RecyclerBlock;
 import ovh.corail.recycler.common.handler.PacketHandler;
 import ovh.corail.recycler.common.packets.ProgressMessage;
-import ovh.corail.recycler.core.Main;
-import ovh.corail.recycler.core.MainUtil;
 
-public class TileEntityRecycler extends TileEntity implements IInventory, ITickable {
+public class RecyclerTile extends TileEntity implements IInventory, ITickable {
 	private int count = 20;
 	public int firstOutput = 2;
 	public ItemStack[] inventory;
@@ -52,7 +51,7 @@ public class TileEntityRecycler extends TileEntity implements IInventory, ITicka
 	private boolean isWorking = false;
 	private int progress = 0;
 
-	public TileEntityRecycler() {
+	public RecyclerTile() {
 		this.inventory = new ItemStack[count];
 		this.visual = new InventoryBasic("visual", true, 6);
 		recyclingManager = RecyclingManager.getInstance();
@@ -145,8 +144,7 @@ public class TileEntityRecycler extends TileEntity implements IInventory, ITicka
 			}
 
 		} else {
-			/**TODO to change... */
-			Minecraft.getMinecraft().thePlayer.sendChatMessage(I18n.translateToLocal("message.recycler.notEnoughOutputSlots"));
+			MainUtil.sendMessage("message.recycler.notEnoughOutputSlots", true);
 			return false;
 		}
 		/* Vide le slot input */
@@ -314,7 +312,7 @@ public class TileEntityRecycler extends TileEntity implements IInventory, ITicka
 		}
 		/* Disk Input Slot */
 		if (index == 1) {
-			if (stack.getItem()==Main.diamond_disk) {
+			if (stack.getItem().getRegistryName().compareTo(MainUtil.diamond_disk.getRegistryName()) == 0) {
 				return true;
 			} else {
 				return false;

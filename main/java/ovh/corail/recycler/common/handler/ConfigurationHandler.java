@@ -1,7 +1,9 @@
 package ovh.corail.recycler.common.handler;
 
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
+import ovh.corail.recycler.common.MainUtil;
 
 public class ConfigurationHandler {
 	public static Configuration config;
@@ -9,11 +11,11 @@ public class ConfigurationHandler {
 	public static boolean recyclerRecycled, craftPodzol, craftClay, craftWeb, craftChainmail;
 
 	public static void refreshConfig() {
-		recyclerRecycled=config.getBoolean("recyclerRecycled", config.CATEGORY_GENERAL, false, I18n.translateToLocal("config.recyclerRecycled"));
-		craftPodzol=config.getBoolean("craftPodzol", config.CATEGORY_GENERAL, true, I18n.translateToLocal("config.craftPodzol"));
-		craftClay=config.getBoolean("craftClay", config.CATEGORY_GENERAL, true, I18n.translateToLocal("config.craftClay"));
-		craftWeb=config.getBoolean("craftWeb", config.CATEGORY_GENERAL, true, I18n.translateToLocal("config.craftWeb"));
-		craftChainmail=config.getBoolean("craftChainmail", config.CATEGORY_GENERAL, true, I18n.translateToLocal("config.craftChainmail"));
+		recyclerRecycled=config.getBoolean("recyclerRecycled", config.CATEGORY_GENERAL, false, MainUtil.getTranslation("config.recyclerRecycled"));
+		craftPodzol=config.getBoolean("craftPodzol", config.CATEGORY_GENERAL, true, MainUtil.getTranslation("config.craftPodzol"));
+		craftClay=config.getBoolean("craftClay", config.CATEGORY_GENERAL, true, MainUtil.getTranslation("config.craftClay"));
+		craftWeb=config.getBoolean("craftWeb", config.CATEGORY_GENERAL, true, MainUtil.getTranslation("config.craftWeb"));
+		craftChainmail=config.getBoolean("craftChainmail", config.CATEGORY_GENERAL, true, MainUtil.getTranslation("config.craftChainmail"));
 		if (config.hasChanged()) {
 			config.save();
 		}
