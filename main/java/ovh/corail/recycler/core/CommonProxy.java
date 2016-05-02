@@ -19,12 +19,12 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import ovh.corail.recycler.handler.ConfigurationHandler;
-import ovh.corail.recycler.handler.GuiHandler;
-import ovh.corail.recycler.handler.PacketHandler;
-import ovh.corail.recycler.recycling.JsonRecyclingRecipe;
-import ovh.corail.recycler.recycling.RecyclingManager;
-import ovh.corail.recycler.tileentity.TileEntityRecycler;
+import ovh.corail.recycler.common.JsonRecyclingRecipe;
+import ovh.corail.recycler.common.RecyclingManager;
+import ovh.corail.recycler.common.handler.ConfigurationHandler;
+import ovh.corail.recycler.common.handler.GuiHandler;
+import ovh.corail.recycler.common.handler.PacketHandler;
+import ovh.corail.recycler.common.tileentity.TileEntityRecycler;
 
 public class CommonProxy {
 	public void preInit(FMLPreInitializationEvent event) throws IOException {

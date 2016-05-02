@@ -1,4 +1,4 @@
-package ovh.corail.recycler.handler;
+package ovh.corail.recycler.common.handler;
 
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.common.config.Configuration;

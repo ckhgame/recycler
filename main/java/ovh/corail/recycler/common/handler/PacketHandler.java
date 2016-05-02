@@ -1,11 +1,11 @@
-package ovh.corail.recycler.handler;
+package ovh.corail.recycler.common.handler;
 
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
+import ovh.corail.recycler.common.packets.ButtonMessage;
+import ovh.corail.recycler.common.packets.ProgressMessage;
+import ovh.corail.recycler.common.packets.VisualMessage;
 import ovh.corail.recycler.core.Main;
-import ovh.corail.recycler.packets.ButtonMessage;
-import ovh.corail.recycler.packets.ProgressMessage;
-import ovh.corail.recycler.packets.VisualMessage;
 
 public class PacketHandler {
 

@@ -1,4 +1,4 @@
-package ovh.corail.recycler.recycling;
+package ovh.corail.recycler.common;
 
 public class JsonRecyclingRecipe {
 	String inputItem;

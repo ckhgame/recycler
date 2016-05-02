@@ -11,10 +11,10 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import ovh.corail.recycler.blocks.RecyclerBlock;
-import ovh.corail.recycler.items.ItemDiamondDisk;
-import ovh.corail.recycler.items.ItemDiamondNugget;
-import ovh.corail.recycler.items.ItemIronNugget;
+import ovh.corail.recycler.common.blocks.RecyclerBlock;
+import ovh.corail.recycler.common.items.ItemDiamondDisk;
+import ovh.corail.recycler.common.items.ItemDiamondNugget;
+import ovh.corail.recycler.common.items.ItemIronNugget;
 
 @Mod(modid = Main.MOD_ID, name = Main.MOD_NAME, version = Main.MOD_VER, guiFactory = "ovh.corail.recycler.gui.GuiFactoryRecycler")
 public class Main {

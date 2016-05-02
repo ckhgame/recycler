@@ -1,4 +1,4 @@
-package ovh.corail.recycler.recycling;
+package ovh.corail.recycler.common;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,9 +8,11 @@ import com.google.common.collect.Lists;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import ovh.corail.recycler.common.handler.ConfigurationHandler;
 import ovh.corail.recycler.core.Main;
-import ovh.corail.recycler.handler.ConfigurationHandler;
+import ovh.corail.recycler.core.MainUtil;
 
 public class RecyclingManager {
 	private static final RecyclingManager instance = new RecyclingManager();

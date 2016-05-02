@@ -1,4 +1,4 @@
-package ovh.corail.recycler.packets;
+package ovh.corail.recycler.common.packets;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.IThreadListener;
@@ -6,7 +6,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import ovh.corail.recycler.tileentity.TileEntityRecycler;
+import ovh.corail.recycler.common.tileentity.TileEntityRecycler;
 
 public class VisualMessage implements IMessage, IMessageHandler<VisualMessage, IMessage> {
 		int x, y, z;
