@@ -32,8 +32,6 @@ public class GuiRecycler extends GuiContainer {
 	public TileEntityRecycler inventory;
 	public EntityPlayer currentPlayer;
 	private static ResourceLocation textureBg = new ResourceLocation(Main.MOD_ID + ":textures/gui/recycler.png");
-	private static ResourceLocation texture2 = new ResourceLocation(Main.MOD_ID + ":textures/items/recycler.png");
-	private ResourceLocation textureSlot = new ResourceLocation(Main.MOD_ID + ":textures/gui/slot.png");
 	
 	public GuiRecycler(EntityPlayer player, World world, int x, int y, int z, TileEntityRecycler inventory) {
 		super(new ContainerRecycler(player, world, x, y, z, inventory));
@@ -55,14 +53,14 @@ public class GuiRecycler extends GuiContainer {
 		int posY = ((this.height - this.ySize) / 2);
 		this.drawTexturedModalRect(posX, posY, 0, 0, this.xSize, this.ySize);
 		zLevel = 100.0F;
-		mc.renderEngine.bindTexture(textureSlot);
+		//mc.renderEngine.bindTexture(textureSlot);
 		int i, j;
 		int dimCase = 16;
 		List<Slot> slots = this.inventorySlots.inventorySlots;
 		Slot slot;
 		for (i = 0; i < slots.size(); i++) {
 			slot = slots.get(i);
-			this.drawTexturedModalRect(posX + slot.xDisplayPosition, posY + slot.yDisplayPosition, 0, 0, dimCase, dimCase);
+			this.drawTexturedModalRect(posX + slot.xDisplayPosition, posY + slot.yDisplayPosition, 672, 0, dimCase, dimCase);
 		}
 	}
 
@@ -86,7 +84,7 @@ public class GuiRecycler extends GuiContainer {
 			}
 			// TODO Current Changes
 			if (inventory.isWorking()) {
-				mc.renderEngine.bindTexture(texture2);
+				mc.renderEngine.bindTexture(textureBg);
 				drawTexturedModalRect(90, 19, 100, 104, 22, 12);
 				int widthWorking=(int) Math.floor((double) inventory.getPercentWorking()*20.0/100);
 				drawTexturedModalRect(91, 20, 40, 140, widthWorking, 10);
