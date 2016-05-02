@@ -32,7 +32,7 @@ public class ButtonMessage implements IMessage, IMessageHandler<ButtonMessage, I
 						.getTileEntity(new BlockPos(message.x, message.y, message.z));
 				switch (message.id) {
 				case 0: // Recycle
-					tile.recycle(); 
+					tile.recycle(null);
 					break;
 				case 1: // Auto-recycle
 					tile.switchWorking(); 

@@ -33,6 +33,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ovh.corail.recycler.block.BlockRecycler;
+import ovh.corail.recycler.core.Helper;
 import ovh.corail.recycler.core.Main;
 import ovh.corail.recycler.core.RecyclingManager;
 import ovh.corail.recycler.core.RecyclingRecipe;
@@ -57,45 +58,52 @@ public class TileEntityRecycler extends TileEntity implements IInventory, ITicka
 		recyclingManager = RecyclingManager.getInstance();
 	}
 
-	public boolean canRecycle() {
+	public boolean canRecycle(EntityPlayer currentPlayer) {
 		/* Item input slot empty */
 		if (getStackInSlot(0) == null) {
+			Helper.addChatMessage("tile.recycler.message.emptySlot", currentPlayer, true);
 			return false;
 		}
 		if (getStackInSlot(0).stackSize <= 0) {
+			Helper.addChatMessage("tile.recycler.message.emptySlot", currentPlayer, true);
 			setInventorySlotContents(0, null);
 			return false;
 		}
 		/* Disk input slot empty */
 		ItemStack diskStack = getStackInSlot(1);
 		if (diskStack == null) {
+			Helper.addChatMessage("tile.recycler.message.noDisk", currentPlayer, true);
 			return false;
 		}
 		if (diskStack.stackSize <= 0) {
+			Helper.addChatMessage("tile.recycler.message.noDisk", currentPlayer, true);
 			setInventorySlotContents(1, null);
 			return false;
 		}
 		// TODO nécessaire?
 		if (getStackInSlot(1).getItemDamage() >= getStackInSlot(1).getMaxDamage()) {
 			setInventorySlotContents(1, null);
+			Helper.addChatMessage("tile.recycler.message.noDisk", currentPlayer, true);
 			return false;
 		}
 		return true;
 	}
 
-	public boolean recycle() {
-		if (!canRecycle()) {
+	public boolean recycle(EntityPlayer currentPlayer) {
+		if (!canRecycle(currentPlayer)) {
 			return false;
 		}
 		ItemStack diskStack = getStackInSlot(1);
 		/* Recette correspondante */
 		int num_recipe = recyclingManager.hasRecipe(getStackInSlot(0));
 		if (num_recipe < 0) {
+			Helper.addChatMessage("tile.recycler.message.noRecipe", currentPlayer, true);
 			return false;
 		}
 		RecyclingRecipe currentRecipe = recyclingManager.getRecipe(num_recipe);
 		/* Stacksize suffisant du slot input */
 		if (getStackInSlot(0).stackSize < currentRecipe.getItemRecipe().stackSize) {
+			Helper.addChatMessage("tile.recycler.message.noEnoughInput", currentPlayer, true);
 			return false;
 		}
 		int nb_input = (int) Math.floor((double) getStackInSlot(0).stackSize / (double) currentRecipe.getItemRecipe().stackSize);
@@ -144,7 +152,7 @@ public class TileEntityRecycler extends TileEntity implements IInventory, ITicka
 			}
 
 		} else {
-			Minecraft.getMinecraft().thePlayer.addChatMessage(new TextComponentString(I18n.translateToLocal("message.recycler.notEnoughOutputSlots")));
+			Helper.addChatMessage("tile.recycler.message.notEnoughOutputSlots", currentPlayer, true);
 			return false;
 		}
 		/* Vide le slot input */
@@ -160,6 +168,7 @@ public class TileEntityRecycler extends TileEntity implements IInventory, ITicka
 
 		diskStack.setItemDamage(diskStack.getItemDamage() + (10 * nb_input));
 		if (diskStack.getItemDamage() >= diskStack.getMaxDamage()) {
+			Helper.addChatMessage("tile.recycler.message.BrokenDisk", currentPlayer, true);
 			this.setInventorySlotContents(1, null);
 		} else {
 			this.setInventorySlotContents(1, diskStack);
@@ -387,10 +396,10 @@ public class TileEntityRecycler extends TileEntity implements IInventory, ITicka
 		if (isWorking) {
 			countTicks--;
 		if (countTicks <= 0) {
-			if (!recycle()) { 
+			if (!recycle((EntityPlayer) null)) { 
 				isWorking=false;
 			} else {
-				if (canRecycle()) {
+				if (canRecycle((EntityPlayer) null)) {
 					countTicks += maxTicks;
 				} else {
 					isWorking=false;

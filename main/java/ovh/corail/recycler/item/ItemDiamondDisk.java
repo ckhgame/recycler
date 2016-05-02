@@ -8,6 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
+import net.minecraft.world.World;
 import ovh.corail.recycler.core.Main;
 
 public class ItemDiamondDisk extends Item {
@@ -31,5 +32,10 @@ public class ItemDiamondDisk extends Item {
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advanced) {
 		super.addInformation(stack, player, list, advanced);
 		list.add(TextFormatting.WHITE + I18n.translateToLocal("item." + name + ".desc"));
+	}
+	
+	@Override
+	public void onCreated(ItemStack stack, World worldIn, EntityPlayer playerIn) {
+		playerIn.addStat(Main.achievementBuildDisk, 1);
 	}
 }

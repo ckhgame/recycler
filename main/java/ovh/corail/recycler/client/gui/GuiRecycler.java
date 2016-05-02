@@ -27,12 +27,14 @@ public class GuiRecycler extends GuiContainer {
 	public int j = 0;
 	public int k = 0;
 	public TileEntityRecycler inventory;
+	public EntityPlayer currentPlayer;
 	private static ResourceLocation texture = new ResourceLocation(Main.MOD_ID + ":textures/recycler.png");
 	private static ResourceLocation texture2 = new ResourceLocation(Main.MOD_ID + ":textures/items/recycler.png");
 	
 	public GuiRecycler(EntityPlayer player, World world, int x, int y, int z, TileEntityRecycler inventory) {
 		super(new ContainerRecycler(player, world, x, y, z, inventory));
 		this.inventory = inventory;
+		this.currentPlayer = player;
 		this.i = x;
 		this.j = y;
 		this.k = z;
@@ -94,7 +96,7 @@ public class GuiRecycler extends GuiContainer {
 		this.buttonList.clear();
 		// TODO Current Changes
 		this.buttonList.add(new GuiButton(0, this.guiLeft + 40, this.guiTop + 12, 54, 16, I18n.translateToLocal("button.recycle")));
-		this.buttonList.add(new GuiButton(1, this.guiLeft + 95, this.guiTop + 5, 16, 16, "Auto"));
+		//this.buttonList.add(new GuiButton(1, this.guiLeft + 95, this.guiTop + 5, 16, 16, "Auto"));
 	}
 
 	@Override
@@ -109,7 +111,9 @@ public class GuiRecycler extends GuiContainer {
 				inventory.getPos().getY(), inventory.getPos().getZ()));
 		switch (button.id) {
 		case 0: // Recycle
-			inventory.recycle();
+			if (inventory.recycle(currentPlayer)) {
+				currentPlayer.addStat(Main.achievementBuildDisk, 1);
+			}
 			break;
 		case 1: // Auto-recycle
 			inventory.switchWorking();

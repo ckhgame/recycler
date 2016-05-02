@@ -1,12 +1,12 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "recycler:items/diamond_disk"
+        "layer0": "recycler:items/recycler"
     },
     "display": {
         "thirdperson": {
             "rotation": [ -90, 0, 0 ],
-            "translation": [ 0, 1, -2 ],
+            "translation": [ 0, 1, -3 ],
             "scale": [ 0.55, 0.55, 0.55 ]
         },
         "firstperson": {

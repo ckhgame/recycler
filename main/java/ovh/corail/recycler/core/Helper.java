@@ -3,16 +3,26 @@ package ovh.corail.recycler.core;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import ovh.corail.recycler.handler.ConfigurationHandler;
 
 public class Helper {
-	public static boolean showMessages = true;
+	public static void addChatMessage(String message, EntityPlayer currentPlayer, boolean translate) {
+		if (currentPlayer != null) {
+			if (translate) {
+				message = I18n.translateToLocal(message);
+			}
+			currentPlayer.addChatMessage(new TextComponentString(message));
+		}
+	}
 
 	public static void render() {
 		/** blocks */
@@ -21,6 +31,7 @@ public class Helper {
 		render(Main.iron_nugget);
 		render(Main.diamond_nugget);
 		render(Main.diamond_disk);
+		render(Main.itemAchievement001);
 	}
 
 	private static void render(Block block) {
@@ -39,6 +50,7 @@ public class Helper {
 		register(Main.iron_nugget);
 		register(Main.diamond_nugget);
 		register(Main.diamond_disk);
+		register(Main.itemAchievement001);
 	}
 	
 	private static void register(Block block) {

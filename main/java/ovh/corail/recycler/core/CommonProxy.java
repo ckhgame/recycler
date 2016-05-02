@@ -11,6 +11,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import net.minecraft.stats.Achievement;
+import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -51,6 +53,11 @@ public class CommonProxy {
 	}
 
 	public void init(FMLInitializationEvent event) {
+		/** achievements */
+		Main.achievementPlaceRecycler.registerStat();
+		Main.achievementBuildDisk.registerStat();
+		Main.achievementFirstRecycle.registerStat();
+		AchievementPage.registerAchievementPage(new AchievementPage(Main.MOD_NAME, new Achievement[] { Main.achievementPlaceRecycler, Main.achievementBuildDisk, Main.achievementFirstRecycle }));
 		/** gui handler */
 		NetworkRegistry.INSTANCE.registerGuiHandler(Main.instance, new GuiHandler());
 	}

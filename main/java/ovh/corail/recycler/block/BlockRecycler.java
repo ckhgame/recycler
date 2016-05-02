@@ -82,4 +82,11 @@ public class BlockRecycler extends BlockFacing implements ITileEntityProvider {
         TileEntity tileentity = worldIn.getTileEntity(pos);
         return tileentity == null ? false : tileentity.receiveClientEvent(eventID, eventParam);
     }
+	
+	@Override
+	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+		EntityPlayer player = (EntityPlayer) placer;
+		player.addStat(Main.achievementPlaceRecycler, 1);
+		return super.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer);
+	}
 }
