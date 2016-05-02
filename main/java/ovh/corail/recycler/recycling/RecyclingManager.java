@@ -3,7 +3,6 @@ package ovh.corail.recycler.recycling;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -66,8 +65,7 @@ public class RecyclingManager {
 		ItemStack testStack = stack.copy(); /** For damaged items */
 		testStack.setItemDamage(0);
 		for (int recipe_num = 0; recipe_num < getRecipesCount(); recipe_num++) {
-			/** same item */
-			if (testStack.getItem()==recipes.get(recipe_num).getItemRecipe().getItem()) {
+			if (testStack == recipes.get(recipe_num).getItemRecipe()) {
 				return recipe_num;
 			}
 		}
