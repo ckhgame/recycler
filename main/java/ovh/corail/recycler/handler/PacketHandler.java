@@ -5,6 +5,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import ovh.corail.recycler.core.Main;
 import ovh.corail.recycler.packet.ButtonMessage;
 import ovh.corail.recycler.packet.ProgressMessage;
+import ovh.corail.recycler.packet.TakeAllMessage;
 import ovh.corail.recycler.packet.VisualMessage;
 
 public class PacketHandler {
@@ -16,5 +17,6 @@ public class PacketHandler {
 		INSTANCE.registerMessage(ButtonMessage.class, ButtonMessage.class, id++, Side.SERVER);
 		INSTANCE.registerMessage(VisualMessage.class, VisualMessage.class, id++, Side.SERVER);
 		INSTANCE.registerMessage(ProgressMessage.class, ProgressMessage.class, id++, Side.CLIENT);
+		INSTANCE.registerMessage(TakeAllMessage.class, TakeAllMessage.class, id++, Side.SERVER);
 	}
 }

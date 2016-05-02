@@ -25,8 +25,8 @@ public class ContainerRecycler extends Container {
 		this.i = x;
 		this.j = y;
 		this.k = z;
-		this.addSlotToContainer(new SlotRecycler(inventory, 0, 17, 15));
-		this.addSlotToContainer(new SlotRecycler(inventory, 1, 71, 15));
+		this.addSlotToContainer(new SlotRecycler(inventory, 0, 15, 15));
+		this.addSlotToContainer(new SlotRecycler(inventory, 1, 69, 15));
 		for (int i = inventory.firstOutput; i <= 10; i++) {
 			this.addSlotToContainer(new SlotRecycler(inventory, i, 8 + (i - 2) * 18, 60));
 			this.addSlotToContainer(new SlotRecycler(inventory, i + 9, 8 + (i - 2) * 18, 42));
@@ -57,11 +57,11 @@ public class ContainerRecycler extends Container {
 		int j;
 		for (i = 0; i < 3; ++i) {
 			for (j = 0; j < 9; ++j) {
-				this.addSlotToContainer(new Slot(inventoryPlayer, j + (i + 1) * 9, 8 + j * 18, 94 + i * 18));
+				this.addSlotToContainer(new Slot(inventoryPlayer, j + (i + 1) * 9, 8 + j * 18, 97 + i * 18));
 			}
 		}
 		for (i = 0; i < 9; ++i) {
-			this.addSlotToContainer(new Slot(inventoryPlayer, i, 8 + i * 18, 152));
+			this.addSlotToContainer(new Slot(inventoryPlayer, i, 8 + i * 18, 155));
 		}
 	}
 

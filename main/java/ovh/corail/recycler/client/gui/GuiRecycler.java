@@ -22,6 +22,7 @@ import ovh.corail.recycler.core.RecyclingManager;
 import ovh.corail.recycler.handler.PacketHandler;
 import ovh.corail.recycler.packet.ButtonMessage;
 import ovh.corail.recycler.packet.ProgressMessage;
+import ovh.corail.recycler.packet.TakeAllMessage;
 import ovh.corail.recycler.tileentity.TileEntityRecycler;
 
 public class GuiRecycler extends GuiContainer {
@@ -81,7 +82,7 @@ public class GuiRecycler extends GuiContainer {
 			int num_recipe=rm.hasRecipe(inventory.getStackInSlot(0));
 			if (num_recipe>0) {
 				int inputCount=rm.getRecipe(num_recipe).getItemRecipe().stackSize;
-				this.fontRendererObj.drawString(Integer.toString(inputCount), (48), (20), (inventory.getStackInSlot(0).stackSize>=inputCount?0x00ff00:0xff0000));
+				this.fontRendererObj.drawString(Integer.toString(inputCount), (48), (19), (inventory.getStackInSlot(0).stackSize>=inputCount?0x00ff00:0xff0000));
 			}
 			// TODO Current Changes
 			if (inventory.isWorking()) {
@@ -106,9 +107,9 @@ public class GuiRecycler extends GuiContainer {
 		Keyboard.enableRepeatEvents(true);
 		this.buttonList.clear();
 		// TODO Current Changes
-		this.buttonList.add(new GuiButton(0, this.guiLeft + 25, this.guiTop + 78, 60, 14, I18n.translateToLocal("button.recycle")));
+		this.buttonList.add(new GuiButton(0, this.guiLeft+5, this.guiTop + 77, 90, 20, I18n.translateToLocal("button.recycle")));
 		//this.buttonList.add(new GuiButton(1, this.guiLeft + 95, this.guiTop + 5, 16, 16, "Auto"));
-		this.buttonList.add(new GuiButton(2, this.guiLeft + 91, this.guiTop + 78, 60, 14, "Take All"));
+		this.buttonList.add(new GuiButton(2, this.guiLeft + 83, this.guiTop + 77, 90, 20, "Take All"));
 	}
 
 	@Override
@@ -119,10 +120,10 @@ public class GuiRecycler extends GuiContainer {
 	@Override
 	protected void actionPerformed(GuiButton button) throws IOException {
 		super.actionPerformed(button);
-		PacketHandler.INSTANCE.sendToServer(new ButtonMessage(button.id, inventory.getPos().getX(),
-				inventory.getPos().getY(), inventory.getPos().getZ()));
 		switch (button.id) {
 		case 0: // Recycle
+			PacketHandler.INSTANCE.sendToServer(new ButtonMessage(button.id, inventory.getPos().getX(),
+					inventory.getPos().getY(), inventory.getPos().getZ()));
 			if (inventory.recycle(currentPlayer)) {
 				currentPlayer.addStat(Main.achievementBuildDisk, 1);
 			}
@@ -131,6 +132,7 @@ public class GuiRecycler extends GuiContainer {
 			inventory.switchWorking();
 			break;
 		case 2: // Take All
+			PacketHandler.INSTANCE.sendToServer(new TakeAllMessage(inventory.getPos()));
 			break;
 		default:
 		}
