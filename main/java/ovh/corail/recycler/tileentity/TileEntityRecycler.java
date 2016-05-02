@@ -54,7 +54,7 @@ public class TileEntityRecycler extends TileEntity implements IInventory, ITicka
 
 	public TileEntityRecycler() {
 		this.inventory = new ItemStack[count];
-		this.visual = new InventoryBasic("visual", true, 6);
+		this.visual = new InventoryBasic("visual", true, 8);
 		recyclingManager = RecyclingManager.getInstance();
 	}
 
