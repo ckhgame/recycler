@@ -102,8 +102,8 @@ public class GuiRecycler extends GuiContainer {
 	@Override
 	protected void actionPerformed(GuiButton button) throws IOException {
 		super.actionPerformed(button);
-		/** TODO BUTTON MESSAGE */
-		PacketHandler.INSTANCE.sendToServer(new ButtonMessage(button.id, inventory.getPos()));
+		PacketHandler.INSTANCE.sendToServer(new ButtonMessage(button.id, inventory.getPos().getX(),
+				inventory.getPos().getY(), inventory.getPos().getZ()));
 		switch (button.id) {
 		/** TODO check if useless */
 		case 0: /** Recycle */

@@ -2,7 +2,6 @@ tile.recycler.name=Recycler
 item.iron_nugget.name=Iron ingot
 item.diamond_nugget.name=Diamond ingot
 item.diamond_disk.name=Diamond disk
-item.diamond_disk.info=The Recycler can't work without this disk
 message.recycler.notEnoughOutputSlots=Not enough output slots
 button.recycle=Recycle
 config.recyclerRecycled=Recycler recycled

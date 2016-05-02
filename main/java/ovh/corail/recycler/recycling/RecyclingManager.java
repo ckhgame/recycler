@@ -130,7 +130,7 @@ public class RecyclingManager {
 			}
 
 		}
-		if (isGrind) { /** TODO améliorer */
+		if (isGrind) { // TODO améliorer
 			itemsList = this.getResultList(itemsList);
 			itemsList = this.getResultList(itemsList);
 			itemsList = this.getResultList(itemsList);

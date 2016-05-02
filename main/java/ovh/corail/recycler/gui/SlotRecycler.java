@@ -13,7 +13,6 @@ public class SlotRecycler extends Slot {
 
 	public SlotRecycler(TileEntityRecycler inventory, int id, int xPos, int yPos) {
 		super(inventory, id, xPos, yPos);
-		this.inventory=inventory;
 		this.id = id;
 	}
 
