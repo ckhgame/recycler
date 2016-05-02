@@ -1,6 +1,7 @@
 package ovh.corail.recycler.client.gui;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
@@ -9,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Slot;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
@@ -28,8 +30,9 @@ public class GuiRecycler extends GuiContainer {
 	public int k = 0;
 	public TileEntityRecycler inventory;
 	public EntityPlayer currentPlayer;
-	private static ResourceLocation texture = new ResourceLocation(Main.MOD_ID + ":textures/recycler.png");
+	private static ResourceLocation textureBg = new ResourceLocation(Main.MOD_ID + ":textures/gui/recycler.png");
 	private static ResourceLocation texture2 = new ResourceLocation(Main.MOD_ID + ":textures/items/recycler.png");
+	private ResourceLocation textureSlot = new ResourceLocation(Main.MOD_ID + ":textures/gui/slot.png");
 	
 	public GuiRecycler(EntityPlayer player, World world, int x, int y, int z, TileEntityRecycler inventory) {
 		super(new ContainerRecycler(player, world, x, y, z, inventory));
@@ -39,17 +42,27 @@ public class GuiRecycler extends GuiContainer {
 		this.j = y;
 		this.k = z;
 		this.xSize = 176;
-		this.ySize = 166;
+		this.ySize = 176;
 	}
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.renderEngine.bindTexture(texture);
-		int k = (this.width - this.xSize) / 2;
-		int l = (this.height - this.ySize) / 2;
-		this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
-		zLevel = 100.0F;	
+		GL11.glScalef(1F, 1F, 1F);
+		mc.renderEngine.bindTexture(textureBg);
+		int posX = ((this.width - this.xSize) / 2);
+		int posY = ((this.height - this.ySize) / 2);
+		this.drawTexturedModalRect(posX, posY, 0, 0, this.xSize, this.ySize);
+		zLevel = 100.0F;
+		mc.renderEngine.bindTexture(textureSlot);
+		int i, j;
+		int dimCase = 16;
+		List<Slot> slots = this.inventorySlots.inventorySlots;
+		Slot slot;
+		for (i = 0; i < slots.size(); i++) {
+			slot = slots.get(i);
+			this.drawTexturedModalRect(posX + slot.xDisplayPosition, posY + slot.yDisplayPosition, 0, 0, dimCase, dimCase);
+		}
 	}
 
 	protected void keyTyped(char par1, int par2) {
@@ -63,14 +76,12 @@ public class GuiRecycler extends GuiContainer {
 	}
 
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-		int guiLeft = (this.width) / 2;
-		int guiTop = (this.height) / 2;
 		if (inventory.getStackInSlot(0)!=null) {
 			RecyclingManager rm = RecyclingManager.getInstance();
 			int num_recipe=rm.hasRecipe(inventory.getStackInSlot(0));
 			if (num_recipe>0) {
 				int inputCount=rm.getRecipe(num_recipe).getItemRecipe().stackSize;
-				this.fontRendererObj.drawString("X "+Integer.toString(inputCount), (32), (14), 0xffffff);
+				this.fontRendererObj.drawString(Integer.toString(inputCount), (48), (20), (inventory.getStackInSlot(0).stackSize>=inputCount?0x00ff00:0xff0000));
 			}
 			// TODO Current Changes
 			if (inventory.isWorking()) {
@@ -90,13 +101,14 @@ public class GuiRecycler extends GuiContainer {
 
 	public void initGui() {
 		super.initGui();
-		this.guiLeft = (this.width - 176) / 2;
-		this.guiTop = (this.height - 166) / 2;
+		this.guiLeft = (this.width - xSize) / 2;
+		this.guiTop = (this.height - ySize) / 2;
 		Keyboard.enableRepeatEvents(true);
 		this.buttonList.clear();
 		// TODO Current Changes
-		this.buttonList.add(new GuiButton(0, this.guiLeft + 40, this.guiTop + 12, 54, 16, I18n.translateToLocal("button.recycle")));
+		this.buttonList.add(new GuiButton(0, this.guiLeft + 25, this.guiTop + 78, 60, 14, I18n.translateToLocal("button.recycle")));
 		//this.buttonList.add(new GuiButton(1, this.guiLeft + 95, this.guiTop + 5, 16, 16, "Auto"));
+		this.buttonList.add(new GuiButton(2, this.guiLeft + 91, this.guiTop + 78, 60, 14, "Take All"));
 	}
 
 	@Override
@@ -118,6 +130,9 @@ public class GuiRecycler extends GuiContainer {
 		case 1: // Auto-recycle
 			inventory.switchWorking();
 			break;
+		case 2: // Take All
+			break;
+		default:
 		}
 	}
 
