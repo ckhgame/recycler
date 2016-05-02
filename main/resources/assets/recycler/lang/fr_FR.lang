@@ -1,0 +1,14 @@
+tile.recycler.name=Recycleur
+item.iron_nugget.name=Pépite de fer
+item.iron_nugget.desc=Peut être transformée en Lingot de Fer
+item.diamond_nugget.name=Pépite de diamant
+item.diamond_nugget.desc=Peut être transformée en Lingot de Diamant
+item.diamond_disk.name=Disque en diamant
+item.diamond_disk.desc=Composant nécessaire au Recycleur
+message.recycler.notEnoughOutputSlots=Emplacements insuffisants
+button.recycle=Recycler
+config.recyclerRecycled=Recycleur recyclé
+config.craftPodzol=Craft Podzol
+config.craftClay=Craft Argile
+config.craftWeb=Craft Toile
+config.craftChainmail=Craft Cotte de mailles

@@ -1,0 +1,16 @@
+[
+{
+  "modid": "recycler",
+  "name": "Corail Recycleur",
+  "description": "Add a new recycling table with json recipes.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Corail"],
+  "credits": "The Forge and FML guys, for making this example",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

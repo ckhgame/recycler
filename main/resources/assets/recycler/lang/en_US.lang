@@ -1,0 +1,14 @@
+tile.recycler.name=Recycler
+item.iron_nugget.name=Iron Nugget
+item.iron_nugget.desc=Can be craft into Diamond Ingot
+item.diamond_nugget.name=Diamond Nugget
+item.diamond_nugget.desc=Can be craft into Diamond Ingot
+item.diamond_disk.name=Diamond disk
+item.diamond_disk.desc=Component needed by the Recycler
+message.recycler.notEnoughOutputSlots=Not enough output slots
+button.recycle=Recycle
+config.recyclerRecycled=Recycler recycled
+config.craftPodzol=Craft Podzol
+config.craftClay=Craft Clay
+config.craftWeb=Craft Web
+config.craftChainmail=Craft Chainmail
