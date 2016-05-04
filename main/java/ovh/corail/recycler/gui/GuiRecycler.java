@@ -1,4 +1,4 @@
-package ovh.corail.recycler.client.gui;
+package ovh.corail.recycler.gui;
 
 import java.io.IOException;
 import java.util.List;
@@ -107,7 +107,7 @@ public class GuiRecycler extends GuiContainer {
 		// TODO Current Changes
 		this.buttonList.add(new GuiButton(0, this.guiLeft+5, this.guiTop + 77, 90, 20, I18n.translateToLocal("button.recycle")));
 		//this.buttonList.add(new GuiButton(1, this.guiLeft + 95, this.guiTop + 5, 16, 16, "Auto"));
-		this.buttonList.add(new GuiButton(2, this.guiLeft + 83, this.guiTop + 77, 90, 20, "Take All"));
+		this.buttonList.add(new GuiButton(2, this.guiLeft + 83, this.guiTop + 77, 90, 20, I18n.translateToLocal("button.takeAll")));
 	}
 
 	@Override

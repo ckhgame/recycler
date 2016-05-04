@@ -1,4 +1,4 @@
-package ovh.corail.recycler.client.gui;
+package ovh.corail.recycler.gui;
 
 import java.util.Set;
 

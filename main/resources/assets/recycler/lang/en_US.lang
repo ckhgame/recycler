@@ -13,6 +13,7 @@ item.diamond_disk.name=Diamond disk
 item.diamond_disk.desc=The Recycleur can't work without this disk
 message.recycler.notEnoughOutputSlots=Not enough output slots
 button.recycle=Recycle
+button.takeAll=Take All
 config.recyclerRecycled=Recycler recycled
 config.craftPodzol=Craft Podzol
 config.craftClay=Craft Clay

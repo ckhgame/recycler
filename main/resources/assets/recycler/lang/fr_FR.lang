@@ -13,6 +13,7 @@ item.diamond_disk.name=Disque en diamant
 item.diamond_disk.desc=Le Recycler ne peut fonctionner sans ce disque 
 message.recycler.notEnoughOutputSlots=Emplacements insuffisants
 button.recycle=Recycler
+button.takeAll=Prendre Tout
 config.recyclerRecycled=Recycleur recyclé
 config.craftPodzol=Craft Podzol
 config.craftClay=Craft Argile

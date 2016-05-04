@@ -19,7 +19,7 @@ import ovh.corail.recycler.item.ItemDiamondDisk;
 import ovh.corail.recycler.item.ItemDiamondNugget;
 import ovh.corail.recycler.item.ItemIronNugget;
 
-@Mod(modid = Main.MOD_ID, name = Main.MOD_NAME, version = Main.MOD_VER)
+@Mod(modid = Main.MOD_ID, name = Main.MOD_NAME, version = Main.MOD_VER, guiFactory = "ovh.corail.recycler.gui.GuiFactoryRecycler")
 public class Main {
 	public static final String MOD_ID = "recycler";
 	public static final String MOD_NAME = "Corail Recycler";

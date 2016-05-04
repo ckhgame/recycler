@@ -1,4 +1,4 @@
-package ovh.corail.recycler.client.gui;
+package ovh.corail.recycler.gui;
 
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.common.config.ConfigElement;
