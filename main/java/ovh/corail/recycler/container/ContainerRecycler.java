@@ -33,7 +33,7 @@ public class ContainerRecycler extends Container {
 		}
 		for (int i = 0; i < 4; i++) {
 			this.addSlotToContainer(new SlotVisual(inventory, inventory.visual, i, 99 + (i * 18), 5));
-			this.addSlotToContainer(new SlotVisual(inventory, inventory.visual, i + 3, 99 + (i * 18), 23));
+			this.addSlotToContainer(new SlotVisual(inventory, inventory.visual, i + 4, 99 + (i * 18), 23));
 		}
 		PacketHandler.INSTANCE.sendToServer(
 				new VisualMessage(inventory.getPos().getX(), inventory.getPos().getY(), inventory.getPos().getZ()));

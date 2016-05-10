@@ -26,10 +26,8 @@ public class VisualMessage implements IMessage, IMessageHandler<VisualMessage, I
 			mainThread.addScheduledTask(new Runnable() {
 				@Override
 				public void run() {
-					TileEntityRecycler tile = (TileEntityRecycler) ctx.getServerHandler().playerEntity.worldObj
-							.getTileEntity(new BlockPos(message.x, message.y, message.z));
+					TileEntityRecycler tile = (TileEntityRecycler) ctx.getServerHandler().playerEntity.worldObj.getTileEntity(new BlockPos(message.x, message.y, message.z));
 					tile.refreshVisual(tile.getStackInSlot(0));
-
 				}
 			});
 			return null;

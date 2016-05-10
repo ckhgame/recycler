@@ -60,7 +60,7 @@ public class GuiRecycler extends GuiContainer {
 		Slot slot;
 		for (i = 0; i < slots.size(); i++) {
 			slot = slots.get(i);
-			this.drawTexturedModalRect(posX + slot.xDisplayPosition, posY + slot.yDisplayPosition, 672, 0, dimCase, dimCase);
+			this.drawTexturedModalRect(posX + slot.xDisplayPosition, posY + slot.yDisplayPosition, 661, 150, dimCase, dimCase);
 		}
 	}
 
@@ -78,7 +78,7 @@ public class GuiRecycler extends GuiContainer {
 		if (inventory.getStackInSlot(0)!=null) {
 			RecyclingManager rm = RecyclingManager.getInstance();
 			int num_recipe=rm.hasRecipe(inventory.getStackInSlot(0));
-			if (num_recipe>0) {
+			if (num_recipe>=0) {
 				int inputCount=rm.getRecipe(num_recipe).getItemRecipe().stackSize;
 				this.fontRendererObj.drawString(Integer.toString(inputCount), (48), (19), (inventory.getStackInSlot(0).stackSize>=inputCount?0x00ff00:0xff0000));
 			}

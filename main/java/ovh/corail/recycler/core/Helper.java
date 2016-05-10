@@ -122,27 +122,27 @@ public class Helper {
 				new Object[] { "0", Character.valueOf('0'), new ItemStack(Items.diamond, 1), });
 		/** podzol (2 dirt 2 sand in cross) */
 		if (ConfigurationHandler.craftPodzol) {
-		GameRegistry.addRecipe(new ItemStack(Blocks.dirt, 1, 2), new Object[] { "01", "10", Character.valueOf('0'),
+		GameRegistry.addRecipe(new ItemStack(Blocks.dirt, 4, 2), new Object[] { "01", "10", Character.valueOf('0'),
 				new ItemStack(Blocks.dirt, 1, 0), Character.valueOf('1'), new ItemStack(Blocks.sand, 1, 0), });
-		GameRegistry.addRecipe(new ItemStack(Blocks.dirt, 1, 2), new Object[] { "01", "10", Character.valueOf('1'),
+		GameRegistry.addRecipe(new ItemStack(Blocks.dirt, 4, 2), new Object[] { "01", "10", Character.valueOf('1'),
 				new ItemStack(Blocks.dirt, 1, 0), Character.valueOf('0'), new ItemStack(Blocks.sand, 1, 0), });
-		GameRegistry.addRecipe(new ItemStack(Blocks.dirt, 1, 2), new Object[] { "01", "10", Character.valueOf('0'),
+		GameRegistry.addRecipe(new ItemStack(Blocks.dirt, 4, 2), new Object[] { "01", "10", Character.valueOf('0'),
 				new ItemStack(Blocks.dirt, 1, 0), Character.valueOf('1'), new ItemStack(Blocks.sand, 1, 1), });
-		GameRegistry.addRecipe(new ItemStack(Blocks.dirt, 1, 2), new Object[] { "01", "10", Character.valueOf('1'),
+		GameRegistry.addRecipe(new ItemStack(Blocks.dirt, 4, 2), new Object[] { "01", "10", Character.valueOf('1'),
 				new ItemStack(Blocks.dirt, 1, 0), Character.valueOf('0'), new ItemStack(Blocks.sand, 1, 1), });
 		}
-		/** clay (2 granit 2 sand in cross) */
+		/** clay ball (2 granit 2 sand in cross) */
 		if (ConfigurationHandler.craftClay) {
-		GameRegistry.addRecipe(new ItemStack(Blocks.clay, 1, 0), new Object[] { "01", "10", Character.valueOf('0'),
+		GameRegistry.addRecipe(new ItemStack(Items.clay_ball, 4, 0), new Object[] { "01", "10", Character.valueOf('0'),
 				new ItemStack(Blocks.stone, 1, 1), Character.valueOf('1'), new ItemStack(Blocks.sand, 1, 0), });
-		GameRegistry.addRecipe(new ItemStack(Blocks.clay, 1, 0), new Object[] { "01", "10", Character.valueOf('1'),
+		GameRegistry.addRecipe(new ItemStack(Items.clay_ball, 4, 0), new Object[] { "01", "10", Character.valueOf('1'),
 				new ItemStack(Blocks.stone, 1, 1), Character.valueOf('0'), new ItemStack(Blocks.sand, 1, 0), });
-		GameRegistry.addRecipe(new ItemStack(Blocks.clay, 1, 0), new Object[] { "01", "10", Character.valueOf('0'),
+		GameRegistry.addRecipe(new ItemStack(Items.clay_ball, 4, 0), new Object[] { "01", "10", Character.valueOf('0'),
 				new ItemStack(Blocks.stone, 1, 1), Character.valueOf('1'), new ItemStack(Blocks.sand, 1, 1), });
-		GameRegistry.addRecipe(new ItemStack(Blocks.clay, 1, 0), new Object[] { "01", "10", Character.valueOf('1'),
+		GameRegistry.addRecipe(new ItemStack(Items.clay_ball, 4, 0), new Object[] { "01", "10", Character.valueOf('1'),
 				new ItemStack(Blocks.stone, 1, 1), Character.valueOf('0'), new ItemStack(Blocks.sand, 1, 1), });
 		}
-		/** web (5 string in cross) */
+		/** cobweb (5 string in cross) */
 		if (ConfigurationHandler.craftWeb) {
 		GameRegistry.addRecipe(new ItemStack(Blocks.web, 1, 0),
 				new Object[] { "0 0", " 0 ", "0 0", Character.valueOf('0'), new ItemStack(Items.string, 1, 0), });
