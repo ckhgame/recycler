@@ -120,8 +120,7 @@ public class GuiRecycler extends GuiContainer {
 		super.actionPerformed(button);
 		switch (button.id) {
 		case 0: // Recycle
-			PacketHandler.INSTANCE.sendToServer(new ButtonMessage(button.id, inventory.getPos().getX(),
-					inventory.getPos().getY(), inventory.getPos().getZ()));
+			PacketHandler.INSTANCE.sendToServer(new ButtonMessage(button.id, inventory.getPos()));
 			if (inventory.recycle(currentPlayer)) {
 				currentPlayer.addStat(Main.achievementBuildDisk, 1);
 			}

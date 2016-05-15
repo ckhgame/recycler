@@ -40,26 +40,22 @@ import ovh.corail.recycler.core.RecyclingRecipe;
 import ovh.corail.recycler.handler.PacketHandler;
 import ovh.corail.recycler.packet.ProgressMessage;
 
-public class TileEntityRecycler extends TileEntity implements IInventory, ITickable {
-	private int count = 20;
-	public int firstOutput = 2;
-	public ItemStack[] inventory;
+public class TileEntityRecycler extends TileEntityInventory implements ITickable {
 	public InventoryBasic visual;
 	private RecyclingManager recyclingManager;
-	private Object BlockPos;
 	private int countTicks = 0;
 	private final int maxTicks = 200;
 	private boolean isWorking = false;
 	private int progress = 0;
 
 	public TileEntityRecycler() {
-		this.inventory = new ItemStack[count];
+		super();
 		this.visual = new InventoryBasic("visual", true, 8);
 		recyclingManager = RecyclingManager.getInstance();
 	}
 
 	public boolean canRecycle(EntityPlayer currentPlayer) {
-		/* Item input slot empty */
+		/** item input slot empty */
 		if (getStackInSlot(0) == null) {
 			Helper.addChatMessage("tile.recycler.message.emptySlot", currentPlayer, true);
 			return false;
@@ -69,7 +65,7 @@ public class TileEntityRecycler extends TileEntity implements IInventory, ITicka
 			setInventorySlotContents(0, null);
 			return false;
 		}
-		/* Disk input slot empty */
+		/** disk input slot empty */
 		ItemStack diskStack = getStackInSlot(1);
 		if (diskStack == null) {
 			Helper.addChatMessage("tile.recycler.message.noDisk", currentPlayer, true);
@@ -94,14 +90,14 @@ public class TileEntityRecycler extends TileEntity implements IInventory, ITicka
 			return false;
 		}
 		ItemStack diskStack = getStackInSlot(1);
-		/* Recette correspondante */
+		/** corresponding recipe */
 		int num_recipe = recyclingManager.hasRecipe(getStackInSlot(0));
 		if (num_recipe < 0) {
 			Helper.addChatMessage("tile.recycler.message.noRecipe", currentPlayer, true);
 			return false;
 		}
 		RecyclingRecipe currentRecipe = recyclingManager.getRecipe(num_recipe);
-		/* Stacksize suffisant du slot input */
+		/** enough stacksize for the input slot */
 		if (getStackInSlot(0).stackSize < currentRecipe.getItemRecipe().stackSize) {
 			Helper.addChatMessage("tile.recycler.message.noEnoughInput", currentPlayer, true);
 			return false;
@@ -109,24 +105,24 @@ public class TileEntityRecycler extends TileEntity implements IInventory, ITicka
 		int nb_input = (int) Math.floor((double) getStackInSlot(0).stackSize / (double) currentRecipe.getItemRecipe().stackSize);
 		// TODO Current Changes
 		if (isWorking) { nb_input = 1; }
-		/* Limite d'utilisation du disque */
+		/** max uses of the disk */
 		int maxDiskUse = (int) Math.floor((double) (diskStack.getMaxDamage() - diskStack.getItemDamage()) / 10.0);
 		if (maxDiskUse < nb_input) {
 			nb_input = maxDiskUse;
 		}
-		/* Calcul du résultat */
+		/** calculation of the result */
 		List<ItemStack> itemsList = recyclingManager.getResultStack(getStackInSlot(0), nb_input);
 		// TODO calcul des stacksizes pour les slots libres à mettre plus bas
 		int emptyCount = hasEmptySlot();
 		if (emptyCount >= itemsList.size()) {
-			/* Remplir les slots identiques non complets */
-			/* Pour chaque résultat de la recette */
+			/** fill the identical slots not fullstack */
+			/** for each result of the recipe */
 			for (int i = 0; i < itemsList.size(); i++) {
-				/* Si le slot n'est pas à sa taille maximale */
+				/** if the slot isn't fullstack */
 				if (itemsList.get(i).stackSize != itemsList.get(i).getMaxStackSize()) {
-					/* Pour chaque slot */
+					/** for each slot */
 					for (int j = firstOutput; j < this.count; j++) {
-						/* Même objet */
+						/** same item */
 						if (itemsList.get(i) != null && itemsList.get(i).isItemEqual(inventory[j])) {
 							int sommeStackSize = inventory[j].stackSize + itemsList.get(i).stackSize;
 							if (sommeStackSize > inventory[j].getMaxStackSize()) {
@@ -143,7 +139,7 @@ public class TileEntityRecycler extends TileEntity implements IInventory, ITicka
 					}
 				}
 			}
-			/* Remplissage des slots restants Output */
+			/** fill the output slots left */
 			for (int i = 0; i < itemsList.size(); i++) {
 				if (itemsList.get(i) != null) {
 					int emptySlot = getEmptySlot();
@@ -155,7 +151,7 @@ public class TileEntityRecycler extends TileEntity implements IInventory, ITicka
 			Helper.addChatMessage("tile.recycler.message.notEnoughOutputSlots", currentPlayer, true);
 			return false;
 		}
-		/* Vide le slot input */
+		/** empty the input slot */
 		if (currentRecipe.getItemRecipe().stackSize * nb_input == getStackInSlot(0).stackSize) {
 			setInventorySlotContents(0, null);
 			emptyVisual();
@@ -164,7 +160,7 @@ public class TileEntityRecycler extends TileEntity implements IInventory, ITicka
 			stack.stackSize = getStackInSlot(0).stackSize - (nb_input * currentRecipe.getItemRecipe().stackSize);
 			setInventorySlotContents(0, stack);
 		}
-		/* Abime le disque */
+		/** damage the disk */
 
 		diskStack.setItemDamage(diskStack.getItemDamage() + (10 * nb_input));
 		if (diskStack.getItemDamage() >= diskStack.getMaxDamage()) {
@@ -176,92 +172,11 @@ public class TileEntityRecycler extends TileEntity implements IInventory, ITicka
 		return true;
 	}
 
-	public int getEmptySlot() {
-		for (int i = firstOutput; i < getSizeInventory(); i++) {
-			ItemStack item = getStackInSlot(i);
-			if (item == null) {
-				return i;
-			}
-		}
-		return -1;
-	}
-
-	@Override
-	public void markDirty() {
-		super.markDirty();
-	}
-
-	@Override
-	public int getSizeInventory() {
-		return inventory.length;
-	}
-
-	@Override
-	public ItemStack getStackInSlot(int index) {
-		if (index < 0 || index >= this.getSizeInventory()) {
-			return null;
-		} else {
-			return this.inventory[index];
-		}
-	}
-
-	@Override
-	public void setInventorySlotContents(int index, ItemStack stack) {
-		if (index >= 0 && index < count) {
-			inventory[index] = stack;
-		} else {
-			inventory[index] = null;
-		}
-		markDirty();
-	}
-
-	@Override
-	public ItemStack decrStackSize(int index, int count) {
-		ItemStack stack = getStackInSlot(index);
-		if (stack != null) {
-			if (stack.stackSize <= count) {
-				setInventorySlotContents(index, null);
-				this.markDirty();
-			} else {
-				stack = stack.splitStack(count);
-				if (stack.stackSize == 0) {
-					setInventorySlotContents(index, null);
-					this.markDirty();
-				}
-			}
-		}
-		return stack;
-	}
-
-	@Override
-	public int getInventoryStackLimit() {
-		return 64;
-	}
-
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer player) {
-		pos = this.getPos();
-		return worldObj.getTileEntity(pos) == this
-				&& player.getDistanceSq(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) < 64;
-	}
-
-	// TODO Current changes
 	@Override
 	public void writeToNBT(NBTTagCompound compound) {
 		compound.setInteger("countTicks", countTicks);
 		compound.setBoolean("isWorking", isWorking);
 		compound.setInteger("progress", progress);
-		NBTTagList itemList = new NBTTagList();
-		for (int i = 0; i < inventory.length; i++) {
-			ItemStack stack = inventory[i];
-			if (stack != null) {
-				NBTTagCompound tag = new NBTTagCompound();
-				tag.setByte("Slot", (byte) i);
-				stack.writeToNBT(tag);
-				itemList.appendTag(tag);
-			}
-		}
-		compound.setTag("inventory", itemList);
 		super.writeToNBT(compound);
 	}
 
@@ -271,25 +186,28 @@ public class TileEntityRecycler extends TileEntity implements IInventory, ITicka
 		countTicks = compound.getInteger("countTicks");
 		isWorking = compound.getBoolean("isWorking");
 		progress = compound.getInteger("progress");
-		NBTTagList tagList = compound.getTagList("inventory", Constants.NBT.TAG_COMPOUND);
-		for (int i = 0; i < tagList.tagCount(); i++) {
-			NBTTagCompound tag = (NBTTagCompound) tagList.getCompoundTagAt(i);
-			byte slot = tag.getByte("Slot");
-			if (slot >= 0 && slot < inventory.length) {
-				inventory[slot] = ItemStack.loadItemStackFromNBT(tag);
-			}
-		}
 	}
 
 	@Override
-	public ItemStack removeStackFromSlot(int index) {
-		ItemStack stack;
-		if (index >= 0 && index < count) {
-			stack = inventory[index];
-		} else {
-			stack = null;
+	public boolean isItemValidForSlot(int index, ItemStack stack) {
+		/** output slots */
+		if (index > 1) {
+			return false;
 		}
-		return stack;
+		/** disk input slot */
+		if (index == 1) {
+			if (stack.getItem()==Main.diamond_disk) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+		/** item input slot */
+		int currentRecipe = recyclingManager.hasRecipe(stack);
+		if (currentRecipe < 0) {
+			return false;
+		}
+		return true;
 	}
 
 	public void fillVisual(List<ItemStack> itemsList) {
@@ -311,82 +229,6 @@ public class TileEntityRecycler extends TileEntity implements IInventory, ITicka
 		emptyVisual();
 		List<ItemStack> itemsList = recyclingManager.getResultStack(stack, 1);
 		fillVisual(itemsList);
-	}
-
-	@Override
-	public boolean isItemValidForSlot(int index, ItemStack stack) {
-		/* Output Slots */
-		if (index > 1) {
-			return false;
-		}
-		/* Disk Input Slot */
-		if (index == 1) {
-			if (stack.getItem()==Main.diamond_disk) {
-				return true;
-			} else {
-				return false;
-			}
-		}
-		/* Item Input Slot */
-		int currentRecipe = recyclingManager.hasRecipe(stack);
-		if (currentRecipe < 0) {
-			return false;
-		}
-		return true;
-	}
-
-	@Override
-	public int getField(int id) {
-		return 0;
-	}
-
-	@Override
-	public void setField(int id, int value) {
-	}
-
-	@Override
-	public int getFieldCount() {
-		return 0;
-	}
-
-	@Override
-	public void clear() {
-		for (int i = 0; i < this.getSizeInventory(); i++) {
-			this.setInventorySlotContents(i, null);
-		}
-	}
-
-	public int hasEmptySlot() {
-		int count = 0;
-		for (int i = firstOutput; i < getSizeInventory(); i++) {
-			if (getStackInSlot(i) == null) {
-				count++;
-			}
-		}
-		return count;
-	}
-
-	@Override
-	public void openInventory(EntityPlayer player) {
-	}
-
-	@Override
-	public void closeInventory(EntityPlayer player) {
-	}
-
-	@Override
-	public ITextComponent getDisplayName() {
-		return null;
-	}
-
-	@Override
-	public String getName() {
-		return null;
-	}
-
-	@Override
-	public boolean hasCustomName() {
-		return false;
 	}
 
 	// TODO Current Changes
@@ -411,7 +253,7 @@ public class TileEntityRecycler extends TileEntity implements IInventory, ITicka
 		}
 		progress = (int) Math.floor(((double) (maxTicks-countTicks) / (double) maxTicks) * 100.0);
 		PacketHandler.INSTANCE.sendToAllAround(
-			new ProgressMessage(getPos().getX(), getPos().getY(), getPos().getZ(), progress, isWorking),
+			new ProgressMessage(getPos(), progress, isWorking),
 			new TargetPoint(worldObj.provider.getDimension(), getPos().getX(), getPos().getY(), getPos().getZ(),12));
 	}
 

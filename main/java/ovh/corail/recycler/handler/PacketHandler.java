@@ -14,9 +14,9 @@ public class PacketHandler {
 
 	public static void init() {
 		int id = 0;
-		INSTANCE.registerMessage(ButtonMessage.class, ButtonMessage.class, id++, Side.SERVER);
-		INSTANCE.registerMessage(VisualMessage.class, VisualMessage.class, id++, Side.SERVER);
-		INSTANCE.registerMessage(ProgressMessage.class, ProgressMessage.class, id++, Side.CLIENT);
-		INSTANCE.registerMessage(TakeAllMessage.class, TakeAllMessage.class, id++, Side.SERVER);
+		INSTANCE.registerMessage(ButtonMessage.Handler.class, ButtonMessage.class, id++, Side.SERVER);
+		INSTANCE.registerMessage(VisualMessage.Handler.class, VisualMessage.class, id++, Side.SERVER);
+		INSTANCE.registerMessage(ProgressMessage.Handler.class, ProgressMessage.class, id++, Side.CLIENT);
+		INSTANCE.registerMessage(TakeAllMessage.Handler.class, TakeAllMessage.class, id++, Side.SERVER);
 	}
 }

@@ -9,6 +9,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import ovh.corail.recycler.core.Main;
 
 public class ItemDiamondDisk extends Item {
@@ -24,13 +26,14 @@ public class ItemDiamondDisk extends Item {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public boolean hasEffect(ItemStack stack) {
 		return true;
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advanced) {
-		super.addInformation(stack, player, list, advanced);
 		list.add(TextFormatting.WHITE + I18n.translateToLocal("item." + name + ".desc"));
 	}
 	
