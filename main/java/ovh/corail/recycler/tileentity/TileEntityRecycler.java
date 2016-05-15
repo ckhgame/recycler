@@ -2,8 +2,8 @@ package ovh.corail.recycler.tileentity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
@@ -24,6 +24,7 @@ public class TileEntityRecycler extends TileEntityInventory implements ITickable
 	private final int maxTicks = 200;
 	private boolean isWorking = false;
 	private int progress = 0;
+	private int cantRecycleTicks = 0;
 
 	public TileEntityRecycler() {
 		super();
@@ -154,6 +155,7 @@ public class TileEntityRecycler extends TileEntityInventory implements ITickable
 		compound.setInteger("countTicks", countTicks);
 		compound.setBoolean("isWorking", isWorking);
 		compound.setInteger("progress", progress);
+		compound.setInteger("cantRecycleTicks", cantRecycleTicks);
 		super.writeToNBT(compound);
 	}
 
@@ -163,6 +165,7 @@ public class TileEntityRecycler extends TileEntityInventory implements ITickable
 		countTicks = compound.getInteger("countTicks");
 		isWorking = compound.getBoolean("isWorking");
 		progress = compound.getInteger("progress");
+		cantRecycleTicks = compound.getInteger("cantRecycleTicks");
 	}
 
 	@Override
@@ -208,24 +211,33 @@ public class TileEntityRecycler extends TileEntityInventory implements ITickable
 		fillVisual(itemsList);
 	}
 
-	// TODO Current Changes
 	@Override
 	public void update() {
-		if (worldObj.isRemote) { return; }
-		if (isWorking) {
-			countTicks--;
-			if (countTicks <= 0) {
-				if (!recycle((EntityPlayer) null)) { 
-					isWorking=false;
-				} else {
-					if (canRecycle((EntityPlayer) null)) {
-						countTicks += maxTicks;
+		if (!isWorking) { return; } //worldObj.isRemote || 
+		countTicks--;
+		//Helper.addChatMessage("passss", Minecraft.getMinecraft().thePlayer, false);
+		/** try to recycle */
+		if (countTicks <= 0) {
+			/** cant recycle tick */
+			if (!recycle((EntityPlayer) null)) {
+				cantRecycleTicks++;
+				/** put item in output slots if there is a disk */
+				if (cantRecycleTicks > 0) {
+					if (getStackInSlot(0) == null || getStackInSlot(1) == null || getEmptySlot() == -1) {
+						isWorking = false;
 					} else {
-						isWorking=false;
+						/** TODO check to fill stacksize */
+						setInventorySlotContents(getEmptySlot(), getStackInSlot(0));
+						setInventorySlotContents(0, (ItemStack) null);			
 					}
+					cantRecycleTicks = 0;
+					countTicks = 0;
 				}
+			/** has recycled */
 			}
+			countTicks = maxTicks;
 		}
+
 		progress = (int) Math.floor(((double) (maxTicks-countTicks) / (double) maxTicks) * 100.0);
 		PacketHandler.INSTANCE.sendToAllAround(new ProgressMessage(getPos(), progress, isWorking),
 			new TargetPoint(worldObj.provider.getDimension(), getPos().getX(), getPos().getY(), getPos().getZ(),12));
@@ -244,7 +256,7 @@ public class TileEntityRecycler extends TileEntityInventory implements ITickable
 	}
 	
 	public void resetProgress() {
-		this.progress = 0;
+		countTicks = maxTicks;
 	}
 	
 	public void refreshProgress(int progress, boolean isWorking) {

@@ -9,6 +9,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import ovh.corail.recycler.handler.PacketHandler;
+import ovh.corail.recycler.packet.ResetProgressMessage;
 import ovh.corail.recycler.packet.VisualMessage;
 import ovh.corail.recycler.tileentity.TileEntityRecycler;
 
@@ -46,6 +47,10 @@ public class ContainerRecycler extends Container {
 		if (slotId == 0) {
 			PacketHandler.INSTANCE.sendToServer(new VisualMessage(inventory.getPos()));
 			inventory.refreshVisual(inventory.getStackInSlot(0));
+		}
+		if ((slotId == 0 || slotId == 1) && inventory.isWorking()) {
+			PacketHandler.INSTANCE.sendToServer(new ResetProgressMessage(inventory.getPos()));
+			inventory.resetProgress();
 		}
 		return stack;
 	}
