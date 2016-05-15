@@ -163,25 +163,24 @@ public class TileEntityInventory extends TileEntity implements ISidedInventory {
 	public int[] getSlotsForFace(EnumFacing side) {
 		switch (side) {
 		/** insert */
-		case SOUTH:
-			int[] slotsInsert = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19};
-			return slotsInsert;
+		case DOWN:
+			int[] slotsExtract = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19};
+			return slotsExtract;
 		/** extract */
 		default: 
-			int[] slotsExtract = {0, 1};
-			return slotsExtract;
+			int[] slotsInsert = {0, 1};
+			return slotsInsert;
 		}
 	}
 
 	@Override
 	public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
-		//Helper.addChatMessage("Index : "+index + "Direction : "+direction.name(), Minecraft.getMinecraft().thePlayer, false);
-		return direction == EnumFacing.SOUTH && index > 1 && index < count;
+		return direction == EnumFacing.DOWN && index > 1 && index < count;
 	}
 
 	@Override
 	public boolean canInsertItem(int index, ItemStack stack, EnumFacing direction) {
-		return direction != EnumFacing.SOUTH && ((index == 1 && stack.getItem() == Main.diamond_disk) || index == 0);
+		return direction != EnumFacing.DOWN && ((index == 1 && stack.getItem() == Main.diamond_disk) || index == 0);
 	}
 	
 	@Override
