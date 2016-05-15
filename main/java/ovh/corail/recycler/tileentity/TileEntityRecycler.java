@@ -4,35 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockStone;
-import net.minecraft.block.BlockStoneBrick;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.InventoryBasic;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.translation.I18n;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import ovh.corail.recycler.block.BlockRecycler;
 import ovh.corail.recycler.core.Helper;
 import ovh.corail.recycler.core.Main;
 import ovh.corail.recycler.core.RecyclingManager;
@@ -103,7 +80,7 @@ public class TileEntityRecycler extends TileEntityInventory implements ITickable
 			return false;
 		}
 		int nb_input = (int) Math.floor((double) getStackInSlot(0).stackSize / (double) currentRecipe.getItemRecipe().stackSize);
-		// TODO Current Changes
+		/** by unit in auto recycle */
 		if (isWorking) { nb_input = 1; }
 		/** max uses of the disk */
 		int maxDiskUse = (int) Math.floor((double) (diskStack.getMaxDamage() - diskStack.getItemDamage()) / 10.0);
@@ -237,36 +214,39 @@ public class TileEntityRecycler extends TileEntityInventory implements ITickable
 		if (worldObj.isRemote) { return; }
 		if (isWorking) {
 			countTicks--;
-		if (countTicks <= 0) {
-			if (!recycle((EntityPlayer) null)) { 
-				isWorking=false;
-			} else {
-				if (canRecycle((EntityPlayer) null)) {
-					countTicks += maxTicks;
-				} else {
+			if (countTicks <= 0) {
+				if (!recycle((EntityPlayer) null)) { 
 					isWorking=false;
+				} else {
+					if (canRecycle((EntityPlayer) null)) {
+						countTicks += maxTicks;
+					} else {
+						isWorking=false;
+					}
 				}
 			}
-			
-		}
-		
 		}
 		progress = (int) Math.floor(((double) (maxTicks-countTicks) / (double) maxTicks) * 100.0);
-		PacketHandler.INSTANCE.sendToAllAround(
-			new ProgressMessage(getPos(), progress, isWorking),
+		PacketHandler.INSTANCE.sendToAllAround(new ProgressMessage(getPos(), progress, isWorking),
 			new TargetPoint(worldObj.provider.getDimension(), getPos().getX(), getPos().getY(), getPos().getZ(),12));
 	}
 
 	public int getPercentWorking() {
 		return progress;
 	}
-
+	
 	public boolean isWorking() {
 		return isWorking;
 	}
+	
 	public int getCountTicks() {
 		return countTicks;
 	}
+	
+	public void resetProgress() {
+		this.progress = 0;
+	}
+	
 	public void refreshProgress(int progress, boolean isWorking) {
 		this.progress = progress;
 		this.isWorking = isWorking;

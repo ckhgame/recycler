@@ -64,10 +64,14 @@ public class Helper {
 	public static void addChatMessage(String message, EntityPlayer currentPlayer, boolean translate) {
 		if (currentPlayer != null) {
 			if (translate) {
-				message = I18n.translateToLocal(message);
+				message = getTranslation(message);
 			}
 			currentPlayer.addChatMessage(new TextComponentString(message));
 		}
+	}
+	
+	public static String getTranslation(String message) {
+		return I18n.translateToLocal(message);
 	}
 
 	public static void render() {

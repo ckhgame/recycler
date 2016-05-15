@@ -12,7 +12,6 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import ovh.corail.recycler.container.ContainerRecycler;
@@ -22,6 +21,7 @@ import ovh.corail.recycler.core.RecyclingManager;
 import ovh.corail.recycler.handler.PacketHandler;
 import ovh.corail.recycler.packet.ButtonMessage;
 import ovh.corail.recycler.packet.ProgressMessage;
+import ovh.corail.recycler.packet.SwitchWorkingMessage;
 import ovh.corail.recycler.packet.TakeAllMessage;
 import ovh.corail.recycler.tileentity.TileEntityRecycler;
 
@@ -52,8 +52,6 @@ public class GuiRecycler extends GuiContainer {
 		int posX = ((this.width - this.xSize) / 2);
 		int posY = ((this.height - this.ySize) / 2);
 		this.drawTexturedModalRect(posX, posY, 0, 0, this.xSize, this.ySize);
-		zLevel = 100.0F;
-		//mc.renderEngine.bindTexture(textureSlot);
 		int i, j;
 		int dimCase = 16;
 		List<Slot> slots = this.inventorySlots.inventorySlots;
@@ -62,6 +60,7 @@ public class GuiRecycler extends GuiContainer {
 			slot = slots.get(i);
 			this.drawTexturedModalRect(posX + slot.xDisplayPosition, posY + slot.yDisplayPosition, 661, 150, dimCase, dimCase);
 		}
+		zLevel = 100.0F;
 	}
 
 	protected void keyTyped(char par1, int par2) {
@@ -104,10 +103,9 @@ public class GuiRecycler extends GuiContainer {
 		this.guiTop = (this.height - ySize) / 2;
 		Keyboard.enableRepeatEvents(true);
 		this.buttonList.clear();
-		// TODO Current Changes
-		this.buttonList.add(new GuiButton(0, this.guiLeft+5, this.guiTop + 77, 90, 20, I18n.translateToLocal("button.recycle")));
-		//this.buttonList.add(new GuiButton(1, this.guiLeft + 95, this.guiTop + 5, 16, 16, "Auto"));
-		this.buttonList.add(new GuiButton(2, this.guiLeft + 83, this.guiTop + 77, 90, 20, I18n.translateToLocal("button.takeAll")));
+		//this.buttonList.add(new GuiButton(0, this.guiLeft+5, this.guiTop + 77, 90, 20, Helper.getTranslation("button.recycle")));
+		this.buttonList.add(new GuiButton(1, this.guiLeft + 5, this.guiTop + 77, 90, 20, Helper.getTranslation("button.auto")));
+		this.buttonList.add(new GuiButton(2, this.guiLeft + 83, this.guiTop + 77, 90, 20, Helper.getTranslation("button.takeAll")));
 	}
 
 	@Override
@@ -125,8 +123,9 @@ public class GuiRecycler extends GuiContainer {
 				currentPlayer.addStat(Main.achievementBuildDisk, 1);
 			}
 			break;
-		case 1: // Auto-recycle
-			inventory.switchWorking();
+		case 1: // Switch Working
+			PacketHandler.INSTANCE.sendToServer(new SwitchWorkingMessage(inventory.getPos()));
+			//inventory.switchWorking();
 			break;
 		case 2: // Take All
 			PacketHandler.INSTANCE.sendToServer(new TakeAllMessage(inventory.getPos()));

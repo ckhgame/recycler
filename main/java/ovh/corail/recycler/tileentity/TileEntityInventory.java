@@ -180,7 +180,7 @@ public class TileEntityInventory extends TileEntity implements ISidedInventory {
 
 	@Override
 	public boolean canInsertItem(int index, ItemStack stack, EnumFacing direction) {
-		return direction != EnumFacing.DOWN && ((index == 1 && stack.getItem() == Main.diamond_disk) || index == 0);
+		return direction != EnumFacing.DOWN && ((index == 1 && stack.getItem() == Main.diamond_disk) || (index == 0 && stack.getItem() != Main.diamond_disk));
 	}
 	
 	@Override

@@ -89,7 +89,6 @@ public class RecyclingManager {
 			ItemStack currentStack = currentRecipe.getStack(i);
 			int newStackCount = currentStack.stackSize * nb_input;
 			/* Objets abimés */
-			// TODO SWITCH + Main.items.get()
 			if (currentRecipe.canBeRepaired() && stack.getItemDamage() > 0) {
 				int currentSize = currentStack.stackSize;
 				/* Unités plus petites */

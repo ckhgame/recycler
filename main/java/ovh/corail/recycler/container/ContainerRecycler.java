@@ -35,8 +35,7 @@ public class ContainerRecycler extends Container {
 			this.addSlotToContainer(new SlotVisual(inventory, inventory.visual, i, 99 + (i * 18), 5));
 			this.addSlotToContainer(new SlotVisual(inventory, inventory.visual, i + 4, 99 + (i * 18), 23));
 		}
-		PacketHandler.INSTANCE.sendToServer(
-				new VisualMessage(inventory.getPos()));
+		PacketHandler.INSTANCE.sendToServer(new VisualMessage(inventory.getPos()));
 		inventory.refreshVisual(inventory.getStackInSlot(0));
 		bindPlayerInventory(player.inventory);
 	}
@@ -45,8 +44,7 @@ public class ContainerRecycler extends Container {
 	public ItemStack func_184996_a(int slotId, int dragType, ClickType clickType, EntityPlayer player) {
 		ItemStack stack = super.func_184996_a(slotId, dragType, clickType, player);
 		if (slotId == 0) {
-			PacketHandler.INSTANCE.sendToServer(
-					new VisualMessage(inventory.getPos()));
+			PacketHandler.INSTANCE.sendToServer(new VisualMessage(inventory.getPos()));
 			inventory.refreshVisual(inventory.getStackInSlot(0));
 		}
 		return stack;
@@ -105,12 +103,5 @@ public class ContainerRecycler extends Container {
 
 	public void onContainerClosed(EntityPlayer player) {
 		super.onContainerClosed(player);
-		/*
-		 * if (!this.world.isRemote) for (int i = 0; i <
-		 * content.getSizeInventory(); ++i) { ItemStack itemstack =
-		 * content.getStackInSlot(i); if (itemstack != null)
-		 * player.dropPlayerItemWithRandomChoice(itemstack, false); }
-		 */
-
 	}
 }
