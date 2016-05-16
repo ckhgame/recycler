@@ -31,6 +31,8 @@ public class GuiRecycler extends GuiContainer {
 	public TileEntityRecycler inventory;
 	public EntityPlayer currentPlayer;
 	private static ResourceLocation textureBg = new ResourceLocation(Main.MOD_ID + ":textures/gui/recycler.png");
+	private static ResourceLocation textureProgressColor = new ResourceLocation(Main.MOD_ID + ":textures/gui/progress_color.png");
+	private static ResourceLocation textureProgressBg = new ResourceLocation(Main.MOD_ID + ":textures/gui/progress_bg.png");
 	
 	public GuiRecycler(EntityPlayer player, World world, int x, int y, int z, TileEntityRecycler inventory) {
 		super(new ContainerRecycler(player, world, x, y, z, inventory));
@@ -83,10 +85,11 @@ public class GuiRecycler extends GuiContainer {
 			
 				// TODO Current Changes
 				if (inventory.isWorking() && enoughStackSize) {
-					mc.renderEngine.bindTexture(textureBg);
-					drawTexturedModalRect(62, 32, 100, 104, 34, 10);
+					mc.renderEngine.bindTexture(textureProgressBg);
+					drawTexturedModalRect(62, 32, 0, 0, 34, 10);
 					int widthWorking=(int) Math.floor((double) inventory.getPercentWorking()*32.0/100);
-					drawTexturedModalRect(63, 33, 40, 140, widthWorking, 8);
+					mc.renderEngine.bindTexture(textureProgressColor);
+					drawTexturedModalRect(63, 33, 0, 0, widthWorking, 8);
 					this.fontRendererObj.drawString(Integer.toString(inventory.getPercentWorking())+" %", (69), (34), 0xffffff);
 				}
 			}
