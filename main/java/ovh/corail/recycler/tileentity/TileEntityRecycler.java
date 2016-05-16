@@ -63,6 +63,15 @@ public class TileEntityRecycler extends TileEntityInventory implements ITickable
 		return true;
 	}
 
+	public boolean transferSlotInput() {
+		int emptySlot = this.getEmptySlot();
+		if (emptySlot == -1 || getStackInSlot(0) == null) { return false; }
+		ItemStack stack = getStackInSlot(0).copy();
+		this.setInventorySlotContents(0, (ItemStack) null);
+		this.setInventorySlotContents(emptySlot, stack);
+		return true;
+	}
+	
 	public boolean recycle(EntityPlayer currentPlayer) {
 		if (!canRecycle(currentPlayer)) {
 			return false;
@@ -72,6 +81,7 @@ public class TileEntityRecycler extends TileEntityInventory implements ITickable
 		int num_recipe = recyclingManager.hasRecipe(getStackInSlot(0));
 		if (num_recipe < 0) {
 			Helper.addChatMessage("tile.recycler.message.noRecipe", currentPlayer, true);
+			transferSlotInput();
 			return false;
 		}
 		RecyclingRecipe currentRecipe = recyclingManager.getRecipe(num_recipe);
@@ -183,10 +193,10 @@ public class TileEntityRecycler extends TileEntityInventory implements ITickable
 			}
 		}
 		/** item input slot */
-		int currentRecipe = recyclingManager.hasRecipe(stack);
+		/*int currentRecipe = recyclingManager.hasRecipe(stack);
 		if (currentRecipe < 0) {
 			return false;
-		}
+		}*/
 		return true;
 	}
 
@@ -230,22 +240,19 @@ public class TileEntityRecycler extends TileEntityInventory implements ITickable
 					cantRecycleTicks++;
 					countTicks = maxTicks;
 				}
+			/** no recipe */
+			} else {
+				cantRecycleTicks++;
+				countTicks = maxTicks;
 			}
 		}
 		
 		/** can't recycle since 4 seconds */
 		if (cantRecycleTicks > 40) {
-			/** no disk or no input item or not output slot */
-			int emptySlot = getEmptySlot();
-			if (getStackInSlot(0) == null || getStackInSlot(1) == null || emptySlot == -1) {
-				isWorking = false;
-			/** not enough stacksize */
-			} else {
-				ItemStack stack = getStackInSlot(0).copy();
-				setInventorySlotContents(0, (ItemStack) null);
-				/** TODO fill stacksize */
-				setInventorySlotContents(emptySlot, stack);						
-			}
+			/** no input item or no disk */
+			if (getStackInSlot(0) == null || getStackInSlot(1) == null) { isWorking = false; }
+			/** no output slot */
+			if (!transferSlotInput()) { isWorking = false; }
 			cantRecycleTicks = 0;
 			countTicks = maxTicks;
 		}
