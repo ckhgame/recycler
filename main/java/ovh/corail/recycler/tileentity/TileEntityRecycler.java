@@ -213,27 +213,47 @@ public class TileEntityRecycler extends TileEntityInventory implements ITickable
 
 	@Override
 	public void update() {
-		if (!isWorking) { return; } //worldObj.isRemote || 
+		if (worldObj.isRemote || !isWorking) { return; }
 		countTicks--;
-		//Helper.addChatMessage("passss", Minecraft.getMinecraft().thePlayer, false);
+		
+		/** each tick */
+		if (!canRecycle((EntityPlayer) null)) {
+			cantRecycleTicks++;
+			countTicks = maxTicks;
+		} else {
+			/** corresponding recipe */
+			int num_recipe = recyclingManager.hasRecipe(getStackInSlot(0));
+			if (num_recipe >= 0) {
+				int neededStacksize = recyclingManager.getRecipe(num_recipe).getItemRecipe().stackSize;
+				/** enough stacksize for the input slot */
+				if (getStackInSlot(0).stackSize < neededStacksize) {
+					cantRecycleTicks++;
+					countTicks = maxTicks;
+				}
+			}
+		}
+		
+		/** can't recycle since 4 seconds */
+		if (cantRecycleTicks > 40) {
+			/** no disk or no input item or not output slot */
+			int emptySlot = getEmptySlot();
+			if (getStackInSlot(0) == null || getStackInSlot(1) == null || emptySlot == -1) {
+				isWorking = false;
+			/** not enough stacksize */
+			} else {
+				ItemStack stack = getStackInSlot(0).copy();
+				setInventorySlotContents(0, (ItemStack) null);
+				/** TODO fill stacksize */
+				setInventorySlotContents(emptySlot, stack);						
+			}
+			cantRecycleTicks = 0;
+			countTicks = maxTicks;
+		}
+		
 		/** try to recycle */
 		if (countTicks <= 0) {
-			/** cant recycle tick */
 			if (!recycle((EntityPlayer) null)) {
 				cantRecycleTicks++;
-				/** put item in output slots if there is a disk */
-				if (cantRecycleTicks > 0) {
-					if (getStackInSlot(0) == null || getStackInSlot(1) == null || getEmptySlot() == -1) {
-						isWorking = false;
-					} else {
-						/** TODO check to fill stacksize */
-						setInventorySlotContents(getEmptySlot(), getStackInSlot(0));
-						setInventorySlotContents(0, (ItemStack) null);			
-					}
-					cantRecycleTicks = 0;
-					countTicks = 0;
-				}
-			/** has recycled */
 			}
 			countTicks = maxTicks;
 		}

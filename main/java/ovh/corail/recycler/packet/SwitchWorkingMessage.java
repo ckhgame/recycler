@@ -8,10 +8,12 @@ import net.minecraft.util.IThreadListener;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import ovh.corail.recycler.core.Helper;
+import ovh.corail.recycler.handler.PacketHandler;
 import ovh.corail.recycler.tileentity.TileEntityRecycler;
 
 public class SwitchWorkingMessage implements IMessage {
@@ -46,7 +48,10 @@ public class SwitchWorkingMessage implements IMessage {
     				TileEntity tile = worldIn.getTileEntity(message.currentPos);
     				if (tile != null && tile instanceof TileEntityRecycler) {
     					TileEntityRecycler recycler = (TileEntityRecycler) tile;
+    					recycler.resetProgress();
     					recycler.switchWorking();
+    					PacketHandler.INSTANCE.sendToAllAround(new ProgressMessage(message.currentPos, 0, recycler.isWorking()),
+    							new TargetPoint(worldIn.provider.getDimension(), message.currentPos.getX(), message.currentPos.getY(), message.currentPos.getZ(), 12));
     				}
     			}
     		});

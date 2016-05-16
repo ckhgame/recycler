@@ -13,7 +13,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import ovh.corail.recycler.container.ContainerRecycler;
 import ovh.corail.recycler.core.Helper;
 import ovh.corail.recycler.core.Main;
@@ -79,15 +78,17 @@ public class GuiRecycler extends GuiContainer {
 			int num_recipe=rm.hasRecipe(inventory.getStackInSlot(0));
 			if (num_recipe>=0) {
 				int inputCount=rm.getRecipe(num_recipe).getItemRecipe().stackSize;
-				this.fontRendererObj.drawString(Integer.toString(inputCount), (48), (19), (inventory.getStackInSlot(0).stackSize>=inputCount?0x00ff00:0xff0000));
-			}
-			// TODO Current Changes
-			if (inventory.isWorking()) {
-				mc.renderEngine.bindTexture(textureBg);
-				drawTexturedModalRect(90, 19, 100, 104, 22, 12);
-				int widthWorking=(int) Math.floor((double) inventory.getPercentWorking()*20.0/100);
-				drawTexturedModalRect(91, 20, 40, 140, widthWorking, 10);
-				this.fontRendererObj.drawString(Integer.toString(inventory.getPercentWorking())+" %", (93), (22), 0xffffff);
+				boolean enoughStackSize = inventory.getStackInSlot(0).stackSize >= inputCount;
+				this.fontRendererObj.drawString(Integer.toString(inputCount), (50), (20), (enoughStackSize?0x00ff00:0xff0000));
+			
+				// TODO Current Changes
+				if (inventory.isWorking() && enoughStackSize) {
+					mc.renderEngine.bindTexture(textureBg);
+					drawTexturedModalRect(62, 32, 100, 104, 34, 10);
+					int widthWorking=(int) Math.floor((double) inventory.getPercentWorking()*32.0/100);
+					drawTexturedModalRect(63, 33, 40, 140, widthWorking, 8);
+					this.fontRendererObj.drawString(Integer.toString(inventory.getPercentWorking())+" %", (69), (34), 0xffffff);
+				}
 			}
 		}
 	}
@@ -103,9 +104,9 @@ public class GuiRecycler extends GuiContainer {
 		this.guiTop = (this.height - ySize) / 2;
 		Keyboard.enableRepeatEvents(true);
 		this.buttonList.clear();
-		//this.buttonList.add(new GuiButton(0, this.guiLeft+5, this.guiTop + 77, 90, 20, Helper.getTranslation("button.recycle")));
-		this.buttonList.add(new GuiButton(1, this.guiLeft + 5, this.guiTop + 77, 90, 20, Helper.getTranslation("button.auto")));
-		this.buttonList.add(new GuiButton(2, this.guiLeft + 83, this.guiTop + 77, 90, 20, Helper.getTranslation("button.takeAll")));
+		this.buttonList.add(new GuiButton(0, this.guiLeft + 7, this.guiTop + 77, 80, 20, Helper.getTranslation("button.recycle")));
+		this.buttonList.add(new GuiButton(1, this.guiLeft + 7, this.guiTop + 32, 36, 10, Helper.getTranslation("button.auto")));
+		this.buttonList.add(new GuiButton(2, this.guiLeft + 89, this.guiTop + 77, 80, 20, Helper.getTranslation("button.takeAll")));
 	}
 
 	@Override
@@ -120,12 +121,11 @@ public class GuiRecycler extends GuiContainer {
 		case 0: // Recycle
 			PacketHandler.INSTANCE.sendToServer(new ButtonMessage(button.id, inventory.getPos()));
 			if (inventory.recycle(currentPlayer)) {
-				currentPlayer.addStat(Main.achievementBuildDisk, 1);
+				currentPlayer.addStat(Main.achievementFirstRecycle, 1);
 			}
 			break;
 		case 1: // Switch Working
 			PacketHandler.INSTANCE.sendToServer(new SwitchWorkingMessage(inventory.getPos()));
-			//inventory.switchWorking();
 			break;
 		case 2: // Take All
 			PacketHandler.INSTANCE.sendToServer(new TakeAllMessage(inventory.getPos()));
