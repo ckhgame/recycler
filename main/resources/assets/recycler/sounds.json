@@ -1,0 +1,11 @@
+{
+    "recycler": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "recycler:recycler",
+                "stream": true
+            }
+        ]
+    }
+}

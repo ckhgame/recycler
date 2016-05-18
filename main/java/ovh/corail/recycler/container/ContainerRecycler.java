@@ -8,6 +8,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import ovh.corail.recycler.core.Main;
 import ovh.corail.recycler.handler.PacketHandler;
 import ovh.corail.recycler.packet.ResetProgressMessage;
 import ovh.corail.recycler.packet.VisualMessage;
@@ -82,7 +83,7 @@ public class ContainerRecycler extends Container {
 		if (slot != null && slot.getHasStack()) {
 			ItemStack itemstack1 = slot.getStack();
 			itemstack = itemstack1.copy();
-
+			
 			if (index < 9) {
 				if (!this.mergeItemStack(itemstack1, 10, 45, true)) {
 					return null;

@@ -14,6 +14,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import ovh.corail.recycler.block.BlockRecycler;
 import ovh.corail.recycler.handler.EventHandler;
+import ovh.corail.recycler.handler.SoundHandler;
 import ovh.corail.recycler.item.ItemAchievement001;
 import ovh.corail.recycler.item.ItemDiamondDisk;
 import ovh.corail.recycler.item.ItemDiamondNugget;
@@ -53,6 +54,7 @@ public class Main {
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) throws IOException {
 		MinecraftForge.EVENT_BUS.register(new EventHandler());
+		SoundHandler.registerSounds();
 		proxy.preInit(event);
 	}
 

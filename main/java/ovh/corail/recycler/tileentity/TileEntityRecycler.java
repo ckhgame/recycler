@@ -9,12 +9,15 @@ import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import ovh.corail.recycler.core.Helper;
 import ovh.corail.recycler.core.Main;
 import ovh.corail.recycler.core.RecyclingManager;
 import ovh.corail.recycler.core.RecyclingRecipe;
 import ovh.corail.recycler.handler.PacketHandler;
+import ovh.corail.recycler.handler.SoundHandler;
 import ovh.corail.recycler.packet.ProgressMessage;
 
 public class TileEntityRecycler extends TileEntityInventory implements ITickable {
@@ -149,13 +152,18 @@ public class TileEntityRecycler extends TileEntityInventory implements ITickable
 			setInventorySlotContents(0, stack);
 		}
 		/** damage the disk */
-
 		diskStack.setItemDamage(diskStack.getItemDamage() + (10 * nb_input));
 		if (diskStack.getItemDamage() >= diskStack.getMaxDamage()) {
 			Helper.addChatMessage("tile.recycler.message.BrokenDisk", currentPlayer, true);
 			this.setInventorySlotContents(1, null);
 		} else {
 			this.setInventorySlotContents(1, diskStack);
+		}
+		/** play sound */
+		/** TODO */
+		List<EntityPlayer> playerList = worldObj.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(this.getPos()).expand(64.0d, 64.0d, 64.0d));
+		for (int i = 0; i < playerList.size() ; i++) {
+			worldObj.playSound(playerList.get(i), getPos(), SoundHandler.recycler, SoundCategory.NEUTRAL, 1.0f, 1.0f);
 		}
 		return true;
 	}
@@ -191,6 +199,9 @@ public class TileEntityRecycler extends TileEntityInventory implements ITickable
 			} else {
 				return false;
 			}
+		}
+		if (stack.getItem()==Main.diamond_disk) {
+			return false;
 		}
 		/** item input slot */
 		/*int currentRecipe = recyclingManager.hasRecipe(stack);
