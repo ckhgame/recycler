@@ -85,11 +85,19 @@ public class Helper {
 	}
 
 	private static void render(Block block) {
-		render(Item.getItemFromBlock(block));
+		render(Item.getItemFromBlock(block), 0);
+	}
+	
+	private static void render(Item item) {
+		render(item, 0);
 	}
 
-	private static void render(Item item) {
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, 0,
+	private static void render(Block block, int meta) {
+		render(Item.getItemFromBlock(block), meta);
+	}
+	
+	private static void render(Item item, int meta) {
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, meta,
 				new ModelResourceLocation(item.getRegistryName(), "inventory"));
 	}
 	
