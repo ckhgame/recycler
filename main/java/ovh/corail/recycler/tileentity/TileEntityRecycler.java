@@ -28,7 +28,7 @@ public class TileEntityRecycler extends TileEntityInventory implements ITickable
 
 	public TileEntityRecycler() {
 		super();
-		this.visual = new InventoryBasic("visual", true, 8);
+		this.visual = new InventoryBasic("visual", true, 9);
 		recyclingManager = RecyclingManager.getInstance();
 	}
 

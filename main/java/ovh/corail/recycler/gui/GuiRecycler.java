@@ -11,6 +11,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import ovh.corail.recycler.container.ContainerRecycler;
@@ -31,8 +32,6 @@ public class GuiRecycler extends GuiContainer {
 	public TileEntityRecycler inventory;
 	public EntityPlayer currentPlayer;
 	private static ResourceLocation textureBg = new ResourceLocation(Main.MOD_ID + ":textures/gui/recycler.png");
-	private static ResourceLocation textureProgressColor = new ResourceLocation(Main.MOD_ID + ":textures/gui/progress_color.png");
-	private static ResourceLocation textureProgressBg = new ResourceLocation(Main.MOD_ID + ":textures/gui/progress_bg.png");
 	
 	public GuiRecycler(EntityPlayer player, World world, int x, int y, int z, TileEntityRecycler inventory) {
 		super(new ContainerRecycler(player, world, x, y, z, inventory));
@@ -59,9 +58,10 @@ public class GuiRecycler extends GuiContainer {
 		Slot slot;
 		for (i = 0; i < slots.size(); i++) {
 			slot = slots.get(i);
-			this.drawTexturedModalRect(posX + slot.xDisplayPosition, posY + slot.yDisplayPosition, 661, 150, dimCase, dimCase);
+			this.drawTexturedModalRect(posX + slot.xDisplayPosition, posY + slot.yDisplayPosition, 240, 0, dimCase, dimCase);
 		}
 		zLevel = 100.0F;
+		
 	}
 
 	protected void keyTyped(char par1, int par2) {
@@ -81,19 +81,26 @@ public class GuiRecycler extends GuiContainer {
 			if (num_recipe>=0) {
 				int inputCount=rm.getRecipe(num_recipe).getItemRecipe().stackSize;
 				boolean enoughStackSize = inventory.getStackInSlot(0).stackSize >= inputCount;
-				this.fontRendererObj.drawString(Integer.toString(inputCount), (50), (20), (enoughStackSize?0x00ff00:0xff0000));
-			
 				// TODO Current Changes
 				if (inventory.isWorking() && enoughStackSize) {
-					mc.renderEngine.bindTexture(textureProgressBg);
-					drawTexturedModalRect(62, 32, 0, 0, 34, 10);
-					int widthWorking=(int) Math.floor((double) inventory.getPercentWorking()*32.0/100);
-					mc.renderEngine.bindTexture(textureProgressColor);
-					drawTexturedModalRect(63, 33, 0, 0, widthWorking, 8);
-					this.fontRendererObj.drawString(Integer.toString(inventory.getPercentWorking())+" %", (69), (34), 0xffffff);
+					mc.renderEngine.bindTexture(textureBg);
+					drawTexturedModalRect(78, 41, 0, 212, 19, 4);
+					int widthWorking=(int) Math.floor((double) inventory.getPercentWorking()*17.0/100);
+					drawTexturedModalRect(79, 42, 1, 216, widthWorking, 2);
+					//this.fontRendererObj.drawString(Integer.toString(inventory.getPercentWorking())+" %", (74), (11), 0xffffff);
 				}
+				this.fontRendererObj.drawString("X " + Integer.toString(inventory.getStackInSlot(0).stackSize/inputCount), (70), (13), (enoughStackSize?0x00ff00:0xff0000));
 			}
 		}
+		ItemStack disk = inventory.getStackInSlot(1);
+		int diskMaxUse;
+		if (disk == null) {
+			diskMaxUse = 0;
+		} else {
+			diskMaxUse = (disk.getMaxDamage()-disk.getItemDamage())/10;
+		}
+		this.fontRendererObj.drawString("X "+Integer.toString(diskMaxUse), (70), (31), (diskMaxUse>0?0x00ff00:0xff0000));
+
 	}
 
 	public void onGuiClosed() {
@@ -107,9 +114,9 @@ public class GuiRecycler extends GuiContainer {
 		this.guiTop = (this.height - ySize) / 2;
 		Keyboard.enableRepeatEvents(true);
 		this.buttonList.clear();
-		this.buttonList.add(new GuiButton(0, this.guiLeft + 7, this.guiTop + 77, 80, 20, Helper.getTranslation("button.recycle")));
-		this.buttonList.add(new GuiButton(1, this.guiLeft + 7, this.guiTop + 32, 36, 10, Helper.getTranslation("button.auto")));
-		this.buttonList.add(new GuiButton(2, this.guiLeft + 89, this.guiTop + 77, 80, 20, Helper.getTranslation("button.takeAll")));
+		this.buttonList.add(new GuiButtonRecycler(0, this.guiLeft + 8, this.guiTop + 90, 53, 14, Helper.getTranslation("button.recycle")));
+		this.buttonList.add(new GuiButtonRecycler(1, this.guiLeft + 62, this.guiTop + 90, 53, 14, Helper.getTranslation("button.auto")));
+		this.buttonList.add(new GuiButtonRecycler(2, this.guiLeft + 116, this.guiTop + 90, 53, 14, Helper.getTranslation("button.takeAll")));
 	}
 
 	@Override

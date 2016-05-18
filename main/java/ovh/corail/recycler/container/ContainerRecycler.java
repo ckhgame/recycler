@@ -26,15 +26,16 @@ public class ContainerRecycler extends Container {
 		this.i = x;
 		this.j = y;
 		this.k = z;
-		this.addSlotToContainer(new SlotRecycler(inventory, 0, 17, 15));
-		this.addSlotToContainer(new SlotRecycler(inventory, 1, 71, 15));
+		this.addSlotToContainer(new SlotRecycler(inventory, 0, 27, 9));
+		this.addSlotToContainer(new SlotRecycler(inventory, 1, 27, 27));
 		for (int i = inventory.firstOutput; i <= 10; i++) {
-			this.addSlotToContainer(new SlotRecycler(inventory, i, 8 + (i - 2) * 18, 60));
-			this.addSlotToContainer(new SlotRecycler(inventory, i + 9, 8 + (i - 2) * 18, 42));
+			this.addSlotToContainer(new SlotRecycler(inventory, i, ((i - inventory.firstOutput) * 18) + 8, 54));
+			this.addSlotToContainer(new SlotRecycler(inventory, i + 9, ((i - inventory.firstOutput) * 18) + 8, 72));
 		}
-		for (int i = 0; i < 4; i++) {
-			this.addSlotToContainer(new SlotVisual(inventory, inventory.visual, i, 98 + (i * 18), 5));
-			this.addSlotToContainer(new SlotVisual(inventory, inventory.visual, i + 4, 98 + (i * 18), 23));
+		for (int i = 0 ; i < 3 ; i++) {
+			for (int j = 0 ; j < 3 ; j++) {
+				this.addSlotToContainer(new SlotVisual(inventory, inventory.visual, (i*3) + j, (j * 16) + 118, i*16 + 2));
+			}
 		}
 		PacketHandler.INSTANCE.sendToServer(new VisualMessage(inventory.getPos()));
 		inventory.refreshVisual(inventory.getStackInSlot(0));
@@ -58,13 +59,13 @@ public class ContainerRecycler extends Container {
 	protected void bindPlayerInventory(InventoryPlayer inventoryPlayer) {
 		int i;
 		int j;
-		for (i = 0; i < 3; ++i) {
-			for (j = 0; j < 9; ++j) {
-				this.addSlotToContainer(new Slot(inventoryPlayer, j + (i + 1) * 9, 8 + j * 18, 98 + i * 18));
+		for (i = 0; i < 3; i++) {
+			for (j = 0; j < 9; j++) {
+				this.addSlotToContainer(new Slot(inventoryPlayer, ((i + 1) * 9) + j, (j * 18) + 8, (i * 18) + 106));
 			}
 		}
-		for (i = 0; i < 9; ++i) {
-			this.addSlotToContainer(new Slot(inventoryPlayer, i, 8 + i * 18, 155));
+		for (j = 0; j < 9; j++) {
+			this.addSlotToContainer(new Slot(inventoryPlayer, j, (j * 18) +8, 160));
 		}
 	}
 
