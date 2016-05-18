@@ -12,6 +12,7 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
+import ovh.corail.recycler.block.BlockRecycler;
 import ovh.corail.recycler.core.Helper;
 import ovh.corail.recycler.core.Main;
 import ovh.corail.recycler.core.RecyclingManager;
@@ -261,9 +262,15 @@ public class TileEntityRecycler extends TileEntityInventory implements ITickable
 		/** can't recycle since 4 seconds */
 		if (cantRecycleTicks > 40) {
 			/** no input item or no disk */
-			if (getStackInSlot(0) == null || getStackInSlot(1) == null) { isWorking = false; }
+			if (getStackInSlot(0) == null || getStackInSlot(1) == null) {
+				isWorking = false;
+				worldObj.setBlockState(pos, worldObj.getBlockState(pos).withProperty(BlockRecycler.ENABLED, false), 3);
+			}
 			/** no output slot */
-			if (!transferSlotInput()) { isWorking = false; }
+			if (!transferSlotInput()) {
+				isWorking = false;
+				worldObj.setBlockState(pos, worldObj.getBlockState(pos).withProperty(BlockRecycler.ENABLED, false), 3);
+			}
 			cantRecycleTicks = 0;
 			countTicks = maxTicks;
 		}
