@@ -6,10 +6,11 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import ovh.corail.recycler.core.Main;
 
 public class SoundHandler {
-	public static SoundEvent recycler;
+	public static SoundEvent recycler, recycler_working;
 
 	public static void registerSounds() {
 		recycler = registerSound("recycler");
+		recycler_working = registerSound("recycler_working");
 	}
 
 	private static SoundEvent registerSound(String soundName) {
