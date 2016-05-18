@@ -23,7 +23,7 @@ import ovh.corail.recycler.item.ItemIronNugget;
 public class Main {
 	public static final String MOD_ID = "recycler";
 	public static final String MOD_NAME = "Corail Recycler";
-	public static final String MOD_VER = "1.1";
+	public static final String MOD_VER = "1.2";
 	@Instance(Main.MOD_ID)
 	public static Main instance;
 	@SidedProxy(clientSide = "ovh.corail.recycler.core.ClientProxy", serverSide = "ovh.corail.recycler.core.CommonProxy")
