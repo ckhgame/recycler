@@ -1,7 +1,9 @@
 package ovh.corail.recycler.block;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -30,7 +32,8 @@ import ovh.corail.recycler.core.Helper;
 import ovh.corail.recycler.core.Main;
 import ovh.corail.recycler.tileentity.TileEntityRecycler;
 
-public class BlockRecycler extends BlockFacing implements ITileEntityProvider {
+public class BlockRecycler extends Block implements ITileEntityProvider {
+	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyBool ENABLED = PropertyBool.create("enabled");
 	private static boolean isGrind = false;
 	private static String name = "recycler";
@@ -43,6 +46,9 @@ public class BlockRecycler extends BlockFacing implements ITileEntityProvider {
 		this.isBlockContainer = true;
 		setHardness(2.0f);
 		setResistance(10.0f);
+		this.setCreativeTab(Main.tabRecycler);
+		this.stepSound = SoundType.STONE;
+		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 	}
 	
 	@SideOnly(Side.CLIENT)

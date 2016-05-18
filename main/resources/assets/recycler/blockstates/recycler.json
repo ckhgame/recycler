@@ -1,8 +1,29 @@
 {
-    "variants": {
-        "facing=north": { "model": "recycler:recycler" },
-        "facing=south": { "model": "recycler:recycler", "y": 180 },
-        "facing=west":  { "model": "recycler:recycler", "y": 270 },
-        "facing=east":  { "model": "recycler:recycler", "y": 90 }
+  "forge_marker": 1,
+  "defaults": {
+    "model": "recycler:recycler",
+    "textures": {
+      "front": "recycler:blocks/recycler_front"
     }
+  },
+  "variants": {
+    "normal": [{}],
+    "inventory": [{}],
+    "facing": {
+      "north": {},
+      "south": {"y": 180},
+      "west": {"y": 270},
+      "east": {"y": 90},
+      "up": {"x": -90},
+      "down": {"x": 90}
+    },
+    "enabled": {
+      "false": {},
+      "true": {
+        "textures": {
+          "front": "recycler:blocks/recycler_front2"
+        }
+      }
+    }
+  }
 }
