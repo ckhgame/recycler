@@ -51,7 +51,8 @@ public class SwitchWorkingMessage implements IMessage {
     					TileEntityRecycler recycler = (TileEntityRecycler) tile;
     					recycler.resetProgress();
     					recycler.switchWorking();
-    					worldIn.setBlockState(message.currentPos, worldIn.getBlockState(message.currentPos).withProperty(BlockRecycler.ENABLED, recycler.isWorking()), 3);
+    					/*TODO need fix */
+    					//worldIn.setBlockState(message.currentPos, worldIn.getBlockState(message.currentPos).withProperty(BlockRecycler.ENABLED, recycler.isWorking()), 3);
     					PacketHandler.INSTANCE.sendToAllAround(new ProgressMessage(message.currentPos, 0, recycler.isWorking()),
     							new TargetPoint(worldIn.provider.getDimension(), message.currentPos.getX(), message.currentPos.getY(), message.currentPos.getZ(), 12));
     				}

@@ -33,7 +33,7 @@ import ovh.corail.recycler.core.Main;
 import ovh.corail.recycler.tileentity.TileEntityRecycler;
 
 public class BlockRecycler extends Block implements ITileEntityProvider {
-	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+	public static final PropertyDirection FACING = PropertyDirection.create("facing");
 	public static final PropertyBool ENABLED = PropertyBool.create("enabled");
 	private static boolean isGrind = false;
 	private static String name = "recycler";
