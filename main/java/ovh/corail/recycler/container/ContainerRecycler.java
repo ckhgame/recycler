@@ -52,7 +52,6 @@ public class ContainerRecycler extends Container {
 		}
 		if ((slotId == 0 || slotId == 1) && inventory.isWorking()) {
 			PacketHandler.INSTANCE.sendToServer(new ServerProgressMessage(inventory.getPos(), 0, inventory.isWorking(), true));
-			//inventory.resetProgress();
 		}
 		return stack;
 	}

@@ -1,6 +1,7 @@
 package ovh.corail.recycler.packet;
 
 import io.netty.buffer.ByteBuf;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IThreadListener;
 import net.minecraft.util.math.BlockPos;
@@ -56,6 +57,10 @@ public class ServerProgressMessage implements IMessage {
 					if (tile == null || !(tile instanceof TileEntityRecycler)) { return ; }
 					TileEntityRecycler recycler = (TileEntityRecycler) worldIn.getTileEntity(message.currentPos);
    					recycler.setProgress(message.progress, message.isWorking, message.isReset);
+   					if (message.isReset) {
+   						IBlockState state = worldIn.getBlockState(message.currentPos);
+   						//worldIn.setBlockState(message.currentPos, state.withProperty(BlockRecycler.ENABLED, message.isWorking), 3);
+   					}
    					PacketHandler.INSTANCE.sendToAllAround(new ClientProgressMessage(message.currentPos, message.progress, message.isWorking, message.isReset),
    							new TargetPoint(worldIn.provider.getDimension(), message.currentPos.getX(), message.currentPos.getY(), message.currentPos.getZ(), 12));
 				}

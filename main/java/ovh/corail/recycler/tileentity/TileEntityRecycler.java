@@ -281,13 +281,14 @@ public class TileEntityRecycler extends TileEntityInventory implements ITickable
 				cantRecycleTicks++;
 			}
 			countTicks = maxTicks;
+			/** play sound */
+		} else if (cantRecycleTicks<=1 && countTicks%10==0) {
+			PacketHandler.INSTANCE.sendToAllAround(new SoundMessage(getPos(), 1),
+				new TargetPoint(worldObj.provider.getDimension(), getPos().getX(), getPos().getY(), getPos().getZ(), 20));
 		}
 
 		progress = (int) Math.floor(((double) (maxTicks-countTicks) / (double) maxTicks) * 100.0);
-		if (hasChanged && !worldObj.isRemote) {
-			//worldObj.setBlockState(this.getPos(), worldObj.getBlockState(this.getPos()).withProperty(BlockRecycler.ENABLED, isWorking), 3);
-		}
-		PacketHandler.INSTANCE.sendToServer(new ServerProgressMessage(getPos(), progress, isWorking, false));
+		PacketHandler.INSTANCE.sendToServer(new ServerProgressMessage(getPos(), progress, isWorking, hasChanged));
 	}
 
 	public int getPercentWorking() {
