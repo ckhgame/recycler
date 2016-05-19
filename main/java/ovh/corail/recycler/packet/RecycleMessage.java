@@ -10,14 +10,14 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import ovh.corail.recycler.tileentity.TileEntityRecycler;
 
-public class ButtonMessage implements IMessage {
+public class RecycleMessage implements IMessage {
 	int id;
 	BlockPos currentPos;
 
-	public ButtonMessage() {
+	public RecycleMessage() {
 	}
 
-	public ButtonMessage(int id, BlockPos currentPos) {
+	public RecycleMessage(int id, BlockPos currentPos) {
 		this.id = id;
 		this.currentPos = currentPos;
 	}
@@ -34,9 +34,9 @@ public class ButtonMessage implements IMessage {
 		buf.writeLong(this.currentPos.toLong());
 	}
 	
-	public static class Handler implements IMessageHandler<ButtonMessage, IMessage> {
+	public static class Handler implements IMessageHandler<RecycleMessage, IMessage> {
 		@Override
-		public IMessage onMessage(final ButtonMessage message, final MessageContext ctx) {
+		public IMessage onMessage(final RecycleMessage message, final MessageContext ctx) {
 			IThreadListener mainThread = (IThreadListener) ctx.getServerHandler().playerEntity.worldObj;
 			mainThread.addScheduledTask(new Runnable() {
 				@Override
@@ -48,9 +48,6 @@ public class ButtonMessage implements IMessage {
 					switch (message.id) {
 					case 0: // Recycle
 						recycler.recycle(null);
-						break;
-					case 1: // Auto-recycle
-						recycler.switchWorking(); 
 						break;
 					}
 				}

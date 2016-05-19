@@ -19,7 +19,9 @@ import ovh.corail.recycler.core.RecyclingManager;
 import ovh.corail.recycler.core.RecyclingRecipe;
 import ovh.corail.recycler.handler.PacketHandler;
 import ovh.corail.recycler.handler.SoundHandler;
-import ovh.corail.recycler.packet.ProgressMessage;
+import ovh.corail.recycler.packet.ClientProgressMessage;
+import ovh.corail.recycler.packet.ServerProgressMessage;
+import ovh.corail.recycler.packet.SoundMessage;
 
 public class TileEntityRecycler extends TileEntityInventory implements ITickable {
 	public InventoryBasic visual;
@@ -161,11 +163,8 @@ public class TileEntityRecycler extends TileEntityInventory implements ITickable
 			this.setInventorySlotContents(1, diskStack);
 		}
 		/** play sound */
-		/** TODO */
-		List<EntityPlayer> playerList = worldObj.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(this.getPos()).expand(64.0d, 64.0d, 64.0d));
-		for (int i = 0; i < playerList.size() ; i++) {
-			worldObj.playSound(playerList.get(i), getPos(), SoundHandler.recycler, SoundCategory.NEUTRAL, 1.0f, 1.0f);
-		}
+		PacketHandler.INSTANCE.sendToAllAround(new SoundMessage(getPos(), 0),
+			new TargetPoint(worldObj.provider.getDimension(), getPos().getX(), getPos().getY(), getPos().getZ(), 20));
 		return true;
 	}
 
@@ -286,10 +285,9 @@ public class TileEntityRecycler extends TileEntityInventory implements ITickable
 
 		progress = (int) Math.floor(((double) (maxTicks-countTicks) / (double) maxTicks) * 100.0);
 		if (hasChanged && !worldObj.isRemote) {
-			worldObj.setBlockState(this.getPos(), worldObj.getBlockState(this.getPos()).withProperty(BlockRecycler.ENABLED, isWorking), 3);
+			//worldObj.setBlockState(this.getPos(), worldObj.getBlockState(this.getPos()).withProperty(BlockRecycler.ENABLED, isWorking), 3);
 		}
-		PacketHandler.INSTANCE.sendToAllAround(new ProgressMessage(getPos(), progress, isWorking),
-			new TargetPoint(worldObj.provider.getDimension(), getPos().getX(), getPos().getY(), getPos().getZ(),12));
+		PacketHandler.INSTANCE.sendToServer(new ServerProgressMessage(getPos(), progress, isWorking, false));
 	}
 
 	public int getPercentWorking() {
@@ -304,18 +302,11 @@ public class TileEntityRecycler extends TileEntityInventory implements ITickable
 		return countTicks;
 	}
 	
-	public void resetProgress() {
-		countTicks = maxTicks;
-	}
-	
-	public void refreshProgress(int progress, boolean isWorking) {
+	public void setProgress(int progress, boolean isWorking, boolean isReset) {
 		this.progress = progress;
 		this.isWorking = isWorking;
-	}
-
-	public void switchWorking() {
-		isWorking=(isWorking?false:true);
-		countTicks=maxTicks;
-		progress=0;
+		if (isReset) {
+			countTicks = maxTicks;
+		}
 	}
 }

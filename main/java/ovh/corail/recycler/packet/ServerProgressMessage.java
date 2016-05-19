@@ -1,29 +1,31 @@
 package ovh.corail.recycler.packet;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IThreadListener;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import ovh.corail.recycler.block.BlockRecycler;
+import ovh.corail.recycler.handler.PacketHandler;
 import ovh.corail.recycler.tileentity.TileEntityRecycler;
 
-public class ProgressMessage implements IMessage {
+public class ServerProgressMessage implements IMessage {
 	BlockPos currentPos; 
 	int progress;
-	boolean isWorking;
+	boolean isWorking, isReset;
 
-	public ProgressMessage() {
+	public ServerProgressMessage() {
 	}
 
-	public ProgressMessage(BlockPos currentPos, int progress, boolean isWorking) {
+	public ServerProgressMessage(BlockPos currentPos, int progress, boolean isWorking, boolean isReset) {
 		this.currentPos = currentPos;
 		this.progress = progress;
 		this.isWorking = isWorking;
+		this.isReset = isReset;
 	}
 
 	@Override
@@ -31,6 +33,7 @@ public class ProgressMessage implements IMessage {
 		this.currentPos = BlockPos.fromLong(buf.readLong());
 		this.progress = buf.readInt();
 		this.isWorking = buf.readBoolean();
+		this.isReset = buf.readBoolean();
 	}
 
 	@Override
@@ -38,21 +41,23 @@ public class ProgressMessage implements IMessage {
 		buf.writeLong(this.currentPos.toLong());
 		buf.writeInt(this.progress);
 		buf.writeBoolean(this.isWorking);
+		buf.writeBoolean(this.isReset);
 	}
 	
-	public static class Handler implements IMessageHandler<ProgressMessage, IMessage> {
+	public static class Handler implements IMessageHandler<ServerProgressMessage, IMessage> {
 		@Override
-		public IMessage onMessage(final ProgressMessage message, final MessageContext ctx) {
-			IThreadListener mainThread = Minecraft.getMinecraft();
+		public IMessage onMessage(final ServerProgressMessage message, final MessageContext ctx) {
+			IThreadListener mainThread = (IThreadListener) ctx.getServerHandler().playerEntity.worldObj;
 			mainThread.addScheduledTask(new Runnable() {
 				@Override
 				public void run() {
-					WorldClient worldIn = Minecraft.getMinecraft().theWorld;
+					World worldIn = ctx.getServerHandler().playerEntity.worldObj;
 					TileEntity tile = worldIn.getTileEntity(message.currentPos);
 					if (tile == null || !(tile instanceof TileEntityRecycler)) { return ; }
 					TileEntityRecycler recycler = (TileEntityRecycler) worldIn.getTileEntity(message.currentPos);
-   					recycler.refreshProgress(message.progress, message.isWorking);
-
+   					recycler.setProgress(message.progress, message.isWorking, message.isReset);
+   					PacketHandler.INSTANCE.sendToAllAround(new ClientProgressMessage(message.currentPos, message.progress, message.isWorking, message.isReset),
+   							new TargetPoint(worldIn.provider.getDimension(), message.currentPos.getX(), message.currentPos.getY(), message.currentPos.getZ(), 12));
 				}
 			});
 			return null;

@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import ovh.corail.recycler.core.Main;
 import ovh.corail.recycler.handler.PacketHandler;
-import ovh.corail.recycler.packet.ResetProgressMessage;
+import ovh.corail.recycler.packet.ServerProgressMessage;
 import ovh.corail.recycler.packet.VisualMessage;
 import ovh.corail.recycler.tileentity.TileEntityRecycler;
 
@@ -51,8 +51,8 @@ public class ContainerRecycler extends Container {
 			inventory.refreshVisual(inventory.getStackInSlot(0));
 		}
 		if ((slotId == 0 || slotId == 1) && inventory.isWorking()) {
-			PacketHandler.INSTANCE.sendToServer(new ResetProgressMessage(inventory.getPos()));
-			inventory.resetProgress();
+			PacketHandler.INSTANCE.sendToServer(new ServerProgressMessage(inventory.getPos(), 0, inventory.isWorking(), true));
+			//inventory.resetProgress();
 		}
 		return stack;
 	}

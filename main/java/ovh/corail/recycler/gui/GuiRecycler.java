@@ -19,9 +19,8 @@ import ovh.corail.recycler.core.Helper;
 import ovh.corail.recycler.core.Main;
 import ovh.corail.recycler.core.RecyclingManager;
 import ovh.corail.recycler.handler.PacketHandler;
-import ovh.corail.recycler.packet.ButtonMessage;
-import ovh.corail.recycler.packet.ProgressMessage;
-import ovh.corail.recycler.packet.SwitchWorkingMessage;
+import ovh.corail.recycler.packet.RecycleMessage;
+import ovh.corail.recycler.packet.ServerProgressMessage;
 import ovh.corail.recycler.packet.TakeAllMessage;
 import ovh.corail.recycler.tileentity.TileEntityRecycler;
 
@@ -129,13 +128,13 @@ public class GuiRecycler extends GuiContainer {
 		super.actionPerformed(button);
 		switch (button.id) {
 		case 0: // Recycle
-			PacketHandler.INSTANCE.sendToServer(new ButtonMessage(button.id, inventory.getPos()));
+			PacketHandler.INSTANCE.sendToServer(new RecycleMessage(button.id, inventory.getPos()));
 			if (inventory.recycle(currentPlayer)) {
 				currentPlayer.addStat(Main.achievementFirstRecycle, 1);
 			}
 			break;
 		case 1: // Switch Working
-			PacketHandler.INSTANCE.sendToServer(new SwitchWorkingMessage(inventory.getPos()));
+			PacketHandler.INSTANCE.sendToServer(new ServerProgressMessage(inventory.getPos(), 0, !inventory.isWorking(), true));
 			break;
 		case 2: // Take All
 			PacketHandler.INSTANCE.sendToServer(new TakeAllMessage(inventory.getPos()));
