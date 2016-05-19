@@ -9,6 +9,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import ovh.corail.recycler.block.BlockRecycler;
 import ovh.corail.recycler.tileentity.TileEntityRecycler;
 
 public class ProgressMessage implements IMessage {
@@ -50,7 +51,8 @@ public class ProgressMessage implements IMessage {
 					TileEntity tile = worldIn.getTileEntity(message.currentPos);
 					if (tile == null || !(tile instanceof TileEntityRecycler)) { return ; }
 					TileEntityRecycler recycler = (TileEntityRecycler) worldIn.getTileEntity(message.currentPos);
-					recycler.refreshProgress(message.progress, message.isWorking);	
+   					recycler.refreshProgress(message.progress, message.isWorking);
+
 				}
 			});
 			return null;

@@ -1,5 +1,5 @@
 {
-    "parent": "recycler:block/recycler",
+    "parent": "recycler:block/default_recycler",
     "display": {
         "thirdperson": {
             "rotation": [ -90, 0, 0 ],

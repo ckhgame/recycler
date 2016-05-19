@@ -237,6 +237,7 @@ public class TileEntityRecycler extends TileEntityInventory implements ITickable
 	public void update() {
 		if (worldObj.isRemote || !isWorking) { return; }
 		countTicks--;
+		boolean hasChanged = false;
 		
 		/** each tick */
 		if (!canRecycle((EntityPlayer) null)) {
@@ -264,12 +265,12 @@ public class TileEntityRecycler extends TileEntityInventory implements ITickable
 			/** no input item or no disk */
 			if (getStackInSlot(0) == null || getStackInSlot(1) == null) {
 				isWorking = false;
-				worldObj.setBlockState(pos, worldObj.getBlockState(pos).withProperty(BlockRecycler.ENABLED, false), 3);
+				hasChanged = true;
 			}
 			/** no output slot */
 			if (!transferSlotInput()) {
 				isWorking = false;
-				worldObj.setBlockState(pos, worldObj.getBlockState(pos).withProperty(BlockRecycler.ENABLED, false), 3);
+				hasChanged = true;
 			}
 			cantRecycleTicks = 0;
 			countTicks = maxTicks;
@@ -284,6 +285,9 @@ public class TileEntityRecycler extends TileEntityInventory implements ITickable
 		}
 
 		progress = (int) Math.floor(((double) (maxTicks-countTicks) / (double) maxTicks) * 100.0);
+		if (hasChanged && !worldObj.isRemote) {
+			worldObj.setBlockState(this.getPos(), worldObj.getBlockState(this.getPos()).withProperty(BlockRecycler.ENABLED, isWorking), 3);
+		}
 		PacketHandler.INSTANCE.sendToAllAround(new ProgressMessage(getPos(), progress, isWorking),
 			new TargetPoint(worldObj.provider.getDimension(), getPos().getX(), getPos().getY(), getPos().getZ(),12));
 	}
