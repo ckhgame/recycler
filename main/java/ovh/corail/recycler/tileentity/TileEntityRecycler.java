@@ -3,14 +3,11 @@ package ovh.corail.recycler.tileentity;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import ovh.corail.recycler.block.BlockRecycler;
 import ovh.corail.recycler.core.Helper;
@@ -282,7 +279,7 @@ public class TileEntityRecycler extends TileEntityInventory implements ITickable
 			}
 			countTicks = maxTicks;
 			/** play sound */
-		} else if (cantRecycleTicks<=1 && countTicks%10==0) {
+		} else if (cantRecycleTicks<=1 && countTicks%15==0) {
 			PacketHandler.INSTANCE.sendToAllAround(new SoundMessage(getPos(), 1),
 				new TargetPoint(worldObj.provider.getDimension(), getPos().getX(), getPos().getY(), getPos().getZ(), 20));
 		}

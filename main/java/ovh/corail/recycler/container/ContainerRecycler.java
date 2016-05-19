@@ -8,7 +8,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import ovh.corail.recycler.core.Main;
 import ovh.corail.recycler.handler.PacketHandler;
 import ovh.corail.recycler.packet.ServerProgressMessage;
 import ovh.corail.recycler.packet.VisualMessage;
