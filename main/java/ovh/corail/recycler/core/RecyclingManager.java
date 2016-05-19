@@ -871,16 +871,16 @@ public class RecyclingManager {
 				"minecraft:iron_ingot:7:0",
 		}, true));
 		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:golden_boots:1:0", new String[] {
-				"minecraft:golden_ingot:4:0",
+				"minecraft:gold_ingot:4:0",
 		}, true));
 		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:golden_helmet:1:0", new String[] {
-				"minecraft:golden_ingot:5:0",
+				"minecraft:gold_ingot:5:0",
 		}, true));
 		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:golden_chestplate:1:0", new String[] {
-				"minecraft:golden_ingot:8:0",
+				"minecraft:gold_ingot:8:0",
 		}, true));
 		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:golden_leggings:1:0", new String[] {
-				"minecraft:golden_ingot:7:0",
+				"minecraft:gold_ingot:7:0",
 		}, true));
 		jsonRecipesList.add(new JsonRecyclingRecipe("minecraft:diamond_boots:1:0", new String[] {
 				"minecraft:diamond:4:0",
