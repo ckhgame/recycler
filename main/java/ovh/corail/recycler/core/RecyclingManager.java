@@ -927,7 +927,7 @@ public class RecyclingManager {
 	public static void loadJsonRecipes(List<JsonRecyclingRecipe> jsonRecipes) {
 		for (int i = 0; i < jsonRecipes.size(); i++) {
 			RecyclingRecipe recipe = convertJsonRecipe(jsonRecipes.get(i));
-			if (recipe.getItemRecipe() != null && recipe.getCount() > 0) {
+			if (recipe != null && recipe.getCount() > 0) {
 				instance.recipes.add(recipe);
 			} else {
 				//println("Erreur.... Recette : "+i+"  Item : "+jsonRecipes.get(i).inputItem);
@@ -937,9 +937,13 @@ public class RecyclingManager {
 
 	public static RecyclingRecipe convertJsonRecipe(JsonRecyclingRecipe jRecipe) {
 		ItemStack inputItem = StringToItemStack(jRecipe.inputItem);
+		if (inputItem == null) { return null; }
 		RecyclingRecipe recipe = new RecyclingRecipe(inputItem);
 		for (int i = 0; i < jRecipe.outputItems.length; i++) {
-			recipe.addStack(StringToItemStack(jRecipe.outputItems[i]));
+			ItemStack outputItem = StringToItemStack(jRecipe.outputItems[i]);
+			if (outputItem != null) {
+				recipe.addStack(outputItem);
+			}
 		}
 		recipe.setCanBeRepaired(jRecipe.canBeRepaired);
 		return recipe;

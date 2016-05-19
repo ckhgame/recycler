@@ -33,6 +33,7 @@ public class RecyclingRecipe {
 	public ItemStack getItemRecipe() {
 		return itemRecipe;
 	}
+	
 	public void setCanBeRepaired(boolean state) {
 		canBeRepaired=state;
 	}
